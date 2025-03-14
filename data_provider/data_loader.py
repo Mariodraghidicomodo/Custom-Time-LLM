@@ -206,12 +206,12 @@ class Dataset_ETT_minute(Dataset):
         return self.scaler.inverse_transform(data)
 
 
-class Dataset_Custom(Dataset):
+class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET ALTRIMENTI CREARE IL MIO
     def __init__(self, root_path, flag='train', size=None,
                  features='S', data_path='ETTh1.csv',
                  target='OT', scale=True, timeenc=0, freq='h', percent=100,
                  seasonal_patterns=None):
-        if size == None:
+        if size == None: #MI RITORNA LA GRANDZZA DEL DATASET?? SEMBRA SIA COMPOSTO DALL NUEMRO DI ORE GIORNI E SETTIMANE?? nel nostro caso le ore sarebbero solo 3!!!
             self.seq_len = 24 * 4 * 4
             self.label_len = 24 * 4
             self.pred_len = 24 * 4
@@ -239,16 +239,16 @@ class Dataset_Custom(Dataset):
         self.tot_len = len(self.data_x) - self.seq_len - self.pred_len + 1
 
     def __read_data__(self):
-        self.scaler = StandardScaler()
+        self.scaler = StandardScaler() #in automatico fanno già loro la normalizzazione (QUINDI IO NON DEVO NORMALIZZARE NULLA)
         df_raw = pd.read_csv(os.path.join(self.root_path,
-                                          self.data_path))
+                                          self.data_path)) #apre il dataset
 
         '''
         df_raw.columns: ['date', ...(other features), target feature]
         '''
         cols = list(df_raw.columns)
-        cols.remove(self.target)
-        cols.remove('date')
+        cols.remove(self.target) #rimuove il target
+        cols.remove('date') #perchè rimuove anche la data??? quindi dovrei creare una colonna data (può essere anche una stringa)
         df_raw = df_raw[['date'] + cols + [self.target]]
         num_train = int(len(df_raw) * 0.7)
         num_test = int(len(df_raw) * 0.2)

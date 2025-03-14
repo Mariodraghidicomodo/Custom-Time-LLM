@@ -123,7 +123,7 @@ for ii in range(args.itr):
         args.embed,
         args.des, ii)
 
-    train_data, train_loader = data_provider(args, 'train')
+    train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     vali_data, vali_loader = data_provider(args, 'val')
     test_data, test_loader = data_provider(args, 'test')
 
