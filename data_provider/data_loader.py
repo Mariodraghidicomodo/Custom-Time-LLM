@@ -253,7 +253,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         num_train = int(len(df_raw) * 0.7)
         num_test = int(len(df_raw) * 0.2)
         num_vali = len(df_raw) - num_train - num_test
-        border1s = [0, num_train - self.seq_len, len(df_raw) - num_test - self.seq_len]
+        border1s = [0, num_train - self.seq_len, len(df_raw) - num_test - self.seq_len] # capire cosa sono i border
         border2s = [num_train, num_train + num_vali, len(df_raw)]
         border1 = border1s[self.set_type]
         border2 = border2s[self.set_type]
@@ -261,7 +261,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         if self.set_type == 0:
             border2 = (border2 - self.seq_len) * self.percent // 100 + self.seq_len
 
-        if self.features == 'M' or self.features == 'MS':
+        if self.features == 'M' or self.features == 'MS': #per lavorare con ts mulivariable or multivariate con output univariate (penso sia il nostro caso)
             cols_data = df_raw.columns[1:]
             df_data = df_raw[cols_data]
         elif self.features == 'S':
@@ -274,9 +274,9 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         else:
             data = df_data.values
 
-        df_stamp = df_raw[['date']][border1:border2]
-        df_stamp['date'] = pd.to_datetime(df_stamp.date)
-        if self.timeenc == 0:
+        df_stamp = df_raw[['date']][border1:border2] 
+        df_stamp['date'] = pd.to_datetime(df_stamp.date) #prende la colonna data e la trasforma in datetime quindi posso passarla anche come stringa nel mio caso
+        if self.timeenc == 0: #imposta la data se nulla???
             df_stamp['month'] = df_stamp.date.apply(lambda row: row.month, 1)
             df_stamp['day'] = df_stamp.date.apply(lambda row: row.day, 1)
             df_stamp['weekday'] = df_stamp.date.apply(lambda row: row.weekday(), 1)

@@ -24,7 +24,7 @@ parser = argparse.ArgumentParser(description='Time-LLM')
 fix_seed = 2021
 random.seed(fix_seed)
 torch.manual_seed(fix_seed)
-np.random.seed(fix_seed)
+np.random.seed(fix_seed) #TEST
 
 # basic config
 parser.add_argument('--task_name', type=str, required=True, default='long_term_forecast',
@@ -37,20 +37,20 @@ parser.add_argument('--model', type=str, required=True, default='Autoformer',
 parser.add_argument('--seed', type=int, default=2021, help='random seed')
 
 # data loader
-parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
-parser.add_argument('--root_path', type=str, default='./dataset', help='root path of the data file')
-parser.add_argument('--data_path', type=str, default='ETTh1.csv', help='data file')
+parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type') #nome del file da prendere dentro a data factory nel dizionario (data_dict) -> aggiornare data_dict
+parser.add_argument('--root_path', type=str, default='./dataset', help='root path of the data file') #doev è salvato il dataset reale (\poi_crowding)
+parser.add_argument('--data_path', type=str, default='ETTh1.csv', help='data file') #nome reale del data_set (export_42.csv)
 parser.add_argument('--features', type=str, default='M',
                     help='forecasting task, options:[M, S, MS]; '
                          'M:multivariate predict multivariate, S: univariate predict univariate, '
-                         'MS:multivariate predict univariate')
-parser.add_argument('--target', type=str, default='OT', help='target feature in S or MS task')
-parser.add_argument('--loader', type=str, default='modal', help='dataset type')
+                         'MS:multivariate predict univariate') #nel nostro caso abbiamo multipli attributi da usare come ts e un unico output (presenze) (quindi direi che è MS) (da testare)
+parser.add_argument('--target', type=str, default='OT', help='target feature in S or MS task') #target mettere s (un target, un output)
+parser.add_argument('--loader', type=str, default='modal', help='dataset type') #???????
 parser.add_argument('--freq', type=str, default='h',
                     help='freq for time features encoding, '
                          'options:[s:secondly, t:minutely, h:hourly, d:daily, b:business days, w:weekly, m:monthly], '
-                         'you can also use more detailed freq like 15min or 3h')
-parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='location of model checkpoints')
+                         'you can also use more detailed freq like 15min or 3h') #perfetto -> indica ogni quanto vengono salvati i dati (il nostro caso mi sembra particolare in quanto abbimao i dati salvati solo per tre ore ogni giorno!!!!!) (TESTARE)
+parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='location of model checkpoints') #??? ricontrollare!!
 
 # forecasting task
 parser.add_argument('--seq_len', type=int, default=96, help='input sequence length')
