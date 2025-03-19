@@ -11,6 +11,10 @@ d_ff=128
 
 comment='TimeLLM-ETTh1'
 
+#source "C:/Users/elped/OneDrive/Desktop/Università Verona/Magistrale/TesiTirocinio/Thesis_Project/.venv/Scripts/activate" 
+#source ../../.venv/Scripts/activate
+
+#python -m accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
 accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
   --task_name long_term_forecast \
   --is_training 1 \
@@ -37,6 +41,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --train_epochs $train_epochs \
   --model_comment $comment
 
+#python -m accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
 accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
   --task_name long_term_forecast \
   --is_training 1 \
@@ -63,6 +68,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --train_epochs $train_epochs \
   --model_comment $comment
 
+#python -m accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
 accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
   --task_name long_term_forecast \
   --is_training 1 \
@@ -88,8 +94,9 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --learning_rate 0.001 \
   --llm_layers $llama_layers \
   --train_epochs $train_epochs \
-  --model_comment $comment
+  --model_comment $comment 
 
+#python -m accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
 accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
   --task_name long_term_forecast \
   --is_training 1 \
