@@ -8,7 +8,7 @@ import math
 import numpy as np
 
 
-class Model(nn.Module):
+class Model(nn.Module): #utilizza i layer che si è creato in layers!!
     """
     Autoformer is the first method to achieve the series-wise connection,
     with inherent O(LlogL) complexity

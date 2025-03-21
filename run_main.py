@@ -14,8 +14,10 @@ import random
 import numpy as np
 import os
 
-os.environ['CURL_CA_BUNDLE'] = ''
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64"
+#os.environ in Python is a mapping object that represents the user’s OS environmental variables. It returns a dictionary having the user’s environmental variable as key and their values as value.
+#praticamente aggiunge queste variabili d'ambiente
+os.environ['CURL_CA_BUNDLE'] = '' #capire cosa servono
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64" #capire pure quaeto
 
 from utils.tools import del_files, EarlyStopping, adjust_learning_rate, vali, load_content
 
@@ -24,7 +26,7 @@ parser = argparse.ArgumentParser(description='Time-LLM')
 fix_seed = 2021
 random.seed(fix_seed)
 torch.manual_seed(fix_seed)
-np.random.seed(fix_seed) #TEST
+np.random.seed(fix_seed) 
 
 # basic config
 parser.add_argument('--task_name', type=str, required=True, default='long_term_forecast',
@@ -81,12 +83,12 @@ parser.add_argument('--llm_model', type=str, default='LLAMA', help='LLM model') 
 parser.add_argument('--llm_dim', type=int, default='4096', help='LLM model dimension')# LLama7b:4096; GPT2-small:768; BERT-base:768
 
 
-# optimization
-parser.add_argument('--num_workers', type=int, default=10, help='data loader num workers') #capire
+# optimization  #verranno inseriti nel dataloader (in caso vedere dataloader.py)
+parser.add_argument('--num_workers', type=int, default=10, help='data loader num workers') #how many subprocesses to use for data loading. ``0`` means that the data will be loaded in the main process.
 parser.add_argument('--itr', type=int, default=1, help='experiments times')
 parser.add_argument('--train_epochs', type=int, default=10, help='train epochs')
 parser.add_argument('--align_epochs', type=int, default=10, help='alignment epochs')
-parser.add_argument('--batch_size', type=int, default=32, help='batch size of train input data')
+parser.add_argument('--batch_size', type=int, default=32, help='batch size of train input data') #how many samples per batch to load (default: ``1``).
 parser.add_argument('--eval_batch_size', type=int, default=8, help='batch size of model evaluation')
 parser.add_argument('--patience', type=int, default=10, help='early stopping patience')
 parser.add_argument('--learning_rate', type=float, default=0.0001, help='optimizer learning rate')
@@ -125,9 +127,9 @@ for ii in range(args.itr):
 
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     vali_data, vali_loader = data_provider(args, 'val')
-    test_data, test_loader = data_provider(args, 'test')
+    test_data, test_loader = data_provider(args, 'test') #create test
 
-    if args.model == 'Autoformer':
+    if args.model == 'Autoformer': #creazione del modello
         model = Autoformer.Model(args).float()
     elif args.model == 'DLinear':
         model = DLinear.Model(args).float()
@@ -145,7 +147,7 @@ for ii in range(args.itr):
     train_steps = len(train_loader)
     early_stopping = EarlyStopping(accelerator=accelerator, patience=args.patience)
 
-    trained_parameters = []
+    trained_parameters = [] #parametri dove allenare il modello
     for p in model.parameters():
         if p.requires_grad is True:
             trained_parameters.append(p)
@@ -161,22 +163,22 @@ for ii in range(args.itr):
                                             epochs=args.train_epochs,
                                             max_lr=args.learning_rate)
 
-    criterion = nn.MSELoss()
+    criterion = nn.MSELoss() #scelta dei criteri di accuratezza
     mae_metric = nn.L1Loss()
 
     train_loader, vali_loader, test_loader, model, model_optim, scheduler = accelerator.prepare(
         train_loader, vali_loader, test_loader, model, model_optim, scheduler)
 
     if args.use_amp:
-        scaler = torch.cuda.amp.GradScaler()
+        scaler = torch.cuda.amp.GradScaler() #uso di cuda quindi uso della mia GPU?
 
-    for epoch in range(args.train_epochs):
+    for epoch in range(args.train_epochs): #loop for each epochs
         iter_count = 0
         train_loss = []
 
         model.train()
-        epoch_time = time.time()
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)):
+        epoch_time = time.time() #partenza tempo epochs (tenere traccia di quanto ci dta mettendo)
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)): #loop in ogni batch
             iter_count += 1
             model_optim.zero_grad()
 
@@ -238,7 +240,7 @@ for ii in range(args.itr):
                 scheduler.step()
 
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
-        train_loss = np.average(train_loss)
+        train_loss = np.average(train_loss) #print average loss
         vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric)
         test_loss, test_mae_loss = vali(args, accelerator, model, test_data, test_loader, criterion, mae_metric)
         accelerator.print(
@@ -263,7 +265,7 @@ for ii in range(args.itr):
         else:
             accelerator.print('Updating learning rate to {}'.format(scheduler.get_last_lr()[0]))
 
-accelerator.wait_for_everyone()
+accelerator.wait_for_everyone() 
 if accelerator.is_local_main_process:
     path = './checkpoints'  # unique checkpoint saving path
     del_files(path)  # delete checkpoint files

@@ -1,0 +1,22 @@
+comprensione codice:
+
+folder importanti:
+-   data_provider
+-   data_provider_pretrain
+-   layers (layers usati nella creazione del modello)
+-   models (classi e funzioni per i vari modelli / creazione del modello (nella creazione vengono anche richiamti i layer da usare (vedere layers)))
+-   utils
+
+run all:
+-   run_main.py
+    -   inserimento valori generali per la costruzione del modello (parser args)
+    -   costruzione del train/test/val (data_loader, data_factory)
+    -   costruzione del modello
+    -   scelta dei parametri
+    -   scelta dei criteri di accuratezza
+    -   loop sulle epochs
+        -   loop sulle batch 
+    -   deleate check points
+
+(sempbra non printi nulla -> capire!!)
+(dove salva i forecasting!!! li salva?? oppre mi ritorna solo la precisione??)
