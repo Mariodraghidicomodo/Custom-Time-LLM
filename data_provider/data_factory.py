@@ -56,7 +56,7 @@ def data_provider(args, flag):
             percent=percent,
             seasonal_patterns=args.seasonal_patterns
         )
-    data_loader = DataLoader( #funzione di torch!!
+    data_loader = DataLoader( #funzione di torch!!  #errori per il val??
         data_set,
         batch_size=batch_size,
         shuffle=shuffle_flag,

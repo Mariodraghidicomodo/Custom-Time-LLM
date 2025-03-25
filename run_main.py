@@ -17,7 +17,7 @@ import os
 #os.environ in Python is a mapping object that represents the user’s OS environmental variables. It returns a dictionary having the user’s environmental variable as key and their values as value.
 #praticamente aggiunge queste variabili d'ambiente
 os.environ['CURL_CA_BUNDLE'] = '' #capire cosa servono
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64" #capire pure quaeto
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64" #capire pure quanto
 
 from utils.tools import del_files, EarlyStopping, adjust_learning_rate, vali, load_content
 
@@ -61,73 +61,77 @@ parser.add_argument('--pred_len', type=int, default=96, help='prediction sequenc
 parser.add_argument('--seasonal_patterns', type=str, default='Monthly', help='subset for M4')
 
 # model define
-parser.add_argument('--enc_in', type=int, default=7, help='encoder input size')
-parser.add_argument('--dec_in', type=int, default=7, help='decoder input size')
-parser.add_argument('--c_out', type=int, default=7, help='output size')
-parser.add_argument('--d_model', type=int, default=16, help='dimension of model')
-parser.add_argument('--n_heads', type=int, default=8, help='num of heads')
-parser.add_argument('--e_layers', type=int, default=2, help='num of encoder layers')
-parser.add_argument('--d_layers', type=int, default=1, help='num of decoder layers')
-parser.add_argument('--d_ff', type=int, default=32, help='dimension of fcn')
-parser.add_argument('--moving_avg', type=int, default=25, help='window size of moving average')
-parser.add_argument('--factor', type=int, default=1, help='attn factor')
-parser.add_argument('--dropout', type=float, default=0.1, help='dropout')
+parser.add_argument('--enc_in', type=int, default=7, help='encoder input size') #Number of input features for the encoder (7 time-series variables in this case).
+parser.add_argument('--dec_in', type=int, default=7, help='decoder input size') #Number of input features for the decoder (also 7).
+parser.add_argument('--c_out', type=int, default=7, help='output size') #Output dimension (7, matching input features).
+parser.add_argument('--d_model', type=int, default=16, help='dimension of model') #Model embedding dimension (16). Defines the hidden size of the transformer layers.
+parser.add_argument('--n_heads', type=int, default=8, help='num of heads') #Number of attention heads in multi-head self-attention (8).
+parser.add_argument('--e_layers', type=int, default=2, help='num of encoder layers') #Number of layers in the encoder (2).
+parser.add_argument('--d_layers', type=int, default=1, help='num of decoder layers') #Number of layers in the decoder (1).
+parser.add_argument('--d_ff', type=int, default=32, help='dimension of fcn') #Dimension of the feedforward network in the transformer (32).
+parser.add_argument('--moving_avg', type=int, default=25, help='window size of moving average') #Window size for moving average (25), likely used for smoothing the input time series.
+parser.add_argument('--factor', type=int, default=1, help='attn factor') #Attention scaling factor (1), might control attention computation.
+parser.add_argument('--dropout', type=float, default=0.1, help='dropout') #Dropout rate (0.1) to prevent overfitting.
 parser.add_argument('--embed', type=str, default='timeF',
-                    help='time features encoding, options:[timeF, fixed, learned]')
+                    help='time features encoding, options:[timeF, fixed, learned]') #Type of embedding for time features (timeF: time feature encoding).
 parser.add_argument('--activation', type=str, default='gelu', help='activation') #che tipo di activation function usare (gelu: Gaussian error linear unit (GELU) activation function.)
-parser.add_argument('--output_attention', action='store_true', help='whether to output attention in encoder')
-parser.add_argument('--patch_len', type=int, default=16, help='patch length')
-parser.add_argument('--stride', type=int, default=8, help='stride')
-parser.add_argument('--prompt_domain', type=int, default=0, help='')
+parser.add_argument('--output_attention', action='store_true', help='whether to output attention in encoder') #If set, the model outputs attention weights.
+parser.add_argument('--patch_len', type=int, default=16, help='patch length') #Patch size (16), possibly for a patch-based transformer (similar to ViTs).
+parser.add_argument('--stride', type=int, default=8, help='stride') #Stride for patch extraction (8)
+parser.add_argument('--prompt_domain', type=int, default=0, help='') #BOH???
 parser.add_argument('--llm_model', type=str, default='LLAMA', help='LLM model') # LLAMA, GPT2, BERT
 parser.add_argument('--llm_dim', type=int, default='4096', help='LLM model dimension')# LLama7b:4096; GPT2-small:768; BERT-base:768
 
 
 # optimization  #verranno inseriti nel dataloader (in caso vedere dataloader.py)
 parser.add_argument('--num_workers', type=int, default=10, help='data loader num workers') #how many subprocesses to use for data loading. ``0`` means that the data will be loaded in the main process.
-parser.add_argument('--itr', type=int, default=1, help='experiments times')
-parser.add_argument('--train_epochs', type=int, default=10, help='train epochs')
-parser.add_argument('--align_epochs', type=int, default=10, help='alignment epochs')
+parser.add_argument('--itr', type=int, default=1, help='experiments times') #Number of experimental runs
+parser.add_argument('--train_epochs', type=int, default=10, help='train epochs') #Number of experimental runs
+parser.add_argument('--align_epochs', type=int, default=10, help='alignment epochs') #Alignment epochs, possibly for fine-tuning
 parser.add_argument('--batch_size', type=int, default=32, help='batch size of train input data') #how many samples per batch to load (default: ``1``).
-parser.add_argument('--eval_batch_size', type=int, default=8, help='batch size of model evaluation')
-parser.add_argument('--patience', type=int, default=10, help='early stopping patience')
+parser.add_argument('--eval_batch_size', type=int, default=8, help='batch size of model evaluation') #Evaluation batch size
+parser.add_argument('--patience', type=int, default=10, help='early stopping patience') 
 parser.add_argument('--learning_rate', type=float, default=0.0001, help='optimizer learning rate')
 parser.add_argument('--des', type=str, default='test', help='exp description')
 parser.add_argument('--loss', type=str, default='MSE', help='loss function')
 parser.add_argument('--lradj', type=str, default='type1', help='adjust learning rate')
-parser.add_argument('--pct_start', type=float, default=0.2, help='pct_start')
+parser.add_argument('--pct_start', type=float, default=0.2, help='pct_start') #Percentage of the training schedule where the LR increases (0.2).
 parser.add_argument('--use_amp', action='store_true', help='use automatic mixed precision training', default=False)
-parser.add_argument('--llm_layers', type=int, default=6)
+parser.add_argument('--llm_layers', type=int, default=6) #Number of layers used from the LLM
 parser.add_argument('--percent', type=int, default=100)
 
 args = parser.parse_args()
-ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
+ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True) #PERCHè RITORNA QUA DOPO ESSERE ARRIVATO AL LOOP DEI BATCH?????? (sembra una cosa collegate con il numero di num workers)
 deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
-accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
+accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin) #OVVIAMENTE DA ERRORE PERCHè ESSENGO GIA STATO CREATO ACCELELRATE TI DICE CHE LA PORTA è GIà USATA
 
 for ii in range(args.itr):
     # setting record of experiments
-    setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
+    #setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
+    setting = '{}_{}_{}'.format(  #test probelem name path to loong
         args.task_name,
         args.model_id,
-        args.model,
-        args.data,
-        args.features,
-        args.seq_len,
-        args.label_len,
-        args.pred_len,
-        args.d_model,
-        args.n_heads,
-        args.e_layers,
-        args.d_layers,
-        args.d_ff,
-        args.factor,
-        args.embed,
-        args.des, ii)
+        args.model
+        #args.data,
+        #args.features,
+        #args.seq_len,
+        #args.label_len,
+        #args.pred_len,
+        #args.d_model,
+        #args.n_heads,
+        #args.e_layers,
+        #args.d_layers,
+        #args.d_ff,
+        #args.factor,
+        #args.embed,
+        #args.des
+        , ii)
 
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     vali_data, vali_loader = data_provider(args, 'val')
     test_data, test_loader = data_provider(args, 'test') #create test
+    #display
+    print(train_data)
 
     if args.model == 'Autoformer': #creazione del modello
         model = Autoformer.Model(args).float()
@@ -139,17 +143,17 @@ for ii in range(args.itr):
     path = os.path.join(args.checkpoints,
                         setting + '-' + args.model_comment)  # unique checkpoint saving path
     args.content = load_content(args)
-    if not os.path.exists(path) and accelerator.is_local_main_process:
-        os.makedirs(path)
+    if not os.path.exists(path) and accelerator.is_local_main_process: #dove mi salva il modello??
+        os.makedirs(path) #create the directory where save the model if it doesn't exist!!! (path)
 
     time_now = time.time()
 
     train_steps = len(train_loader)
     early_stopping = EarlyStopping(accelerator=accelerator, patience=args.patience)
 
-    trained_parameters = [] #parametri dove allenare il modello
+    trained_parameters = [] #parametri dove allenare il modello (credo, dal debugger mi fa vedere che sono solo valori) (praticamente salva ogni linea del dataset?? NON CREDO)
     for p in model.parameters():
-        if p.requires_grad is True:
+        if p.requires_grad is True: #sta usando solo la cpu??
             trained_parameters.append(p)
 
     model_optim = optim.Adam(trained_parameters, lr=args.learning_rate)
@@ -165,10 +169,15 @@ for ii in range(args.itr):
 
     criterion = nn.MSELoss() #scelta dei criteri di accuratezza
     mae_metric = nn.L1Loss()
-
+#accelerator come device mi da cuda quindi dovrebbe usare la cpu (attenzione no module mpi4py, lo installo(fatto))
+#sembra non caricare MPI library, mi dice di usare il percorso completo con constructor syntax
+#da libearia The Windows wheels available on PyPI are specially crafted to work with either the Intel MPI or the Microsoft MPI runtime, therefore requiring a separate installation of any one of these packages.
+#Intel MPI is under active development and supports recent version of the MPI standard. Intel MPI can be installed with pip (see the impi-rt package on PyPI), being therefore straightforward to get it up and running within a Python environment. Intel MPI can also be installed system-wide as part of the Intel HPC Toolkit for Windows or via standalone online/offline installers.
+#(installado anche microsoft mpi + path)
+#FUNZIONA!! (RISULTATO VEDERE NOTE)
     train_loader, vali_loader, test_loader, model, model_optim, scheduler = accelerator.prepare(
         train_loader, vali_loader, test_loader, model, model_optim, scheduler)
-
+#master port 29500
     if args.use_amp:
         scaler = torch.cuda.amp.GradScaler() #uso di cuda quindi uso della mia GPU?
 
@@ -178,10 +187,10 @@ for ii in range(args.itr):
 
         model.train()
         epoch_time = time.time() #partenza tempo epochs (tenere traccia di quanto ci dta mettendo)
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)): #loop in ogni batch
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)): #loop in ogni batch #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT
             iter_count += 1
             model_optim.zero_grad()
-
+            #nuovo errore con accelerator vedere note
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float().to(accelerator.device)
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
@@ -195,7 +204,7 @@ for ii in range(args.itr):
 
             # encoder - decoder
             if args.use_amp:
-                with torch.cuda.amp.autocast():
+                with torch.cuda.amp.autocast(): #arriva qua
                     if args.output_attention:
                         outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
                     else:

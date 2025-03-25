@@ -40,16 +40,16 @@ class Model(nn.Module):
         self.patch_len = configs.patch_len
         self.stride = configs.stride
 
-        if configs.llm_model == 'LLAMA':
+        if configs.llm_model == 'LLAMA': #se ho scelto di usare un pretraining llama 
             # self.llama_config = LlamaConfig.from_pretrained('/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/')
-            self.llama_config = LlamaConfig.from_pretrained('huggyllama/llama-7b')
+            self.llama_config = LlamaConfig.from_pretrained('huggyllama/llama-7b') #ATTENZIONE FORSE CE DA MODIFICARE QUESTO PERCORSO, MI HA SCARICATO IL MODELLO MA IN UN POSTO DIVERSO!!! #FORSE IL PROBLEMA è COME HA CHIAMTO LA CARTELLA, VEDERE LE NOTE PER DOVE DSALVATO
             self.llama_config.num_hidden_layers = configs.llm_layers
             self.llama_config.output_attentions = True
             self.llama_config.output_hidden_states = True
             try:
                 self.llm_model = LlamaModel.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/",
-                    'huggyllama/llama-7b',
+                    'huggyllama/llama-7b', #probabilmente è da cambiare il percorso
                     trust_remote_code=True,
                     local_files_only=True,
                     config=self.llama_config,
@@ -80,7 +80,7 @@ class Model(nn.Module):
                     trust_remote_code=True,
                     local_files_only=False
                 )
-        elif configs.llm_model == 'GPT2':
+        elif configs.llm_model == 'GPT2': #oppure come pretrain usa gpt2
             self.gpt2_config = GPT2Config.from_pretrained('openai-community/gpt2')
 
             self.gpt2_config.num_hidden_layers = configs.llm_layers
@@ -115,7 +115,7 @@ class Model(nn.Module):
                     trust_remote_code=True,
                     local_files_only=False
                 )
-        elif configs.llm_model == 'BERT':
+        elif configs.llm_model == 'BERT': #oppure usa bert come pretrain
             self.bert_config = BertConfig.from_pretrained('google-bert/bert-base-uncased')
 
             self.bert_config.num_hidden_layers = configs.llm_layers

@@ -228,6 +228,6 @@ def load_content(args):
         file = 'ETT'
     else:
         file = args.data
-    with open('./dataset/prompt_bank/{0}.txt'.format(file), 'r') as f:
-        content = f.read()
+    with open('./dataset/prompt_bank/{0}.txt'.format(file), 'r', encoding="utf-8") as f:
+        content = f.read() #attenzion può dare problemi, meglio esplicitare l encoding (è stato aggiunto encoding -> perfetto adesso funziona)
     return content

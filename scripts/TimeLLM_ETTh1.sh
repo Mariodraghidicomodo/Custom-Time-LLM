@@ -14,8 +14,9 @@ comment='TimeLLM-ETTh1'
 #source "C:/Users/elped/OneDrive/Desktop/Università Verona/Magistrale/TesiTirocinio/Thesis_Project/.venv/Scripts/activate" 
 #source ../../.venv/Scripts/activate
 
+# il problema puotrebbe essere con lo script che fa partire il codice indicando multi_gpu???? CAPIRE
 #python -m accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
-accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
+accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \ 
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
