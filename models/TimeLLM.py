@@ -39,7 +39,7 @@ class Model(nn.Module):
         self.d_llm = configs.llm_dim
         self.patch_len = configs.patch_len
         self.stride = configs.stride
-
+        #carica il modello llama 7b
         if configs.llm_model == 'LLAMA': #se ho scelto di usare un pretraining llama 
             # self.llama_config = LlamaConfig.from_pretrained('/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/')
             self.llama_config = LlamaConfig.from_pretrained('huggyllama/llama-7b') #ATTENZIONE FORSE CE DA MODIFICARE QUESTO PERCORSO, MI HA SCARICATO IL MODELLO MA IN UN POSTO DIVERSO!!! #FORSE IL PROBLEMA è COME HA CHIAMTO LA CARTELLA, VEDERE LE NOTE PER DOVE DSALVATO
@@ -87,7 +87,7 @@ class Model(nn.Module):
             self.gpt2_config.output_attentions = True
             self.gpt2_config.output_hidden_states = True
             try:
-                self.llm_model = GPT2Model.from_pretrained(
+                self.llm_model = GPT2Model.from_pretrained( #ok in collab sembra non riuscire a scaricare il modello!!!
                     'openai-community/gpt2',
                     trust_remote_code=True,
                     local_files_only=True,

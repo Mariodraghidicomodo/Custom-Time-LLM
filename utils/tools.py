@@ -134,7 +134,7 @@ def del_files(dir_path):
     shutil.rmtree(dir_path)
 
 
-def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric):
+def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric): #esegue la validazione, questa parte è utile per capire la precisione del modello da qua devo ritornare i valori che predice e confrontarli con quelli reali (fare anche un grafico e capire mea e altri errori)
     total_loss = []
     total_mae_loss = []
     model.eval()
@@ -169,9 +169,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
 
-            pred = outputs.detach()
-            true = batch_y.detach()
-
+            pred = outputs.detach() #qua adesso abbiamo i valori predetti
+            true = batch_y.detach() #qua abbiamo i valori reali
+            #qua potremmo salvare i valori e fare un GRAFICO da mettere su tensor
             loss = criterion(pred, true)
 
             mae_loss = mae_metric(pred, true)

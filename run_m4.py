@@ -126,7 +126,7 @@ for ii in range(args.itr):
         args.embed,
         args.des, ii)
 
-    if args.data == 'm4':
+    if args.data == 'm4': #si usa solo se il dataset è uno di m4
         args.pred_len = M4Meta.horizons_map[args.seasonal_patterns]  # Up to M4 config
         args.seq_len = 2 * args.pred_len
         args.label_len = args.pred_len
@@ -240,21 +240,21 @@ for ii in range(args.itr):
     unwrapped_model = accelerator.unwrap_model(model)
     torch.cuda.synchronize()
     torch.cuda.empty_cache()
-    unwrapped_model.load_state_dict(torch.load(best_model_path, map_location=lambda storage, loc: storage))
+    unwrapped_model.load_state_dict(torch.load(best_model_path, map_location=lambda storage, loc: storage)) #questo è il modo con cui ricarica il modello presente nel check point
 
     x, _ = train_loader.dataset.last_insample_window()
     y = test_loader.dataset.timeseries
     x = torch.tensor(x, dtype=torch.float32).to(accelerator.device)
     x = x.unsqueeze(-1)
 
-    model.eval()
+    model.eval() #qua fa effettivamente la predizione dei dati!!!!!
 
     with torch.no_grad():
         B, _, C = x.shape
         dec_inp = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
         dec_inp = torch.cat([x[:, -args.label_len:, :], dec_inp], dim=1)
         outputs = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
-        id_list = np.arange(0, B, args.eval_batch_size)
+        id_list = np.arange(0, B, args.eval_batch_size) #attenzione ricnotrollare eval_batch_size
         id_list = np.append(id_list, B)
         for i in range(len(id_list) - 1):
             outputs[id_list[i]:id_list[i + 1], :, :] = model(

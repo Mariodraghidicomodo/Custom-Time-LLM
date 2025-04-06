@@ -207,7 +207,7 @@ class Dataset_ETT_minute(Dataset):
 
 
 class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET ALTRIMENTI CREARE IL MIO
-    def __init__(self, root_path, flag='train', size=None,
+    def __init__(self, root_path, flag='train', size=None, #qua inizializza il dataset!!
                  features='S', data_path='ETTh1.csv',
                  target='OT', scale=True, timeenc=0, freq='h', percent=100,
                  seasonal_patterns=None):
@@ -290,7 +290,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
 
-    def __getitem__(self, index):
+    def __getitem__(self, index): #ritorn ai valori
         feat_id = index // self.tot_len
         s_begin = index % self.tot_len
 

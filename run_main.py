@@ -127,11 +127,27 @@ for ii in range(args.itr):
         #args.des
         , ii)
 
+    #train data sono solo i dati e in che modo li voglio (indico i feature e i target)
+    #train loder caric i dati di train_data per essere usato da tensor indicando batch se fare shuffle e altre cose
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
+    
+    #AGGIUNTE
+    print('train_data:',train_data)
+    print('train_loader:',train_loader)
+    
     vali_data, vali_loader = data_provider(args, 'val')
+    
+    #AGGIUNTE
+    print('vali_data:',train_data)
+    print('vali_loader:',train_loader)
+    
     test_data, test_loader = data_provider(args, 'test') #create test
+    
+    #AGGIUNTE
+    print('test_data:',test_data)
+    print('test_loader:',test_loader)
     #display
-    print(train_data)
+    #print(train_data)
 
     if args.model == 'Autoformer': #creazione del modello
         model = Autoformer.Model(args).float()
@@ -182,18 +198,19 @@ for ii in range(args.itr):
         scaler = torch.cuda.amp.GradScaler() #uso di cuda quindi uso della mia GPU?
 
     for epoch in range(args.train_epochs): #loop for each epochs
-        iter_count = 0
+        iter_count = 0 #imposto train e iter uguali a zero; a ogni epoch si azzerano
         train_loss = []
 
-        model.train()
+        model.train() #set model to trining mode
         epoch_time = time.time() #partenza tempo epochs (tenere traccia di quanto ci dta mettendo)
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)): #loop in ogni batch #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)): #loop in ogni batch (contiene un numero di input e output uguale a quelo inserito in args) #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT (batch y sono i 'labels', batch_x sarebbe images (ex:pytorch))
+            #tdqm deorazione barra progreso / al posto di avere batch_x, batch_y, batch_x_mark, batch_y_mark = data, sono inseriti ne loop??? 
             iter_count += 1
             model_optim.zero_grad()
-            #nuovo errore con accelerator vedere note
+            #nuovo errore con accelerator vedere note; sposta i dati sulla gpu, se il dataset è troppo grande oppure le batch sono troppo grande la gpu arriva al masssimo e il programma crasha
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float().to(accelerator.device)
-            batch_x_mark = batch_x_mark.float().to(accelerator.device)
+            batch_x_mark = batch_x_mark.float().to(accelerator.device) #mark inidica i label/target??
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
 
             # decoder input
@@ -203,31 +220,31 @@ for ii in range(args.itr):
                 accelerator.device)
 
             # encoder - decoder
-            if args.use_amp:
+            if args.use_amp: #CAPIRE QUANDO SI ATTIVA
                 with torch.cuda.amp.autocast(): #arriva qua
                     if args.output_attention:
-                        outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
+                        outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0] #predizione dei valori??
                     else:
                         outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
 
                     f_dim = -1 if args.features == 'MS' else 0
                     outputs = outputs[:, -args.pred_len:, f_dim:]
                     batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
-                    loss = criterion(outputs, batch_y)
+                    loss = criterion(outputs, batch_y) #OK PERFETTO, QUA CALCOLA LA LOSS A OGNI ITERAZIONE -> QUI INSERIRE IL CONTROLLO SULLE ITERAZIONI E SALVARE IL PLOT DELLA LOSS!!
                     train_loss.append(loss.item())
             else:
                 if args.output_attention:
-                    outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
+                    outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]  #model.forward(), costruisco il modello con una parte dei dati (più o meno) forward
                 else:
-                    outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                    outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark) #forward
 
                 f_dim = -1 if args.features == 'MS' else 0
                 outputs = outputs[:, -args.pred_len:, f_dim:]
                 batch_y = batch_y[:, -args.pred_len:, f_dim:]
-                loss = criterion(outputs, batch_y)
-                train_loss.append(loss.item())
-
-            if (i + 1) % 100 == 0:
+                loss = criterion(outputs, batch_y) #OK PERFETTO, QUA CALCOLA LA LOSS A OGNI ITERAZIONE -> QUI INSERIRE IL CONTROLLO SULLE ITERAZIONI E SALVARE IL PLOT DELLA LOSS!!
+                train_loss.append(loss.item()) #OK PERFETTO DEVO SALVARE QUESTA VARIABILE (EX PYTORCH == running_loss)
+                #inserire if sull iter -> inseire nel tensorboard add_scalar (plot della loss)
+            if (i + 1) % 100 == 0: #quando arriva all unltimo batch satmpa i dati
                 accelerator.print(
                     "\titers: {0}, epoch: {1} | loss: {2:.7f}".format(i + 1, epoch + 1, loss.item()))
                 speed = (time.time() - time_now) / iter_count
@@ -241,22 +258,24 @@ for ii in range(args.itr):
                 scaler.step(model_optim)
                 scaler.update()
             else:
-                accelerator.backward(loss)
-                model_optim.step()
+                accelerator.backward(loss) 
+                model_optim.step() #Update model weights
 
             if args.lradj == 'TST':
                 adjust_learning_rate(accelerator, model_optim, scheduler, epoch + 1, args, printout=False)
                 scheduler.step()
-
+        #DIVERSO DAI NORMALI ESEMPI DOVE ALLA FINE DI TUTTE LE EPOCH FANNO IL MODEL EVAL SUL TEST 
+        #QUA MI FA SUBITO UN EVAL() (FA PREDIZIONI SUL TEST!!!) (PRATICAMENTE AD OGNI EPOCH FA UNAM PREDIZIONI SUL TEST PER VEDERE SE CE EFFETTIVAMENTE UN MIGLIORAMENTO ANCHE SUL TEST!!!) 
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
         train_loss = np.average(train_loss) #print average loss
-        vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric)
-        test_loss, test_mae_loss = vali(args, accelerator, model, test_data, test_loader, criterion, mae_metric)
+        vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric) #ricontrollare questa funzione!!!! ATTENZIONE: qua dentro fa model.eval() QUINDI QUA DOVREI RITORNARE I RISULTATI FINALI QUDO ESEGUIO L'ULTIMA EPOCH!!!!!!!
+        test_loss, test_mae_loss = vali(args, accelerator, model, test_data, test_loader, criterion, mae_metric) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
+        #AGGIUNTE, QUA INSERIRE IL PLOT DEI RISULTAI DEGLI OUTPUT!!!! (DECIDERE SE FARLO PER TUTTI GLI EPOCH PER VEDERE UN MIGLIORAMENTO OPPURE SOLO IL PROBL SULL ULTIMO EPOCH (QUNIDI A TRAIN COMPLETO))
         accelerator.print(
             "Epoch: {0} | Train Loss: {1:.7f} Vali Loss: {2:.7f} Test Loss: {3:.7f} MAE Loss: {4:.7f}".format(
                 epoch + 1, train_loss, vali_loss, test_loss, test_mae_loss))
 
-        early_stopping(vali_loss, model, path)
+        early_stopping(vali_loss, model, path) #stop trining if validation loss doesn't improve after a few epochs
         if early_stopping.early_stop:
             accelerator.print("Early stopping")
             break
@@ -273,7 +292,7 @@ for ii in range(args.itr):
 
         else:
             accelerator.print('Updating learning rate to {}'.format(scheduler.get_last_lr()[0]))
-
+        
 accelerator.wait_for_everyone() 
 if accelerator.is_local_main_process:
     path = './checkpoints'  # unique checkpoint saving path
