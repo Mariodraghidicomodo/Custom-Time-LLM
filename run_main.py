@@ -149,20 +149,18 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     
 #----- AGGIUNTE (return scaler)
-    print('data_path: ', train_data.data_path)
-    print('scale: ', train_data.scale)
-    print('scaler: ', train_data.scaler.mean_)
-    mean, std = train_data.get_scaler_params()
-    print("Mean:", mean)
-    print("Std:", std)
+    #print('data_path: ', train_data.data_path)
+    #print('scale: ', train_data.scale)
+    #print('scaler: ', train_data.scaler.mean_)
+    #mean, std = train_data.get_scaler_params()
+    #print("Mean:", mean)
+    #print("Std:", std)
     #print('train_data: ', train_data)
     #inverse = train_data.inverse_transform(train_data)
     #print('train_data_inverse', train_data.inverse_transform(train_data))
     #print('mean_inverse:', inverse.mean())
     #print('scaler: ', train_data.scaler.std_)
-    print('type: ', type(train_data))
-    import sys
-    sys.exit()
+    #print('type: ', type(train_data))
     #AGGIUNTE
     #print('train_data:',train_data)
     #print('train_loader:',train_loader)
