@@ -1,7 +1,7 @@
 import argparse
 import torch
-from accelerate import Accelerator, DeepSpeedPlugin
-from accelerate import DistributedDataParallelKwargs
+from accelerate import Accelerator, DeepSpeedPlugin #Within the PyTorch repo, we define an “Accelerator” as a torch.device that is being used alongside a CPU to speed up computation.
+from accelerate import DistributedDataParallelKwargs #powerful module in PyTorch that allows you to parallelize your model across multiple machines, making it perfect for large-scale deep learning applications. To use DDP, you’ll need to spawn multiple processes and create a single instance of DDP per process.
 from torch import nn, optim
 from torch.optim import lr_scheduler
 from tqdm import tqdm
@@ -13,6 +13,11 @@ import time
 import random
 import numpy as np
 import os
+
+#----- AGGIUNTE
+#import pickle
+#import json
+#-----
 
 #os.environ in Python is a mapping object that represents the user’s OS environmental variables. It returns a dictionary having the user’s environmental variable as key and their values as value.
 #praticamente aggiunge queste variabili d'ambiente
@@ -101,30 +106,42 @@ parser.add_argument('--llm_layers', type=int, default=6) #Number of layers used 
 parser.add_argument('--percent', type=int, default=100)
 
 args = parser.parse_args()
-ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True) #PERCHè RITORNA QUA DOPO ESSERE ARRIVATO AL LOOP DEI BATCH?????? (sembra una cosa collegate con il numero di num workers)
-deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
-accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin) #OVVIAMENTE DA ERRORE PERCHè ESSENGO GIA STATO CREATO ACCELELRATE TI DICE CHE LA PORTA è GIà USATA
+#----- AGGIUNTE
+#args_dict = vars(args)
+#with open("args.json", "w") as f:
+#    json.dump(args_dict, f, indent=4) #save args as json
+#-----
+#----- AGGIUGO CREAZIONE TENSORBOARD
+from torch.utils.tensorboard import SummaryWriter
+test_writer = SummaryWriter(log_dir='runs/model_small_small')
 
+#import sys
+#sys.exit()
+#-----
+ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True) #PERCHè RITORNA QUA DOPO ESSERE ARRIVATO AL LOOP DEI BATCH?????? (sembra una cosa collegate con il numero di num workers)
+deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json') #ok se uso il multiprocessing devo capire come lavora deepspeed!!
+accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin) #OVVIAMENTE DA ERRORE PERCHè ESSENGO GIA STATO CREATO ACCELELRATE TI DICE CHE LA PORTA è GIà USATA
+#alla fine crea più processi per velocizzare tutto (devere anche script per args dell accelerator)
 for ii in range(args.itr):
     # setting record of experiments
     #setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
     setting = '{}_{}_{}'.format(  #test probelem name path to loong
         args.task_name,
         args.model_id,
-        args.model
-        #args.data,
-        #args.features,
-        #args.seq_len,
-        #args.label_len,
-        #args.pred_len,
-        #args.d_model,
-        #args.n_heads,
-        #args.e_layers,
-        #args.d_layers,
-        #args.d_ff,
-        #args.factor,
-        #args.embed,
-        #args.des
+        args.model,
+        args.data,
+        args.features,
+        args.seq_len,
+        args.label_len,
+        args.pred_len,
+        args.d_model,
+        args.n_heads,
+        args.e_layers,
+        args.d_layers,
+        args.d_ff,
+        args.factor,
+        args.embed,
+        args.des
         , ii)
 
     #train data sono solo i dati e in che modo li voglio (indico i feature e i target)
@@ -132,22 +149,34 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     
     #AGGIUNTE
-    print('train_data:',train_data)
-    print('train_loader:',train_loader)
+    #print('train_data:',train_data)
+    #print('train_loader:',train_loader)
+    #display(train_data)
     
     vali_data, vali_loader = data_provider(args, 'val')
     
     #AGGIUNTE
-    print('vali_data:',train_data)
-    print('vali_loader:',train_loader)
+    #print('vali_data:',train_data)
+    #print('vali_loader:',train_loader)
     
     test_data, test_loader = data_provider(args, 'test') #create test
     
     #AGGIUNTE
-    print('test_data:',test_data)
-    print('test_loader:',test_loader)
-    #display
-    #print(train_data)
+    #print('test_data:',test_data)
+    #print('test_loader:',test_loader)
+
+    #AAGIUNTE 
+    #salvo train test e val
+    #torch.save(train_data,"train_data.pt")
+    #torch.save(vali_data,"vali_data.pt")
+    #torch.save(test_data,"test_data.pt")
+    #salvo anche i loader cosi non devo ricrearli
+    #with open("train_loader.pkl", "wb") as f:
+    #    pickle.dump(train_loader, f)
+    #with open("vali_loader.pkl", "wb") as f:
+    #    pickle.dump(vali_loader, f)
+    #with open("test_loader.pkl", "wb") as f:
+    #    pickle.dump(test_loader, f)
 
     if args.model == 'Autoformer': #creazione del modello
         model = Autoformer.Model(args).float()
@@ -197,6 +226,10 @@ for ii in range(args.itr):
     if args.use_amp:
         scaler = torch.cuda.amp.GradScaler() #uso di cuda quindi uso della mia GPU?
 
+#-----AGGIUNTE
+    #test_predictions = []
+    running_loss = 0.0
+#-----
     for epoch in range(args.train_epochs): #loop for each epochs
         iter_count = 0 #imposto train e iter uguali a zero; a ogni epoch si azzerano
         train_loss = []
@@ -232,6 +265,14 @@ for ii in range(args.itr):
                     batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
                     loss = criterion(outputs, batch_y) #OK PERFETTO, QUA CALCOLA LA LOSS A OGNI ITERAZIONE -> QUI INSERIRE IL CONTROLLO SULLE ITERAZIONI E SALVARE IL PLOT DELLA LOSS!!
                     train_loss.append(loss.item())
+#----- AGGIUNTE
+                    running_loss += loss.item()
+                    if i % 10 == 9: #ogni 10 iter dovrebbe salvare
+                      #log the running loss
+                      print('running_loss = ', running_loss)
+                      test_writer.add_scalar('training loss', running_loss / 10, epoch * len(train_loader) + i)
+                      running_loss = 0.0
+#-----
             else:
                 if args.output_attention:
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]  #model.forward(), costruisco il modello con una parte dei dati (più o meno) forward
@@ -244,6 +285,15 @@ for ii in range(args.itr):
                 loss = criterion(outputs, batch_y) #OK PERFETTO, QUA CALCOLA LA LOSS A OGNI ITERAZIONE -> QUI INSERIRE IL CONTROLLO SULLE ITERAZIONI E SALVARE IL PLOT DELLA LOSS!!
                 train_loss.append(loss.item()) #OK PERFETTO DEVO SALVARE QUESTA VARIABILE (EX PYTORCH == running_loss)
                 #inserire if sull iter -> inseire nel tensorboard add_scalar (plot della loss)
+#----- AGGIUNTE
+                running_loss += loss.item()
+                if i % 10 == 9: #ogni 10 iter dovrebbe salvare
+                  #log the running loss
+                  print('running_loss = ', running_loss)
+                  test_writer.add_scalar('training loss', running_loss / 10, epoch * len(train_loader) + i)
+                  running_loss = 0.0
+#-----
+
             if (i + 1) % 100 == 0: #quando arriva all unltimo batch satmpa i dati
                 accelerator.print(
                     "\titers: {0}, epoch: {1} | loss: {2:.7f}".format(i + 1, epoch + 1, loss.item()))
@@ -264,6 +314,9 @@ for ii in range(args.itr):
             if args.lradj == 'TST':
                 adjust_learning_rate(accelerator, model_optim, scheduler, epoch + 1, args, printout=False)
                 scheduler.step()
+            #AGGIUNTA
+            #test_predictions.append(outputs.detach().cpu().numpy()) #siamo sicuri che non sia GPU??
+        
         #DIVERSO DAI NORMALI ESEMPI DOVE ALLA FINE DI TUTTE LE EPOCH FANNO IL MODEL EVAL SUL TEST 
         #QUA MI FA SUBITO UN EVAL() (FA PREDIZIONI SUL TEST!!!) (PRATICAMENTE AD OGNI EPOCH FA UNAM PREDIZIONI SUL TEST PER VEDERE SE CE EFFETTIVAMENTE UN MIGLIORAMENTO ANCHE SUL TEST!!!) 
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
@@ -292,7 +345,20 @@ for ii in range(args.itr):
 
         else:
             accelerator.print('Updating learning rate to {}'.format(scheduler.get_last_lr()[0]))
-        
+
+#----- AGGIUNTE
+test_writer.close()
+
+#AGGIUNTE
+#test_predictions = np.concatenate(test_predictions)
+#test_predictions.to_csv('test_prediction.csv')
+
+#AGGIUNTE
+#salvo il modello da utilizzare in futuro
+#torch.save(model.state_dict(), '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_dict.pth')
+#torch.save(model, '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_all.pth')
+#-----
+      
 accelerator.wait_for_everyone() 
 if accelerator.is_local_main_process:
     path = './checkpoints'  # unique checkpoint saving path

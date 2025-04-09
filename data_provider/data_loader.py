@@ -308,7 +308,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         return (len(self.data_x) - self.seq_len - self.pred_len + 1) * self.enc_in
 
     def inverse_transform(self, data):
-        return self.scaler.inverse_transform(data)
+        return self.scaler.inverse_transform(data) #OK PERFETTO è PRESENTE ANCHE UNA FUNZIONE PER RITORNARE I DATI NORMALI (NON SCALATI)
 
 
 class Dataset_M4(Dataset):

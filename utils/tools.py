@@ -2,7 +2,12 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 import shutil
-
+#----- AGGIUNTE
+#from run_main import test_writer #da provare
+from torch.utils.tensorboard import SummaryWriter
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+#-----
 from tqdm import tqdm
 
 plt.switch_backend('agg')
@@ -43,7 +48,8 @@ class EarlyStopping:
         self.counter = 0
         self.best_score = None
         self.early_stop = False
-        self.val_loss_min = np.Inf
+        #self.val_loss_min = np.Inf
+        self.val_loss_min = np.inf #modificato il codice perchè np.Inf non è più supportato
         self.delta = delta
         self.save_mode = save_mode
 
@@ -91,7 +97,7 @@ class dotdict(dict):
     __delattr__ = dict.__delitem__
 
 
-class StandardScaler():
+class StandardScaler(): #class/function for standardization of the data
     def __init__(self, mean, std):
         self.mean = mean
         self.std = std
@@ -138,7 +144,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     total_loss = []
     total_mae_loss = []
     model.eval()
-    with torch.no_grad():
+#----- AGGIUNTE
+    predictions = []  
+    actuals = []  
+#-----
+    with torch.no_grad(): #inference?
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
@@ -172,6 +182,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             pred = outputs.detach() #qua adesso abbiamo i valori predetti
             true = batch_y.detach() #qua abbiamo i valori reali
             #qua potremmo salvare i valori e fare un GRAFICO da mettere su tensor
+#----- AGGIUNTE
+            predictions.append(pred.cpu().numpy()) 
+            actuals.append(true.cpu().numpy()) 
+            #print('PREDICTION: ',predictions)
+            #print('ACTUALS: ',actuals)
+#-----
             loss = criterion(pred, true)
 
             mae_loss = mae_metric(pred, true)
@@ -181,6 +197,49 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 
     total_loss = np.average(total_loss)
     total_mae_loss = np.average(total_mae_loss)
+#----- AGGIUNTE
+    predictions = np.concatenate(predictions, axis = 0)
+    #predictions = np.concatenate([pred.cpu().numpy() for pred in predictions], axis=0)
+    actuals = np.concatenate(actuals, axis = 0)
+    #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
+    
+    print('PREDICTION: ',predictions)
+    print('ACTUALS: ',actuals)
+    #scaler = StandardScaler() #SBAGLIATO
+    #predictions_normal = predictions.scaler.inverse_transform(predictions.reshape(-1,1))
+    #actuals_normal = actuals.scaler.inverse_transform(actuals.reshape(-1,1))
+    #print('PREDICTION NORMAL: ',predictions_normal.reshape(1,-1))
+    #print('ACTUALS NORMAL: ',actuals_normal.reshape(1,-1))
+    test_writer = SummaryWriter(log_dir='runs/model_small_small') #open writer
+    
+    for step in range(predictions.shape[0]): #loop samples
+      test_writer.add_scalars("Predictions vs Actuals",{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+    
+    #for step in range(predictions.shape[0]): #loop samples
+    #  test_writer.add_scalars("Predictions Normal vs Actuals Normal",{"Predicted Normal":predictions_normal[step].mean(), "Actual Normal":actuals_normal[step].mean()}, step) #name, dict, step
+    
+    #or
+
+    fig,ax = plt.subplots(figsize=(10,5))
+    #ax.plot(actuals[0], label = 'Actual')
+    ax.plot(actuals, label = 'Actual')
+    #ax.plot(predictions[0], label = 'Predictions', color='red')
+    ax.plot(predictions, label = 'Predictions', color='red')
+    ax.legend()
+    ax.set_title('Prediction vs Actual')
+    test_writer.add_figure("Prediction vs Actual (simple plot)", fig)
+
+    #fig,ax = plt.subplots(figsize=(10,5))
+    #ax.plot(actuals[0], label = 'Actual')
+    #ax.plot(actuals, label = 'Actual Normal')
+    #ax.plot(predictions[0], label = 'Predictions', color='red')
+    #ax.plot(predictions, label = 'Predictions Normal', color='red')
+    #ax.legend()
+    #ax.set_title('Prediction vs Actual')
+    #test_writer.add_figure("Prediction Normal vs Actual Normal (simple plot)", fig)
+
+    test_writer.close() #close writer
+#-----
 
     model.train()
     return total_loss, total_mae_loss
