@@ -152,10 +152,13 @@ for ii in range(args.itr):
     print('data_path: ', train_data.data_path)
     print('scale: ', train_data.scale)
     print('scaler: ', train_data.scaler.mean_)
-    print('train_data: ', train_data)
-    inverse = train_data.inverse_transform(train_data)
-    print('train_data_inverse', train_data.inverse_transform(train_data))
-    print('mean_inverse:', inverse.mean())
+    mean, std = train_data.get_scaler_params()
+    print("Mean:", mean)
+    print("Std:", std)
+    #print('train_data: ', train_data)
+    #inverse = train_data.inverse_transform(train_data)
+    #print('train_data_inverse', train_data.inverse_transform(train_data))
+    #print('mean_inverse:', inverse.mean())
     #print('scaler: ', train_data.scaler.std_)
     print('type: ', type(train_data))
     import sys
@@ -164,7 +167,7 @@ for ii in range(args.itr):
     #print('train_data:',train_data)
     #print('train_loader:',train_loader)
     #display(train_data)
-    
+#-----   
     vali_data, vali_loader = data_provider(args, 'val')
     
     #AGGIUNTE

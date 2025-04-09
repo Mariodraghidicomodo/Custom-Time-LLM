@@ -312,7 +312,11 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 
     def inverse_transform(self, data):
         return self.scaler.inverse_transform(data) #OK PERFETTO è PRESENTE ANCHE UNA FUNZIONE PER RITORNARE I DATI NORMALI (NON SCALATI)
-
+#----- AGGIUNTE
+    def get_scaler_params(self):
+        """Return the mean and standard deviation used for scaling."""
+        return self.scaler.mean_, self.scaler.scale_
+#-----
 
 class Dataset_M4(Dataset):
     def __init__(self, root_path, flag='pred', size=None,
