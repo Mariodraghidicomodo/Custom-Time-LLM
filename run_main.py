@@ -149,7 +149,9 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     
 #----- AGGIUNTE (return scaler)
-    print('scaler: ', train_data.data_path)
+    print('data_path: ', train_data.data_path)
+    print('scale: ', train_data.scale)
+    print('scaler: ', train_data.scaler)
     print('type: ', type(train_data))
     import sys
     sys.exit()
