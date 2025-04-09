@@ -150,6 +150,8 @@ for ii in range(args.itr):
 #----- AGGIUNTE (return scaler)
     print('scaler: ', train_data.scaler())
     print('type: ', type(train_data))
+    import sys
+    sys.exit()
     #AGGIUNTE
     #print('train_data:',train_data)
     #print('train_loader:',train_loader)
