@@ -17,6 +17,7 @@ import os
 #----- AGGIUNTE
 #import pickle
 #import json
+from sklearn.preprocessing import StandardScaler
 #-----
 
 #os.environ in Python is a mapping object that represents the user’s OS environmental variables. It returns a dictionary having the user’s environmental variable as key and their values as value.
