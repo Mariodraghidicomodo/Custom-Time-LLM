@@ -147,6 +147,9 @@ for ii in range(args.itr):
     #train loder caric i dati di train_data per essere usato da tensor indicando batch se fare shuffle e altre cose
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     
+#----- AGGIUNTE (return scaler)
+    print('scaler: ', train_data.scaler())
+    print('type: ', type(train_data))
     #AGGIUNTE
     #print('train_data:',train_data)
     #print('train_loader:',train_loader)
