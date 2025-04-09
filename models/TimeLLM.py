@@ -47,13 +47,16 @@ class Model(nn.Module):
             self.llama_config.output_attentions = True
             self.llama_config.output_hidden_states = True
             try:
+#----- AGGIUNTE
+                print('\nCARICO IL MODELLO LLAMA\n')
+#-----
                 self.llm_model = LlamaModel.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/",
                     'huggyllama/llama-7b', #probabilmente è da cambiare il percorso
                     trust_remote_code=True,
                     local_files_only=True,
                     config=self.llama_config,
-                    # load_in_4bit=True
+                    load_in_4bit=True #it was commented, lighter version
                 )
             except EnvironmentError:  # downloads model from HF is not already done
                 print("Local model files not found. Attempting to download...")
@@ -63,7 +66,7 @@ class Model(nn.Module):
                     trust_remote_code=True,
                     local_files_only=False,
                     config=self.llama_config,
-                    # load_in_4bit=True
+                    load_in_4bit=True
                 )
             try:
                 self.tokenizer = LlamaTokenizer.from_pretrained(

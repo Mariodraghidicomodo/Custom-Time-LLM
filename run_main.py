@@ -124,8 +124,8 @@ accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspe
 #alla fine crea più processi per velocizzare tutto (devere anche script per args dell accelerator)
 for ii in range(args.itr):
     # setting record of experiments
-    #setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
-    setting = '{}_{}_{}'.format(  #test probelem name path to loong
+    setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
+    #setting = '{}_{}_{}'.format(  #test probelem name path to loong
         args.task_name,
         args.model_id,
         args.model,
@@ -141,8 +141,7 @@ for ii in range(args.itr):
         args.d_ff,
         args.factor,
         args.embed,
-        args.des
-        , ii)
+        args.des, ii)
 
     #train data sono solo i dati e in che modo li voglio (indico i feature e i target)
     #train loder caric i dati di train_data per essere usato da tensor indicando batch se fare shuffle e altre cose
