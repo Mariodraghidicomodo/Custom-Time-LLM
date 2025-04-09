@@ -219,12 +219,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #  test_writer.add_scalars("Predictions Normal vs Actuals Normal",{"Predicted Normal":predictions_normal[step].mean(), "Actual Normal":actuals_normal[step].mean()}, step) #name, dict, step
     
     #or
-
     fig,ax = plt.subplots(figsize=(10,5))
-    #ax.plot(actuals[0], label = 'Actual')
-    ax.plot(actuals, label = 'Actual')
-    #ax.plot(predictions[0], label = 'Predictions', color='red')
-    ax.plot(predictions, label = 'Predictions', color='red')
+    ax.plot(actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+    #ax.plot(actuals, label = 'Actual')
+    ax.plot(predictions[0], label = 'Predictions', color='red')
+    #ax.plot(predictions, label = 'Predictions', color='red')
     ax.legend()
     ax.set_title('Prediction vs Actual')
     test_writer.add_figure("Prediction vs Actual (simple plot)", fig)
