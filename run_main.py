@@ -151,7 +151,8 @@ for ii in range(args.itr):
 #----- AGGIUNTE (return scaler)
     print('data_path: ', train_data.data_path)
     print('scale: ', train_data.scale)
-    print('scaler: ', train_data.scaler)
+    print('scaler: ', train_data.scaler.mean)
+    print('scaler: ', train_data.scaler.std)
     print('type: ', type(train_data))
     import sys
     sys.exit()
