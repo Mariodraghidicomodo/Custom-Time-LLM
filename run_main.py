@@ -152,7 +152,7 @@ for ii in range(args.itr):
     print('data_path: ', train_data.data_path)
     print('scale: ', train_data.scale)
     print('scaler: ', train_data.scaler.mean_)
-    print('scaler: ', train_data.scaler.std_)
+    #print('scaler: ', train_data.scaler.std_)
     print('type: ', type(train_data))
     import sys
     sys.exit()
