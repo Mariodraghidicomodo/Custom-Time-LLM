@@ -17,7 +17,7 @@ import os
 #----- AGGIUNTE
 #import pickle
 #import json
-from sklearn.preprocessing import StandardScaler
+#from sklearn.preprocessing import StandardScaler
 #-----
 
 #os.environ in Python is a mapping object that represents the user’s OS environmental variables. It returns a dictionary having the user’s environmental variable as key and their values as value.
@@ -149,7 +149,7 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     
 #----- AGGIUNTE (return scaler)
-    print('scaler: ', train_data.scaler())
+    #print('scaler: ', train_data.scaler())
     print('type: ', type(train_data))
     import sys
     sys.exit()
