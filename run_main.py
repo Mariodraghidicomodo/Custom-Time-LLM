@@ -332,6 +332,9 @@ for ii in range(args.itr):
         
         #DIVERSO DAI NORMALI ESEMPI DOVE ALLA FINE DI TUTTE LE EPOCH FANNO IL MODEL EVAL SUL TEST 
         #QUA MI FA SUBITO UN EVAL() (FA PREDIZIONI SUL TEST!!!) (PRATICAMENTE AD OGNI EPOCH FA UNAM PREDIZIONI SUL TEST PER VEDERE SE CE EFFETTIVAMENTE UN MIGLIORAMENTO ANCHE SUL TEST!!!) 
+#----- AGGIUNTE
+        test_writer.close()
+#-----
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
         train_loss = np.average(train_loss) #print average loss
         vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric) #ricontrollare questa funzione!!!! ATTENZIONE: qua dentro fa model.eval() QUINDI QUA DOVREI RITORNARE I RISULTATI FINALI QUDO ESEGUIO L'ULTIMA EPOCH!!!!!!!
@@ -360,7 +363,7 @@ for ii in range(args.itr):
             accelerator.print('Updating learning rate to {}'.format(scheduler.get_last_lr()[0]))
 
 #----- AGGIUNTE
-test_writer.close()
+#test_writer.close()
 
 #AGGIUNTE
 #test_predictions = np.concatenate(test_predictions)
@@ -370,6 +373,7 @@ test_writer.close()
 #salvo il modello da utilizzare in futuro
 #torch.save(model.state_dict(), '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_dict.pth')
 #torch.save(model, '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_all.pth')
+torch.save(model, '/kaggle/working/model_test_small_small_all.pth')
 #-----
       
 accelerator.wait_for_everyone() 
