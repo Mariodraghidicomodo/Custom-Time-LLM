@@ -151,13 +151,15 @@ for ii in range(args.itr):
 #----- AGGIUNTE (return scaler)
     #print('data_path: ', train_data.data_path)
     #print('scale: ', train_data.scale)
-    print('scaler: ', train_data.scaler.mean_)
-    mean, std = train_data.get_scaler_params()
+    print('raw_data: ', train_data.data_x)
+    print('raw_target', train_data.data_y)
+    print('scaler: ', train_data.scaler.mean_) #la media è per ogni colonna
+    mean, std = train_data.get_scaler_params() #la std è per ogni colonna (quinidi è una lista, dove ogni valori è la media di una colonna)
     print("Mean:", mean)
     print("Std:", std)
     #print('train_data: ', train_data)
-    inverse = train_data.inverse_transform(train_data)
-    print('inverse:',inverse)
+    print('unscaled_data = ',train_data.inverse_transform(train_data.data_x))
+    print('unscaled_target = ', train_data.inverse_transform(train_data.data_y))
     #print('train_data_inverse', train_data.inverse_transform(train_data))
     #print('mean_inverse:', inverse.mean())
     #print('scaler: ', train_data.scaler.std_)
@@ -255,6 +257,8 @@ for ii in range(args.itr):
         epoch_time = time.time() #partenza tempo epochs (tenere traccia di quanto ci dta mettendo)
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)): #loop in ogni batch (contiene un numero di input e output uguale a quelo inserito in args) #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT (batch y sono i 'labels', batch_x sarebbe images (ex:pytorch))
             #tdqm deorazione barra progreso / al posto di avere batch_x, batch_y, batch_x_mark, batch_y_mark = data, sono inseriti ne loop??? 
+            # batch_x = ts values that will use as input (shape: batch_size, seq_len, num_features) (numerical values)
+            # batch_x_mark = temporal feature day, week, hour etc... (data, timestamp), shape(batch_size, seq_len, num_time_features) (temporal context)
             iter_count += 1
             model_optim.zero_grad()
             #nuovo errore con accelerator vedere note; sposta i dati sulla gpu, se il dataset è troppo grande oppure le batch sono troppo grande la gpu arriva al masssimo e il programma crasha
