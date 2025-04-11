@@ -203,7 +203,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #predictions = np.concatenate([pred.cpu().numpy() for pred in predictions], axis=0)
     actuals = np.concatenate(actuals, axis = 0)
     #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
-    mean,std = vali_data.get_mean_std()
+    mean,std = vali_data.get_scaler_params()
     scaler = StandardScaler(mean,std)
     predictions_norm = scaler.inverse_transform(predictions)
     actuals_norm = scaler.inverse_transform(actuals)
