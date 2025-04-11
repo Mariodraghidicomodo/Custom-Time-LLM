@@ -242,15 +242,6 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     test_writer.add_figure("Prediction Normal vs Actual Normal (simple plot)", fig)
 
     test_writer.close() #close writer
-
-    df_results = pd.DataFrame({
-    'Actual': actuals.flatten(),
-    'Predicted': predictions.flatten(),
-    'Actual Norm': actuals_norm.flatten(),
-    'Predictions Norm': predictions_norm.flatten()
-    })
-    # Save to CSV
-    df_results.to_csv("predictions_vs_actuals.csv", index=False)
 #-----
 
     model.train()
