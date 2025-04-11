@@ -15,8 +15,8 @@ import numpy as np
 import os
 
 #----- AGGIUNTE
-#import pickle
-#import json
+import pickle
+import json
 #from sklearn.preprocessing import StandardScaler
 #-----
 
@@ -151,12 +151,13 @@ for ii in range(args.itr):
 #----- AGGIUNTE (return scaler)
     #print('data_path: ', train_data.data_path)
     #print('scale: ', train_data.scale)
-    #print('scaler: ', train_data.scaler.mean_)
-    #mean, std = train_data.get_scaler_params()
-    #print("Mean:", mean)
-    #print("Std:", std)
+    print('scaler: ', train_data.scaler.mean_)
+    mean, std = train_data.get_scaler_params()
+    print("Mean:", mean)
+    print("Std:", std)
     #print('train_data: ', train_data)
-    #inverse = train_data.inverse_transform(train_data)
+    inverse = train_data.inverse_transform(train_data)
+    print('inverse:',inverse)
     #print('train_data_inverse', train_data.inverse_transform(train_data))
     #print('mean_inverse:', inverse.mean())
     #print('scaler: ', train_data.scaler.std_)
@@ -165,6 +166,9 @@ for ii in range(args.itr):
     #print('train_data:',train_data)
     #print('train_loader:',train_loader)
     #display(train_data)
+    import sys
+    sys.exit()
+
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
     
@@ -174,23 +178,23 @@ for ii in range(args.itr):
     
     test_data, test_loader = data_provider(args, 'test') #create test
     
-    #AGGIUNTE
+#----- AGGIUNTE
     #print('test_data:',test_data)
     #print('test_loader:',test_loader)
 
     #AAGIUNTE 
     #salvo train test e val
-    #torch.save(train_data,"train_data.pt")
-    #torch.save(vali_data,"vali_data.pt")
-    #torch.save(test_data,"test_data.pt")
+    torch.save(train_data,"train_data.pt")
+    torch.save(vali_data,"vali_data.pt")
+    torch.save(test_data,"test_data.pt")
     #salvo anche i loader cosi non devo ricrearli
-    #with open("train_loader.pkl", "wb") as f:
-    #    pickle.dump(train_loader, f)
-    #with open("vali_loader.pkl", "wb") as f:
-    #    pickle.dump(vali_loader, f)
-    #with open("test_loader.pkl", "wb") as f:
-    #    pickle.dump(test_loader, f)
-
+    with open("train_loader.pkl", "wb") as f:
+        pickle.dump(train_loader, f)
+    with open("vali_loader.pkl", "wb") as f:
+        pickle.dump(vali_loader, f)
+    with open("test_loader.pkl", "wb") as f:
+        pickle.dump(test_loader, f)
+#-----
     if args.model == 'Autoformer': #creazione del modello
         model = Autoformer.Model(args).float()
     elif args.model == 'DLinear':
