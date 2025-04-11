@@ -151,7 +151,7 @@ for ii in range(args.itr):
 #----- AGGIUNTE (return scaler)
     #print('data_path: ', train_data.data_path)
     #print('scale: ', train_data.scale)
-    print('raw_data: ', train_data.data_x)
+    print('raw_data: ', train_data.data_x) #    PERCHè DATA_X E DATA_Y SONO UGUALI??
     print('raw_target', train_data.data_y)
     print('scaler: ', train_data.scaler.mean_) #la media è per ogni colonna
     mean, std = train_data.get_scaler_params() #la std è per ogni colonna (quinidi è una lista, dove ogni valori è la media di una colonna)

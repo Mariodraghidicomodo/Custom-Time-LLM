@@ -7,6 +7,7 @@ import shutil
 from torch.utils.tensorboard import SummaryWriter
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
+import pandas as pd
 #-----
 from tqdm import tqdm
 
@@ -202,9 +203,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #predictions = np.concatenate([pred.cpu().numpy() for pred in predictions], axis=0)
     actuals = np.concatenate(actuals, axis = 0)
     #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
-    
-    print('PREDICTION: ',predictions)
-    print('ACTUALS: ',actuals)
+    mean,std = vali_data.get_mean_std()
+    scaler = StandardScaler(mean,std)
+    predictions_norm = scaler.inverse_transform(predictions)
+    actuals_norm = scaler.inverse_transform(actuals)
+    #print('PREDICTION: ',predictions)
+    #print('ACTUALS: ',actuals)
     #scaler = StandardScaler() #SBAGLIATO
     #predictions_normal = predictions.scaler.inverse_transform(predictions.reshape(-1,1))
     #actuals_normal = actuals.scaler.inverse_transform(actuals.reshape(-1,1))
@@ -215,8 +219,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     for step in range(predictions.shape[0]): #loop samples
       test_writer.add_scalars("Predictions vs Actuals",{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
     
-    #for step in range(predictions.shape[0]): #loop samples
-    #  test_writer.add_scalars("Predictions Normal vs Actuals Normal",{"Predicted Normal":predictions_normal[step].mean(), "Actual Normal":actuals_normal[step].mean()}, step) #name, dict, step
+    for step in range(predictions.shape[0]): #loop samples
+      test_writer.add_scalars("Predictions Normal vs Actuals Normal",{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
     
     #or
     fig,ax = plt.subplots(figsize=(10,5))
@@ -228,16 +232,25 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     ax.set_title('Prediction vs Actual')
     test_writer.add_figure("Prediction vs Actual (simple plot)", fig)
 
-    #fig,ax = plt.subplots(figsize=(10,5))
-    #ax.plot(actuals[0], label = 'Actual')
+    fig,ax = plt.subplots(figsize=(10,5))
+    ax.plot(actuals_norm[0], label = 'Actual')
     #ax.plot(actuals, label = 'Actual Normal')
-    #ax.plot(predictions[0], label = 'Predictions', color='red')
+    ax.plot(predictions_norm[0], label = 'Predictions', color='red')
     #ax.plot(predictions, label = 'Predictions Normal', color='red')
-    #ax.legend()
-    #ax.set_title('Prediction vs Actual')
-    #test_writer.add_figure("Prediction Normal vs Actual Normal (simple plot)", fig)
+    ax.legend()
+    ax.set_title('Prediction vs Actual NORMAL')
+    test_writer.add_figure("Prediction Normal vs Actual Normal (simple plot)", fig)
 
     test_writer.close() #close writer
+
+    df_results = pd.DataFrame({
+    'Actual': actuals.flatten(),
+    'Predicted': predictions.flatten(),
+    'Actual Norm': actuals_norm.flatten(),
+    'Predictions Norm': predictions_norm.flatten()
+    })
+    # Save to CSV
+    df_results.to_csv("predictions_vs_actuals.csv", index=False)
 #-----
 
     model.train()
