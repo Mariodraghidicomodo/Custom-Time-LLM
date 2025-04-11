@@ -168,9 +168,6 @@ for ii in range(args.itr):
     #print('train_data:',train_data)
     #print('train_loader:',train_loader)
     #display(train_data)
-    import sys
-    sys.exit()
-
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
     
