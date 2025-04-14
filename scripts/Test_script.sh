@@ -4,12 +4,7 @@ num_process=2
 master_port=29500  # or any free port
 
 # Configure Accelerate for Kaggle (might require setup beforehand)
-accelerate accelerate launch \
-  --multi_gpu \
-  --num_processes $num_process \
-  --main_process_port $master_port \
-  --mixed_precision bf16 \
-  run_main.py \
+accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \ 
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
