@@ -1,4 +1,4 @@
-timestamp,poi_id,frequency
+date,poi_id,frequency
 2020-01-01 13:00:00,50,16
 2020-01-01 14:00:00,50,28
 2020-01-01 15:00:00,50,26

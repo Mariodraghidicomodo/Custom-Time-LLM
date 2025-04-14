@@ -1,4 +1,4 @@
-timestamp,poi_id,frequency
+date,poi_id,frequency
 2014-01-02 09:00:00,201,2
 2014-01-02 10:00:00,201,5
 2014-01-02 11:00:00,201,4
