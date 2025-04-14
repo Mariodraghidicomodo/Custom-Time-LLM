@@ -25,7 +25,7 @@ import json
 os.environ['CURL_CA_BUNDLE'] = '' #capire cosa servono
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64" #capire pure quanto
 
-from utils.tools import del_files, EarlyStopping, adjust_learning_rate, vali, load_content
+from utils.tools import del_files, EarlyStopping, adjust_learning_rate, vali, load_content, test
 
 parser = argparse.ArgumentParser(description='Time-LLM')
 
@@ -114,7 +114,7 @@ args = parser.parse_args()
 #-----
 #----- AGGIUGO CREAZIONE TENSORBOARD
 from torch.utils.tensorboard import SummaryWriter
-test_writer = SummaryWriter(log_dir='runs/model_small_small')
+test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}')
 
 #import sys
 #sys.exit()
@@ -149,25 +149,14 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     
 #----- AGGIUNTE (return scaler)
-    #print('data_path: ', train_data.data_path)
-    #print('scale: ', train_data.scale)
-    print('raw_data: ', train_data.data_x) #    PERCHè DATA_X E DATA_Y SONO UGUALI??
-    print('raw_target', train_data.data_y)
-    print('scaler: ', train_data.scaler.mean_) #la media è per ogni colonna
-    mean, std = train_data.get_scaler_params() #la std è per ogni colonna (quinidi è una lista, dove ogni valori è la media di una colonna)
-    print("Mean:", mean)
-    print("Std:", std)
-    #print('train_data: ', train_data)
-    print('unscaled_data = ',train_data.inverse_transform(train_data.data_x))
-    print('unscaled_target = ', train_data.inverse_transform(train_data.data_y))
-    #print('train_data_inverse', train_data.inverse_transform(train_data))
-    #print('mean_inverse:', inverse.mean())
-    #print('scaler: ', train_data.scaler.std_)
-    #print('type: ', type(train_data))
-    #AGGIUNTE
-    #print('train_data:',train_data)
-    #print('train_loader:',train_loader)
-    #display(train_data)
+    #print('raw_data: ', train_data.data_x) #    PERCHè DATA_X E DATA_Y SONO UGUALI??
+    #print('raw_target', train_data.data_y)
+    #print('scaler: ', train_data.scaler.mean_) #la media è per ogni colonna
+    #mean, std = train_data.get_scaler_params() #la std è per ogni colonna (quinidi è una lista, dove ogni valori è la media di una colonna)
+    #print("Mean:", mean)
+    #print("Std:", std)
+    #print('unscaled_data = ',train_data.inverse_transform(train_data.data_x))
+    #print('unscaled_target = ', train_data.inverse_transform(train_data.data_y))
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
     
@@ -342,8 +331,8 @@ for ii in range(args.itr):
 #-----
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
         train_loss = np.average(train_loss) #print average loss
-        vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric) #ricontrollare questa funzione!!!! ATTENZIONE: qua dentro fa model.eval() QUINDI QUA DOVREI RITORNARE I RISULTATI FINALI QUDO ESEGUIO L'ULTIMA EPOCH!!!!!!!
-        test_loss, test_mae_loss = vali(args, accelerator, model, test_data, test_loader, criterion, mae_metric) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
+        vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric, epoch) #ricontrollare questa funzione!!!! ATTENZIONE: qua dentro fa model.eval() QUINDI QUA DOVREI RITORNARE I RISULTATI FINALI QUDO ESEGUIO L'ULTIMA EPOCH!!!!!!!
+        test_loss, test_mae_loss = vali(args, accelerator, model, test_data, test_loader, criterion, mae_metric, epoch) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
         #AGGIUNTE, QUA INSERIRE IL PLOT DEI RISULTAI DEGLI OUTPUT!!!! (DECIDERE SE FARLO PER TUTTI GLI EPOCH PER VEDERE UN MIGLIORAMENTO OPPURE SOLO IL PROBL SULL ULTIMO EPOCH (QUNIDI A TRAIN COMPLETO))
         accelerator.print(
             "Epoch: {0} | Train Loss: {1:.7f} Vali Loss: {2:.7f} Test Loss: {3:.7f} MAE Loss: {4:.7f}".format(
@@ -370,9 +359,7 @@ for ii in range(args.itr):
 #----- AGGIUNTE
 #test_writer.close()
 
-#AGGIUNTE
-#test_predictions = np.concatenate(test_predictions)
-#test_predictions.to_csv('test_prediction.csv')
+final_loss = test(args, accelerator, model, train_loader, test_loader, criterion) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
 
 #AGGIUNTE
 #salvo il modello da utilizzare in futuro
