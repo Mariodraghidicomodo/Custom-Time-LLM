@@ -331,8 +331,8 @@ for ii in range(args.itr):
 #-----
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
         train_loss = np.average(train_loss) #print average loss
-        vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric, epoch) #ricontrollare questa funzione!!!! ATTENZIONE: qua dentro fa model.eval() QUINDI QUA DOVREI RITORNARE I RISULTATI FINALI QUDO ESEGUIO L'ULTIMA EPOCH!!!!!!!
-        test_loss, test_mae_loss = vali(args, accelerator, model, test_data, test_loader, criterion, mae_metric, epoch) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
+        vali_loss, vali_mae_loss = vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric, epoch, 'vali') #ricontrollare questa funzione!!!! ATTENZIONE: qua dentro fa model.eval() QUINDI QUA DOVREI RITORNARE I RISULTATI FINALI QUDO ESEGUIO L'ULTIMA EPOCH!!!!!!!
+        test_loss, test_mae_loss = vali(args, accelerator, model, test_data, test_loader, criterion, mae_metric, epoch, 'test') #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
         #AGGIUNTE, QUA INSERIRE IL PLOT DEI RISULTAI DEGLI OUTPUT!!!! (DECIDERE SE FARLO PER TUTTI GLI EPOCH PER VEDERE UN MIGLIORAMENTO OPPURE SOLO IL PROBL SULL ULTIMO EPOCH (QUNIDI A TRAIN COMPLETO))
         accelerator.print(
             "Epoch: {0} | Train Loss: {1:.7f} Vali Loss: {2:.7f} Test Loss: {3:.7f} MAE Loss: {4:.7f}".format(

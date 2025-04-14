@@ -141,7 +141,7 @@ def del_files(dir_path):
     shutil.rmtree(dir_path)
 
 
-def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric, epoch): #esegue la validazione, questa parte è utile per capire la precisione del modello da qua devo ritornare i valori che predice e confrontarli con quelli reali (fare anche un grafico e capire mea e altri errori)
+def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric, epoch, type): #esegue la validazione, questa parte è utile per capire la precisione del modello da qua devo ritornare i valori che predice e confrontarli con quelli reali (fare anche un grafico e capire mea e altri errori)
     total_loss = []
     total_mae_loss = []
     model.eval()
@@ -209,32 +209,65 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     actuals_norm = scaler.inverse_transform(actuals)
     
     test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
-    title = f'Predictions vs Actuals Epoch {epoch + 1}'
-    title_normal = f'Predictions Normal vs Actuals Normal Epoch {epoch + 1}'
-    for step in range(predictions.shape[0]): #loop samples
-      test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
     
-    for step in range(predictions.shape[0]): #loop samples
-      test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
-    
-    #or
-    fig,ax = plt.subplots(figsize=(10,5))
-    ax.plot(actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
-    #ax.plot(actuals, label = 'Actual')
-    ax.plot(predictions[0], label = 'Predictions', color='red')
-    #ax.plot(predictions, label = 'Predictions', color='red')
-    ax.legend()
-    ax.set_title(f'Prediction vs Actual Epoch {epoch + 1}')
-    test_writer.add_figure(f"Prediction vs Actual Epoch{epoch + 1} (simple plot)", fig)
+    if type == 'vali':
 
-    fig,ax = plt.subplots(figsize=(10,5))
-    ax.plot(actuals_norm[0], label = 'Actual')
-    #ax.plot(actuals, label = 'Actual Normal')
-    ax.plot(predictions_norm[0], label = 'Predictions', color='red')
-    #ax.plot(predictions, label = 'Predictions Normal', color='red')
-    ax.legend()
-    ax.set_title(f'Prediction vs Actual NORMAL Epoch{epoch + 1}')
-    test_writer.add_figure(f"Prediction Normal vs Actual Normal Epoch{epoch + 1} (simple plot)", fig)
+        title = f'Predictions vs Actuals Vali Epoch {epoch + 1}'
+        title_normal = f'Predictions Normal vs Actuals Normal Vali Epoch {epoch + 1}'
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
+        
+        #or
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(actuals, label = 'Actual')
+        ax.plot(predictions[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions', color='red')
+        ax.legend()
+        ax.set_title(f'Prediction vs Actual Vali Epoch {epoch + 1}')
+        test_writer.add_figure(f"Prediction vs Actual Vali Epoch{epoch + 1} (simple plot)", fig)
+
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(actuals_norm[0], label = 'Actual')
+        #ax.plot(actuals, label = 'Actual Normal')
+        ax.plot(predictions_norm[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions Normal', color='red')
+        ax.legend()
+        ax.set_title(f'Prediction vs Actual NORMAL Vali Epoch{epoch + 1}')
+        test_writer.add_figure(f"Prediction Normal vs Actual Normal Vali Epoch{epoch + 1} (simple plot)", fig)
+
+    if type == 'test':
+
+        title = f'Predictions vs Actuals Test Epoch {epoch + 1}'
+        title_normal = f'Predictions Normal vs Actuals Normal Test Epoch {epoch + 1}'
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
+        
+        #or
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(actuals, label = 'Actual')
+        ax.plot(predictions[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions', color='red')
+        ax.legend()
+        ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1}')
+        test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
+
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(actuals_norm[0], label = 'Actual')
+        #ax.plot(actuals, label = 'Actual Normal')
+        ax.plot(predictions_norm[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions Normal', color='red')
+        ax.legend()
+        ax.set_title(f'Prediction vs Actual NORMAL Test Epoch{epoch + 1}')
+        test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot)", fig)
+
 
     test_writer.close() #close writer
 #-----
