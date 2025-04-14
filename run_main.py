@@ -359,7 +359,7 @@ for ii in range(args.itr):
 #----- AGGIUNTE
 #test_writer.close()
 
-final_loss = test(args, accelerator, model, train_loader, test_loader, criterion) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
+#final_loss = test(args, accelerator, model, train_loader, test_loader, criterion) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
 
 #AGGIUNTE
 #salvo il modello da utilizzare in futuro
