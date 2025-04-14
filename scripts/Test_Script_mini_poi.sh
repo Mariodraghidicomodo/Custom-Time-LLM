@@ -8,7 +8,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset/final_df_poi/ \
-  --data_path freq_mini_42.csv \
+  --data_path freq_mini.csv \
   --model_id freq_mini_df_42 \
   --model TimeLLM \
   --data Traffic \
