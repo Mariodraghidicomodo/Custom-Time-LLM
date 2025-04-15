@@ -160,8 +160,10 @@ for ii in range(args.itr):
     print('data_stamp: ',train_data.data_stamp[:5])
     date = train_data.get_date_strings()
     print('date: ', date[:5])
-    #import sys
-    #sys.exit()
+    print('date type:', type(date))
+    print('date type:', date.size())
+    import sys
+    sys.exit()
 
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
