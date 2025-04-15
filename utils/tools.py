@@ -210,7 +210,15 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     
     test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
+    dates = vali_data.get_date_strings()
+    dates = [d[0] for d in dates]
+
     if type == 'vali':
+        plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
+    else:
+        plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
+
+    '''if type == 'vali':
 
         title = f'Predictions vs Actuals Vali Epoch {epoch + 1}'
         title_normal = f'Predictions Normal vs Actuals Normal Vali Epoch {epoch + 1}'
@@ -222,18 +230,18 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
         #or
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals[0], vali_data.get_date_strings(), label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(dates, actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(actuals, label = 'Actual')
-        ax.plot(predictions[0], vali_data.get_date_strings(), label = 'Predictions', color='red')
+        ax.plot(dates, predictions[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions', color='red')
         ax.legend()
         ax.set_title(f'Prediction vs Actual Vali Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Vali Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals_norm[0],vali_data.get_date_strings(), label = 'Actual')
+        ax.plot(dates, actuals_norm[0], label = 'Actual')
         #ax.plot(actuals, label = 'Actual Normal')
-        ax.plot(predictions_norm[0],vali_data.get_date_strings(), label = 'Predictions', color='red')
+        ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions Normal', color='red')
         ax.legend()
         ax.set_title(f'Prediction vs Actual NORMAL Vali Epoch{epoch + 1}')
@@ -251,22 +259,23 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
         #or
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals[0],vali_data.get_date_strings(), label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(dates, actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(actuals, label = 'Actual')
-        ax.plot(predictions[0],vali_data.get_date_strings(), label = 'Predictions', color='red')
+        ax.plot(dates, predictions[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions', color='red')
         ax.legend()
+        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
         ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals_norm[0],vali_data.get_date_strings(), label = 'Actual')
+        ax.plot(dates, actuals_norm[0], label = 'Actual')
         #ax.plot(actuals, label = 'Actual Normal')
-        ax.plot(predictions_norm[0],vali_data.get_date_strings(), label = 'Predictions', color='red')
+        ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions Normal', color='red')
         ax.legend()
         ax.set_title(f'Prediction vs Actual NORMAL Test Epoch{epoch + 1}')
-        test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot)", fig)
+        test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot)", fig)'''
 
 
     test_writer.close() #close writer
@@ -275,6 +284,77 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     model.train()
     return total_loss, total_mae_loss
 
+#----- AGGIUNTE
+def plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args):
+        
+        test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
+
+        title = f'Predictions vs Actuals Vali Epoch {epoch + 1}'
+        title_normal = f'Predictions Normal vs Actuals Normal Vali Epoch {epoch + 1}'
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
+        
+        #or
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(dates, actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(actuals, label = 'Actual')
+        ax.plot(dates, predictions[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions', color='red')
+        ax.legend()
+        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        ax.set_title(f'Prediction vs Actual Vali Epoch {epoch + 1}')
+        test_writer.add_figure(f"Prediction vs Actual Vali Epoch{epoch + 1} (simple plot)", fig)
+
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(dates, actuals_norm[0], label = 'Actual')
+        #ax.plot(actuals, label = 'Actual Normal')
+        ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions Normal', color='red')
+        ax.legend()
+        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        ax.set_title(f'Prediction vs Actual NORMAL Vali Epoch{epoch + 1}')
+        test_writer.add_figure(f"Prediction Normal vs Actual Normal Vali Epoch{epoch + 1} (simple plot)", fig)
+
+        test_writer.close() #close writer
+
+def plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args):
+        
+        test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
+
+        title = f'Predictions vs Actuals Test Epoch {epoch + 1}'
+        title_normal = f'Predictions Normal vs Actuals Normal Test Epoch {epoch + 1}'
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        
+        for step in range(predictions.shape[0]): #loop samples
+            test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
+        
+        #or
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(dates, actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(actuals, label = 'Actual')
+        ax.plot(dates, predictions[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions', color='red')
+        ax.legend()
+        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1}')
+        test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
+
+        fig,ax = plt.subplots(figsize=(10,5))
+        ax.plot(dates, actuals_norm[0], label = 'Actual')
+        #ax.plot(actuals, label = 'Actual Normal')
+        ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
+        #ax.plot(predictions, label = 'Predictions Normal', color='red')
+        ax.legend()
+        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        ax.set_title(f'Prediction vs Actual NORMAL Test Epoch{epoch + 1}')
+        test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot)", fig)
+
+        test_writer.close() #close writer
+#----- AGGIUNTE
 
 def test(args, accelerator, model, train_loader, vali_loader, criterion):
     x, _ = train_loader.dataset.last_insample_window()
