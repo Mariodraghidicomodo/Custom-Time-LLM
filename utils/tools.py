@@ -208,9 +208,13 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions_norm = scaler.inverse_transform(predictions)
     actuals_norm = scaler.inverse_transform(actuals)
     
-    print('ACTUALS:', actuals)
+    print('ACTUALS:', actuals[:5])
+    print('ACTUALS FLAT:', actuals.squeeze().reshape(-1)[:5])
     print('PREDICTIONS:', predictions)
-
+    actuals_flat = actuals.squeeze().reshape(-1)
+    predictions_flat = predictions.squeeze().reshape(-1)
+    actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
+    predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
 
     #test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
@@ -218,9 +222,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     dates = [d[0] for d in dates]
 
     if type == 'vali':
-        plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
+        #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
+        plot_vali(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates, epoch, args)
     else:
-        plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
+        #plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
+        plot_vali(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates, epoch, args)
 
     '''if type == 'vali':
 
@@ -295,28 +301,28 @@ def plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch
 
         title = f'Predictions vs Actuals Vali Epoch {epoch + 1}'
         title_normal = f'Predictions Normal vs Actuals Normal Vali Epoch {epoch + 1}'
-        for step in range(predictions.shape[0]): #loop samples
-            test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        #for step in range(predictions.shape[0]): #loop samples
+        #    test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
         
-        for step in range(predictions.shape[0]): #loop samples
-            test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
+        #for step in range(predictions.shape[0]): #loop samples
+        #    test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
         
         #or
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(dates, actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
-        #ax.plot(actuals, label = 'Actual')
-        ax.plot(dates, predictions[0], label = 'Predictions', color='red')
-        #ax.plot(predictions, label = 'Predictions', color='red')
+        #ax.plot(dates, actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(dates, actuals,label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(dates, predictions[0], label = 'Predictions', color='red')
+        ax.plot(dates, predictions, label = 'Predictions', color='red')
         ax.legend()
         ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
         ax.set_title(f'Prediction vs Actual Vali Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Vali Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(dates, actuals_norm[0], label = 'Actual')
-        #ax.plot(actuals, label = 'Actual Normal')
-        ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
-        #ax.plot(predictions, label = 'Predictions Normal', color='red')
+        #ax.plot(dates, actuals_norm[0], label = 'Actual')
+        ax.plot(dates, actuals_norm, label = 'Actual')
+        #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(dates, predictions_norm, label = 'Predictions', color='red')
         ax.legend()
         ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
         ax.set_title(f'Prediction vs Actual NORMAL Vali Epoch{epoch + 1}')
