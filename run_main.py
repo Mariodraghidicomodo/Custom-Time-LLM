@@ -162,7 +162,7 @@ for ii in range(args.itr):
     #print('date: ', date[:5])
     #print('date type:', type(date))
     print('lenght date', len(date['date']))
-    print('lenght date_x', train_data.data_x.size())
+    print('lenght date_x', len(train_data.data_x))
     #print('columns:', date.columns)
     import sys
     sys.exit()
