@@ -270,7 +270,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         if self.scale:
             train_data = df_data[border1s[0]:border2s[0]]
 #----- AGIUNTE 
-            print('MEAN: ',train_data.values.mean())
+            #print('MEAN: ',train_data.values.mean())
 #-----
             self.scaler.fit(train_data.values)
             data = self.scaler.transform(df_data.values)
@@ -287,7 +287,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             data_stamp = df_stamp.drop(['date'], 1).values
         elif self.timeenc == 1:
             data_stamp = time_features(pd.to_datetime(df_stamp['date'].values), freq=self.freq)
-            data_stamp = data_stamp.transpose(1, 0)
+            data_stamp = data_stamp.transpose(1, 0) #riscrive la data come numeri? [[[-0.06521739  0.         -0.46666667 -0.49726027]]
 
         self.data_x = data[border1:border2]
         self.data_y = data[border1:border2]
