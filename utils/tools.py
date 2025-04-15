@@ -219,17 +219,13 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
     dates = vali_data.get_date_strings()
-    print('prima:', dates)
-    #dates = [d for d in dates]
-    print('DATES:', dates)
-    print('dates')
 
     if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
-        plot_vali(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates, epoch, args)
+        plot_vali(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates['date'], epoch, args)
     else:
         #plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
-        plot_test(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates, epoch, args)
+        plot_test(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates['date'], epoch, args)
 
     '''if type == 'vali':
 

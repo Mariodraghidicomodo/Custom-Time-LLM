@@ -149,21 +149,21 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train') #usato per creare le parti del data set
     
 #----- AGGIUNTE (return scaler)
-    print('raw_data: ', train_data.data_x[:5]) #    PERCHè DATA_X E DATA_Y SONO UGUALI??
-    print('raw_target', train_data.data_y[:5])
+    #print('raw_data: ', train_data.data_x[:5]) #    PERCHè DATA_X E DATA_Y SONO UGUALI??
+    #print('raw_target', train_data.data_y[:5])
     #print('scaler: ', train_data.scaler.mean_) #la media è per ogni colonna
     #mean, std = train_data.get_scaler_params() #la std è per ogni colonna (quinidi è una lista, dove ogni valori è la media di una colonna)
     #print("Mean:", mean)
     #print("Std:", std)
     #print('unscaled_data = ',train_data.inverse_transform(train_data.data_x))
     #print('unscaled_target = ', train_data.inverse_transform(train_data.data_y))
-    print('data_stamp: ',train_data.data_stamp[:5])
-    date = train_data.get_date_strings()
-    print('date: ', date[:5])
-    print('date type:', type(date))
-    print('columns:', date.columns)
-    import sys
-    sys.exit()
+    #print('data_stamp: ',train_data.data_stamp[:5])
+    #date = train_data.get_date_strings()
+    #print('date: ', date[:5])
+    #print('date type:', type(date))
+    #print('columns:', date.columns)
+    #import sys
+    #sys.exit()
 
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
