@@ -239,23 +239,23 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
         #or
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(dates, actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
-        #ax.plot(actuals, label = 'Actual')
-        ax.plot(predictions[0], label = 'Predictions', color='red')
+        ax.plot(actuals_flat, label = 'Actual')
+        #ax.plot(predictions[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions[0], label = 'Predictions', color='red')
-        #ax.plot(predictions, label = 'Predictions', color='red')
+        ax.plot(predictions_flat, label = 'Predictions', color='red')
         ax.legend()
         ax.set_title(f'Prediction vs Actual Vali Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Vali Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals_norm[0], label = 'Actual')
+        #ax.plot(actuals_norm[0], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
-        #ax.plot(actuals, label = 'Actual Normal')
-        ax.plot(predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(actuals_flat_norm, label = 'Actual Normal')
+        #ax.plot(predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
-        #ax.plot(predictions, label = 'Predictions Normal', color='red')
+        ax.plot(predictions_flat_norm, label = 'Predictions Normal', color='red')
         ax.legend()
         ax.set_title(f'Prediction vs Actual NORMAL Vali Epoch{epoch + 1}')
         test_writer.add_figure(f"Prediction Normal vs Actual Normal Vali Epoch{epoch + 1} (simple plot)", fig)
