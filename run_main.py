@@ -157,6 +157,10 @@ for ii in range(args.itr):
     #print("Std:", std)
     #print('unscaled_data = ',train_data.inverse_transform(train_data.data_x))
     #print('unscaled_target = ', train_data.inverse_transform(train_data.data_y))
+    print('data_stamp: ',train_data.data_stamp)
+    import sys
+    sys.exit()
+
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
     
