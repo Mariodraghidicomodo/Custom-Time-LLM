@@ -220,7 +220,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             self.label_len = size[1]
             self.pred_len = size[2]
         # init
-        assert flag in ['train', 'test', 'val']
+        assert flag in ['train', 'test', 'val'] #can i use this in the vali/test
         type_map = {'train': 0, 'val': 1, 'test': 2}
         self.set_type = type_map[flag]
 
@@ -292,6 +292,9 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         self.data_x = data[border1:border2]
         self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
+#----- AGGIUNTE
+        self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True)
+#-----
 
     def __getitem__(self, index): #ritorn ai valori
         feat_id = index // self.tot_len
@@ -313,9 +316,10 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
     def inverse_transform(self, data):
         return self.scaler.inverse_transform(data) #OK PERFETTO è PRESENTE ANCHE UNA FUNZIONE PER RITORNARE I DATI NORMALI (NON SCALATI)
 #----- AGGIUNTE
-    def get_scaler_params(self):
-        """Return the mean and standard deviation used for scaling."""
+    def get_scaler_params(self): #return mean and std for scaling
         return self.scaler.mean_, self.scaler.scale_
+    def get_date_strings(self): #return the normal form date (different from data_stamp)
+        return self.date_string
 #-----
 
 class Dataset_M4(Dataset):
