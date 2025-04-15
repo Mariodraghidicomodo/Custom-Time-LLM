@@ -158,12 +158,14 @@ for ii in range(args.itr):
     #print('unscaled_data = ',train_data.inverse_transform(train_data.data_x))
     #print('unscaled_target = ', train_data.inverse_transform(train_data.data_y))
     #print('data_stamp: ',train_data.data_stamp[:5])
-    #date = train_data.get_date_strings()
+    date = train_data.get_date_strings()
     #print('date: ', date[:5])
     #print('date type:', type(date))
+    print('lenght date', len(date['date']))
+    print('lenght date_x', train_data.data_x.size())
     #print('columns:', date.columns)
-    #import sys
-    #sys.exit()
+    import sys
+    sys.exit()
 
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
