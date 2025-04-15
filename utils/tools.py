@@ -208,7 +208,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions_norm = scaler.inverse_transform(predictions)
     actuals_norm = scaler.inverse_transform(actuals)
     
-    test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
+    print('ACTUALS:', actuals)
+    print('PREDICTIONS:', predictions)
+
+
+    #test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
     dates = vali_data.get_date_strings()
     dates = [d[0] for d in dates]
@@ -278,7 +282,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot)", fig)'''
 
 
-    test_writer.close() #close writer
+    #test_writer.close() #close writer
 #-----
 
     model.train()
