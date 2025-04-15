@@ -7,15 +7,15 @@ master_port=29500  # or any free port
 accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
   --task_name long_term_forecast \
   --is_training 1 \
-  --root_path ./dataset/final_df_poi/ \
-  --data_path freq_mini.csv \
-  --model_id freq_mini_df_42 \
+  --root_path ./dataset/final_15min_df_poi/ \
+  --data_path frequency_15min_df_42.csv \
+  --model_id frequency_15min \
   --model TimeLLM \
   --data Traffic \
   --features S \
   --target frequency \
-  --freq h \
-  --seq_len 1 \
+  --freq 15min \
+  --seq_len 4 \
   --label_len 1 \
   --pred_len 1 \
   --enc_in 1 \
@@ -27,9 +27,9 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --d_model 32 \
   --d_ff 128 \
   --n_head 4 \
-  --batch_size 8 \
+  --batch_size 24 \
   --eval_batch_size 8 \
   --learning_rate 0.01 \
   --llm_layers 8 \
-  --train_epochs 2 \
-  --model_comment TimeLLM_mini_poi_42
+  --train_epochs 1 \
+  --model_comment TimeLLM-poi_15min_42
