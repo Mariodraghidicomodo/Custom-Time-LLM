@@ -208,9 +208,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions_norm = scaler.inverse_transform(predictions)
     actuals_norm = scaler.inverse_transform(actuals)
     
-    print('ACTUALS:', actuals[:5])
-    print('ACTUALS FLAT:', actuals.squeeze().reshape(-1)[:5])
-    print('PREDICTIONS:', predictions)
+    #print('ACTUALS:', actuals[:5])
+    #print('ACTUALS FLAT:', actuals.squeeze().reshape(-1)[:5])
+    #print('PREDICTIONS:', predictions)
     actuals_flat = actuals.squeeze().reshape(-1)
     predictions_flat = predictions.squeeze().reshape(-1)
     actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
