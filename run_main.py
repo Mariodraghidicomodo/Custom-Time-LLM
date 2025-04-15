@@ -160,23 +160,26 @@ for ii in range(args.itr):
     print('data_stamp: ',train_data.data_stamp[:5])
     date = train_data.get_date_strings()
     print('date: ', date[:5])
-    import sys
-    sys.exit()
+    #import sys
+    #sys.exit()
 
 #-----   
     vali_data, vali_loader = data_provider(args, 'val')
     
-    #AGGIUNTE
+#----- AGGIUNTE
     #print('vali_data:',train_data)
     #print('vali_loader:',train_loader)
+    date = vali_data.get_date_strings()
+    print('date: ', date[:5])
+#-----    
     
     test_data, test_loader = data_provider(args, 'test') #create test
     
 #----- AGGIUNTE
     #print('test_data:',test_data)
     #print('test_loader:',test_loader)
-
-    #AAGIUNTE 
+    date = test_data.get_date_strings()
+    print('date: ', date[:5])
     #salvo train test e val
     torch.save(train_data,"train_data.pt")
     torch.save(vali_data,"vali_data.pt")
