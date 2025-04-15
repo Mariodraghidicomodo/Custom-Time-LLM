@@ -347,9 +347,9 @@ def plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch
         
         #or
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(dates[0:args.batch_size], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(actuals, label = 'Actual')
-        ax.plot(dates[0], predictions[0], label = 'Predictions', color='red')
+        ax.plot(dates[0:args.batch_size], predictions[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions', color='red')
         ax.legend()
         ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
@@ -357,9 +357,9 @@ def plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(dates[0], actuals_norm[0], label = 'Actual')
+        ax.plot(dates[0:args.batch_size], actuals_norm[0], label = 'Actual')
         #ax.plot(actuals, label = 'Actual Normal')
-        ax.plot(dates[0], predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(dates[0:args.batch_size], predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions Normal', color='red')
         ax.legend()
         ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
