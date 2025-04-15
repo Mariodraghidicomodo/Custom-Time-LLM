@@ -161,7 +161,7 @@ for ii in range(args.itr):
     date = train_data.get_date_strings()
     print('date: ', date[:5])
     print('date type:', type(date))
-    print('date type:', date.size())
+    print('columns:', date.columns)
     import sys
     sys.exit()
 
