@@ -224,9 +224,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
         plot_vali(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates, epoch, args)
-    else:
+    #else:
         #plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
-        plot_vali(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates, epoch, args)
+        #plot_vali(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates, epoch, args)
 
     '''if type == 'vali':
 
