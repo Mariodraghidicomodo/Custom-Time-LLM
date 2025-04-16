@@ -1,0 +1,12 @@
+torch
+torchvision
+accelerate
+tqdm
+transformers
+deepspeed
+sentencepiece
+numpy
+deepspeed
+mpi4py
+bitsandbytes
+tensorboar
