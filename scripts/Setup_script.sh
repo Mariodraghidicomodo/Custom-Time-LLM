@@ -5,7 +5,9 @@ git clone https://github.com/Mariodraghidicomodo/Custom-Time-LLM.git || exit
 # Step 2: Navigate into the repo
 #cd Custom-Time-LLM || exit
 #Kaggle repo
-cd kaggle/working/Custom/Custom-Time-LLM || exit
+#cd kaggle/working/Custom/Custom-Time-LLM || exit
+#Kaggle repo input
+
 
 # Step 3: Set up Python virtual environment (optional)
 # python3 -m venv .venv
