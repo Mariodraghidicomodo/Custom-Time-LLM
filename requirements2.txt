@@ -1,12 +1,16 @@
-torch
-torchvision
+matplotlib
+numpy
+pandas
+scikit_learn
+scipy
+#torch==2.2.2 
+#torchvision==0.17.2 
+#torchaudio==2.2.2
 accelerate
 tqdm
 transformers
-deepspeed
 sentencepiece
-numpy
-deepspeed
+#deepspeed #deppspeed da problemi, installare dopo direttamente da terminale
 mpi4py
 bitsandbytes
 tensorboard
