@@ -206,10 +206,15 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #predictions = np.concatenate([pred.cpu().numpy() for pred in predictions], axis=0)
     actuals = np.concatenate(actuals, axis = 0)
     #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
+    print('predictions lenght:', len(predictions))
+    print('actuals lenght:', len(actuals))
     mean,std = vali_data.get_scaler_params()
     scaler = StandardScaler(mean,std)
     predictions_norm = scaler.inverse_transform(predictions)
     actuals_norm = scaler.inverse_transform(actuals)
+    print('predictions inv lenght:', len(predictions_norm))
+    print('actuals inv lenght:', len(actuals_norm))
+    
     
     #print('ACTUALS:', actuals[:5])
     #print('ACTUALS FLAT:', actuals.squeeze().reshape(-1)[:5])
@@ -218,10 +223,14 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions_flat = predictions.squeeze().reshape(-1)
     actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
     predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
+    print('predictions flat lenght:', len(predictions_flat))
+    print('actuals flat lenght:', len(actuals_flat))
+    
 
     test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
     dates = vali_data.get_date_strings()
+    print('dates_lenght:', len(dates['date']))
 
     #if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)

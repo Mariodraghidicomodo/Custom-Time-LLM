@@ -35,7 +35,7 @@ class Model(nn.Module):
         self.pred_len = configs.pred_len
         self.seq_len = configs.seq_len
         self.d_ff = configs.d_ff
-        self.top_k = 5
+        self.top_k = 5 #for what is used and why = 5?, whit some specifi arguments this value return errors, (try with = 1)
         self.d_llm = configs.llm_dim
         self.patch_len = configs.patch_len
         self.stride = configs.stride
