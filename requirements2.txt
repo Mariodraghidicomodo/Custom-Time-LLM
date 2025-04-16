@@ -9,4 +9,4 @@ numpy
 deepspeed
 mpi4py
 bitsandbytes
-tensorboar
+tensorboard

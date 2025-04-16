@@ -3,11 +3,7 @@ echo "Cloning GitHub repo..."
 git clone https://github.com/Mariodraghidicomodo/Custom-Time-LLM.git || exit
 
 # Step 2: Navigate into the repo
-#cd Custom-Time-LLM || exit
-#Kaggle repo
-#cd kaggle/working/Custom/Custom-Time-LLM || exit
-#Kaggle repo input
-
+cd Custom-Time-LLM || exit
 
 # Step 3: Set up Python virtual environment (optional)
 # python3 -m venv .venv
@@ -16,7 +12,7 @@ git clone https://github.com/Mariodraghidicomodo/Custom-Time-LLM.git || exit
 # Step 4: Install requirements
 echo "Installing requirements"
 #pip install --upgrade pip
-pip install -r requirements2.txt
+pip install -r requirements2.txt || exit
 
 # Step 5: Install LLama 7B model (huggyllama)
 echo "⬇️ Downloading LLaMA 7B model (huggyllama)..."
@@ -34,4 +30,4 @@ print("LLaMA 7B model downloaded successfully.")
 EOF
 
 echo "Setup complete!"
-echo "Now if you want to run the main execute Script_15_min_poi.sh"
+echo "Now, if you want to run the main, execute Script_15_min_poi.sh"
