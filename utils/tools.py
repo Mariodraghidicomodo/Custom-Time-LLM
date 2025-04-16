@@ -156,6 +156,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
+            print('batch_y_mark:', batch_y_mark)
+            print('type batch_y_mark', type(batch_y_mark))
 
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
