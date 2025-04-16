@@ -20,15 +20,22 @@ git clone https://github.com/Mariodraghidicomodo/Custom-Time-LLM.git || exit
 # Step 5: Install LLama 7B model (huggyllama)
 echo "Downloading LLaMA 7B model (huggyllama)"
 python - <<EOF
-from transformers import LlamaModel, LlamaConfig
+from transformers import LlamaModel, LlamaConfig, LlamaTokenizer
 print("Loading LLaMA config and model")
 model = LlamaModel.from_pretrained(
     "huggyllama/llama-7b",
     trust_remote_code=True,
     local_files_only=False,
     config=LlamaConfig.from_pretrained("huggyllama/llama-7b"),
-    #load_in_4bit=True
+    load_in_4bit=True
 )
+print("Download tokenizer files")
+tokenizer = LlamaTokenizer.from_pretrained(
+                    # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/tokenizer.model",
+                    'huggyllama/llama-7b',
+                    trust_remote_code=True,
+                    local_files_only=False
+                )
 print("LLaMA 7B model downloaded successfully.")
 EOF
 
