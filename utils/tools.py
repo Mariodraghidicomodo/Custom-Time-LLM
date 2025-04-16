@@ -148,6 +148,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
     predictions = []  
     actuals = []  
+    date = vali_data.get_date_strings()
+    print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
+    print('lenght date_x', len(vali_data.data_x))
 #-----
     with torch.no_grad(): #inference?
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
