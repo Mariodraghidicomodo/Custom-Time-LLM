@@ -181,7 +181,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
 
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y))
-
+            print('batch_y primaaaa:', batch_y)
+            print('batch_y_marker primaaaa', batch_y_mark)
             f_dim = -1 if args.features == 'MS' else 0
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
@@ -191,11 +192,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #qua potremmo salvare i valori e fare un GRAFICO da mettere su tensor
 #----- AGGIUNTE
             print('batch_y aaaa: ', len(batch_y))
+            #print('batch_y_marker aaaa', batch_y_mark)
             print('batch_y_dates aaaa', len(batch_y_dates))
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
-            all_batch_dates.append(batch_y_dates)
+            all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
 #-----
