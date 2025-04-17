@@ -8,6 +8,7 @@ from torch.utils.tensorboard import SummaryWriter
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import pandas as pd
+from tools import get_batch_dates
 #-----
 from tqdm import tqdm
 
@@ -151,13 +152,14 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     date = vali_data.get_date_strings()
     print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
     print('lenght date_x', len(vali_data.data_x))
+    all_batch_dates = []
 #-----
     with torch.no_grad(): #inference?
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
             print('batch_y_mark:', batch_y_mark)
-            print('type batch_y_mark', type(batch_y_mark))
+            #print('type batch_y_mark:', type(batch_y_mark))
 
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
@@ -191,6 +193,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
+            batch_dates = get_batch_dates(batch_y_mark)
+            all_batch_dates.append(batch_dates)
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
 #-----
@@ -207,9 +211,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions = np.concatenate(predictions, axis = 0)
     #predictions = np.concatenate([pred.cpu().numpy() for pred in predictions], axis=0)
     actuals = np.concatenate(actuals, axis = 0)
+    all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
     #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
     print('predictions lenght:', len(predictions))
     print('actuals lenght:', len(actuals))
+    print('dates_from batch:', all_batch_dates)
     mean,std = vali_data.get_scaler_params()
     scaler = StandardScaler(mean,std)
     predictions_norm = scaler.inverse_transform(predictions)
@@ -290,10 +296,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
         #or
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(dates, actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(actuals, label = 'Actual')
-        ax.plot(predictions[0], label = 'Predictions', color='red')
+        ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions', color='red')
         ax.legend()
@@ -304,10 +310,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(actuals_norm[0], label = 'Actual')
+        ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
         #ax.plot(actuals, label = 'Actual Normal')
-        ax.plot(predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(all_batch_dates[0], predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(predictions, label = 'Predictions Normal', color='red')
         ax.legend()

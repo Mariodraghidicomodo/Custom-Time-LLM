@@ -6,6 +6,7 @@ from sklearn.preprocessing import StandardScaler
 from utils.timefeatures import time_features
 from data_provider.m4 import M4Dataset, M4Meta
 import warnings
+import torch
 
 warnings.filterwarnings('ignore')
 
@@ -276,7 +277,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             data = self.scaler.transform(df_data.values)
         else:
             data = df_data.values
-
+        #cercare di replicare all invero questa parte per avere le date anche nei batch da usare nei plot!!!
         df_stamp = df_raw[['date']][border1:border2] 
         df_stamp['date'] = pd.to_datetime(df_stamp.date) #prende la colonna data e la trasforma in datetime quindi posso passarla anche come stringa nel mio caso
         if self.timeenc == 0: #imposta la data se nulla???
@@ -286,6 +287,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             df_stamp['hour'] = df_stamp.date.apply(lambda row: row.hour, 1)
             data_stamp = df_stamp.drop(['date'], 1).values
         elif self.timeenc == 1:
+            print('TEST TIMEENC == 1') #VIENE SCELTO dall args.embed, defaoult timeF (che va bene)
             data_stamp = time_features(pd.to_datetime(df_stamp['date'].values), freq=self.freq)
             data_stamp = data_stamp.transpose(1, 0) #riscrive la data come numeri? [[[-0.06521739  0.         -0.46666667 -0.49726027]]
 
@@ -320,6 +322,19 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         return self.scaler.mean_, self.scaler.scale_
     def get_date_strings(self): #return the normal form date (different from data_stamp)
         return self.date_string
+    def get_batch_dates(batch_y_mark): #test to return real data from the batch (during infrernze)
+        #from dataset i assume batch_y_mark has time featurees in order [year, month, day, hour, min]
+
+        if isinstance(batch_y_mark, torch.Tensor):
+            batch_y_mark = batch_y_mark.cpu.numpy()
+        
+        timestamps = []
+        for row in batch_y_mark:
+            for time_point in row:
+                year, month, day, hour, minute = [int(x) for x in time_point[:5]]
+                timestamps.append(pd.Timestamp(year=year, month=month, day=day, hour=hour, minute=minute))
+        
+        return timestamps
 #-----
 
 class Dataset_M4(Dataset):
