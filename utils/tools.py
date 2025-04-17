@@ -148,9 +148,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
     predictions = []  
     actuals = []  
-    date = vali_data.get_date_strings()
-    print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
-    print('lenght date_x', len(vali_data.data_x))
+    #date = vali_data.get_date_strings()
+    #print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
+    #print('lenght date_x', len(vali_data.data_x))
     all_batch_dates = []
 #-----
     with torch.no_grad(): #inference?
@@ -190,6 +190,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             true = batch_y.detach() #qua abbiamo i valori reali
             #qua potremmo salvare i valori e fare un GRAFICO da mettere su tensor
 #----- AGGIUNTE
+            print('batch_y aaaa: ', len(batch_y))
+            print('batch_y_dates aaaa', len(batch_y_dates))
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
@@ -214,7 +216,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
     print('predictions lenght:', len(predictions))
     print('actuals lenght:', len(actuals))
-    print('dates_from batch:', all_batch_dates)
+    print('dates_from batch:', len(all_batch_dates))
+    print('predictions lenght[0]:', len(predictions[0]))
+    print('actuals lenght[0]:', len(actuals[0]))
+    print('dates_from batch[0]:', len(all_batch_dates[0]))
     mean,std = vali_data.get_scaler_params()
     scaler = StandardScaler(mean,std)
     predictions_norm = scaler.inverse_transform(predictions)
