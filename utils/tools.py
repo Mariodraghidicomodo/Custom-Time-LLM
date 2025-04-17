@@ -182,8 +182,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             print('batch_y pppppp:', batch_y.shape)
             #print('batch_y_marker ppppp', len(batch_y_mark))
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
-            print('batch_y primaaaa:', len(batch_y))
-            print('batch_y_marker primaaaa', len(batch_y_mark))
+            print('batch_y primaaaa:', batch_y.shape)
+            print('batch_y_marker primaaaa', batch_y_mark.shape)
             f_dim = -1 if args.features == 'MS' else 0
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
@@ -192,13 +192,13 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             true = batch_y.detach() #qua abbiamo i valori reali
             #qua potremmo salvare i valori e fare un GRAFICO da mettere su tensor
 #----- AGGIUNTE
-            print('batch_y aaaa: ', len(batch_y))
+            print('batch_y aaaa: ', batch_y.shape)
             #print('batch_y_marker aaaa', batch_y_mark)
-            print('batch_y_dates aaaa', len(batch_y_dates))
+            print('batch_y_dates aaaa', batch_y_dates.shape)
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
-            all_batch_dates.append(batch_y_dates.cpu().numpy()) # batch_y_date[: -args.pred_len: f_dim] !!!!????
+            all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
 #-----
