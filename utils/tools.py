@@ -323,7 +323,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
         ax.plot(actuals[0], label = 'Actual Normal')
-        ax.plot(all_batch_dates[0], predictions_norm[0], label = 'Predictions', color='red')
+        #ax.plot(all_batch_dates[0], predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
         ax.plot(predictions[0], label = 'Predictions Normal', color='red')
         ax.legend()

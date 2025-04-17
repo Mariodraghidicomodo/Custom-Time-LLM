@@ -316,7 +316,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         #print('lenght seq_y', seq_y.shape)
         #print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
         #print('lenght seq_y_dates', seq_y_dates.shape)
-        print('seq_y_dates type:', type(seq_y_dates))
+        #print('seq_y_dates type:', type(seq_y_dates))
 #-----
         return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates #add return the raw date
 
