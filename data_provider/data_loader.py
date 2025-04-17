@@ -322,19 +322,6 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         return self.scaler.mean_, self.scaler.scale_
     def get_date_strings(self): #return the normal form date (different from data_stamp)
         return self.date_string
-    def get_batch_dates(batch_y_mark): #test to return real data from the batch (during infrernze)
-        #from dataset i assume batch_y_mark has time featurees in order [year, month, day, hour, min]
-
-        if isinstance(batch_y_mark, torch.Tensor):
-            batch_y_mark = batch_y_mark.cpu.numpy()
-        
-        timestamps = []
-        for row in batch_y_mark:
-            for time_point in row:
-                year, month, day, hour, minute = [int(x) for x in time_point[:5]]
-                timestamps.append(pd.Timestamp(year=year, month=month, day=day, hour=hour, minute=minute))
-        
-        return timestamps
 #-----
 
 class Dataset_M4(Dataset):
