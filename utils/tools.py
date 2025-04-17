@@ -199,6 +199,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
             batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates]
+            print('batch_y_dates bbbbbb', len(batch_y_dates))
             all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
@@ -246,7 +247,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
     #dates = vali_data.get_date_strings()
-    print('dates_from batch_flat:', all_batch_dates.squeeze().reshape(-1))
+    print('dates_from batch_flat:', len(all_batch_dates.squeeze().reshape(-1)))
 
     #if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
@@ -307,12 +308,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 
         #or
         fig,ax = plt.subplots(figsize=(10,5))
-        #ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(dates, actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
-        ax.plot(actuals[0], label = 'Actual')
-        #ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
+        #ax.plot(actuals[0], label = 'Actual')
+        ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions[0], label = 'Predictions', color='red')
-        ax.plot(predictions[0], label = 'Predictions', color='red')
+        #ax.plot(predictions[0], label = 'Predictions', color='red')
         ax.legend()
         ax.set_xlabel('Timestamp')
         ax.set_ylabel('Affluence')
@@ -321,12 +322,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        #ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
+        ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
-        ax.plot(actuals[0], label = 'Actual Normal')
-        #ax.plot(all_batch_dates[0], predictions_norm[0], label = 'Predictions', color='red')
+        #ax.plot(actuals[0], label = 'Actual Normal')
+        ax.plot(all_batch_dates[0], predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
-        ax.plot(predictions[0], label = 'Predictions Normal', color='red')
+        #ax.plot(predictions[0], label = 'Predictions Normal', color='red')
         ax.legend()
         ax.set_xlabel('Timestamp')
         ax.set_ylabel('Affluence')
