@@ -194,7 +194,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
             print('batch_y aaaa: ', batch_y.shape)
             #print('batch_y_marker aaaa', batch_y_mark)
-            #print('batch_y_dates aaaa', batch_y_dates.shape)
+            print('batch_y_dates aaaa', len(batch_y_dates))
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
