@@ -1,5 +1,5 @@
 # Set number of processes (1 per GPU)
-num_process=2
+num_process=1
 master_port=29500  # or any free port
 #seq_len -> 24*7 = 168 (24h for 7days = 1 week)
 #pred_len -> 24*4 = 96 or predict the next 4 h
