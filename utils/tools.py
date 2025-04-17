@@ -182,7 +182,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             print('batch_y pppppp:', batch_y.shape)
             #print('batch_y_marker ppppp', len(batch_y_mark))
             #outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
-            outputs, batch_y, batch_y_dates = accelerator.gather_for_metrics((outputs, batch_y, batch_y_dates))
+            #outputs, batch_y, batch_y_dates = accelerator.gather_for_metrics((outputs, batch_y, batch_y_dates))
+            gather = accelerator.gather_for_metrics((outputs, batch_y, batch_y_dates))
+            outputs, batch_y, batch_y_dates = gather
             print('batch_y primaaaa:', len(batch_y))
             print('batch_y_marker primaaaa', len(batch_y_mark))
             f_dim = -1 if args.features == 'MS' else 0
