@@ -198,6 +198,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
+            batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates]
             all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
@@ -245,7 +246,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
     #dates = vali_data.get_date_strings()
-    print('dates_from batch:', len(all_batch_dates))
+    print('dates_from batch_flat:', all_batch_dates.squeeze().reshape(-1))
 
     #if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)

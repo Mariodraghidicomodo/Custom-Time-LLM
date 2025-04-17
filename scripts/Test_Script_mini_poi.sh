@@ -4,8 +4,8 @@ master_port=29500  # or any free port
 #seq_len -> 24*7 = 168 (24h for 7days = 1 week)
 #pred_len -> 24*4 = 96 or predict the next 4 h
 # Configure Accelerate for Kaggle (might require setup beforehand)
-#accelerate launch --num_processes $num_process --main_process_port $master_port run_main.py \
-accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
+#accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
+accelerate launch --num_processes $num_process --main_process_port $master_port run_main.py \
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset/final_df_poi/ \
