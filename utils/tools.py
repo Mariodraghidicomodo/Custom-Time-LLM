@@ -179,9 +179,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
                 else:
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-            print('batch_y pppppp:', len(batch_y))
+            print('batch_y pppppp:', batch_y.shape)
             #print('batch_y_marker ppppp', len(batch_y_mark))
-            outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y))
+            #outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
+            outputs, batch_y, batch_y_dates = accelerator.gather_for_metrics((outputs, batch_y, batch_y_dates))
             print('batch_y primaaaa:', len(batch_y))
             print('batch_y_marker primaaaa', len(batch_y_mark))
             f_dim = -1 if args.features == 'MS' else 0
@@ -198,7 +199,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
-            all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
+            all_batch_dates.append(batch_y_dates.cpu().numpy()) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
 #-----
@@ -217,12 +218,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     actuals = np.concatenate(actuals, axis = 0)
     all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
     #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
-    print('predictions lenght:', len(predictions))
-    print('actuals lenght:', len(actuals))
-    print('dates_from batch:', len(all_batch_dates))
-    print('predictions lenght[0]:', len(predictions[0]))
-    print('actuals lenght[0]:', len(actuals[0]))
-    print('dates_from batch[0]:', len(all_batch_dates[0]))
+    print('predictions lenght:', predictions.shape)
+    print('actuals lenght:', actuals.shape)
+    print('dates_from batch:', all_batch_dates.shape)
+    print('predictions lenght[0]:', predictions[0].shape)
+    print('actuals lenght[0]:', actuals[0].shape)
+    print('dates_from batch[0]:', all_batch_dates[0].shape)
     mean,std = vali_data.get_scaler_params()
     scaler = StandardScaler(mean,std)
     predictions_norm = scaler.inverse_transform(predictions)

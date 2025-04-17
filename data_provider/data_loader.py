@@ -310,10 +310,11 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         seq_x_mark = self.data_stamp[s_begin:s_end]
         seq_y_mark = self.data_stamp[r_begin:r_end]
 #----- AGGIUNTE
-        seq_y_dates = self.date_string['date'][r_begin:r_end].to_list() #no dataframe or series
-        #print('lenght seq_y', len(seq_y))
-        #print('lenght, seq_y_mark', len(seq_y_mark)) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
-        #print('lenght seq_y_dates', len(seq_y_dates))
+        seq_y_dates = np.array(self.date_string['date'][r_begin:r_end].to_list()) #no dataframe or series
+        #seq_y_dates = np.array(self.date_string['date'][r_begin:r_end].to_list())[-self.pred_len:] #da testare
+        print('lenght seq_y', seq_y.shape)
+        print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
+        print('lenght seq_y_dates', seq_y_dates.shape)
 #-----
         return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates #add return the raw date
 
