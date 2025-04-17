@@ -181,8 +181,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
 
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y))
-            print('batch_y primaaaa:', batch_y)
-            print('batch_y_marker primaaaa', batch_y_mark)
+            print('batch_y primaaaa:', len(batch_y))
+            print('batch_y_marker primaaaa', len(batch_y_mark))
             f_dim = -1 if args.features == 'MS' else 0
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
