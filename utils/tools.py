@@ -232,12 +232,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
     print('predictions flat lenght:', len(predictions_flat))
     print('actuals flat lenght:', len(actuals_flat))
-    
+    #print('dates_from batch flat:', all_batch_dates)
 
     test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
     
-    dates = vali_data.get_date_strings()
-    print('dates_lenght:', len(dates['date']))
+    #dates = vali_data.get_date_strings()
+    print('dates_from batch:', len(all_batch_dates))
 
     #if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
@@ -293,6 +293,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         for step in range(predictions.shape[0]): #loop samples
             test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
         
+        print('test data[0]:', predictions[0])
+        print('all_batch_dates[0]', all_batch_dates[0])
+
         #or
         fig,ax = plt.subplots(figsize=(10,5))
         ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
