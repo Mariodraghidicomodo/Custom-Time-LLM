@@ -311,10 +311,10 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         seq_y_mark = self.data_stamp[r_begin:r_end]
 #----- AGGIUNTE
         seq_y_dates = self.date_string['date'][r_begin:r_end].to_list() #no dataframe or series
-        print('seq_y', seq_y)
-        print('seq_y_dates', seq_y_dates)
-        print('lenght seq_y', len(seq_y))
-        print('lenght seq_y_dates', len(seq_y))
+        #print('seq_y', seq_y)
+        #print('seq_y_dates', seq_y_dates)
+        #print('lenght seq_y', len(seq_y))
+        #print('lenght seq_y_dates', len(seq_y))
 
         return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates #add return the raw date
 
