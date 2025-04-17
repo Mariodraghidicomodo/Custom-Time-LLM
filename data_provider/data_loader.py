@@ -310,7 +310,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         seq_x_mark = self.data_stamp[s_begin:s_end]
         seq_y_mark = self.data_stamp[r_begin:r_end]
 #----- AGGIUNTE
-        seq_y_dates = self.date_string['date'][r_begin:r_end]
+        seq_y_dates = self.date_string['date'][r_begin:r_end].to_list() #no dataframe or series
 
         return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates #add return the raw date
 
