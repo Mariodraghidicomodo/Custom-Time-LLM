@@ -154,10 +154,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     all_batch_dates = []
 #-----
     with torch.no_grad(): #inference?
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)):
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
-            print('batch_y_mark:', batch_y_mark)
+            #print('batch_y_mark:', batch_y_mark)
             #print('type batch_y_mark:', type(batch_y_mark))
 
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
@@ -192,8 +192,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
-            batch_dates = get_batch_dates(batch_y_mark, args.freq)
-            all_batch_dates.append(batch_dates)
+            #batch_dates = get_batch_dates(batch_y_mark, args.freq)
+            all_batch_dates.append(batch_y_dates)
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
 #-----
