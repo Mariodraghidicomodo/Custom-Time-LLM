@@ -192,7 +192,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
-            batch_dates = get_batch_dates(batch_y_mark)
+            batch_dates = get_batch_dates(batch_y_mark, args.freq)
             all_batch_dates.append(batch_dates)
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
@@ -407,18 +407,26 @@ def plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch
 
         test_writer.close() #close writer
 
-def get_batch_dates(batch_y_mark): #test to return real data from the batch (during infrernze)
+def get_batch_dates(batch_y_mark, freq): #test to return real data from the batch (during infrernze)
         #from dataset i assume batch_y_mark has time featurees in order [year, month, day, hour, min]
 
         if isinstance(batch_y_mark, torch.Tensor):
-            batch_y_mark = batch_y_mark.cpu.numpy()
+            batch_y_mark = batch_y_mark.cpu().numpy()
         
         timestamps = []
-        for row in batch_y_mark:
-            for time_point in row:
-                year, month, day, hour, minute = [int(x) for x in time_point[:5]]
-                timestamps.append(pd.Timestamp(year=year, month=month, day=day, hour=hour, minute=minute))
-        
+
+        if freq == 'h':
+            print('ora')
+            for row in batch_y_mark:
+                for time_point in row:
+                    year, month, day, hour= [int(x) for x in time_point[:4]]
+                    timestamps.append(pd.Timestamp(year=year, month=month, day=day, hour=hour))
+        if freq == '15min':
+            print('min')
+            for row in batch_y_mark:
+                for time_point in row:
+                    year, month, day, hour, minute = [int(x) for x in time_point[:5]]
+                    timestamps.append(pd.Timestamp(year=year, month=month, day=day, hour=hour, minute=minute))    
         return timestamps
 #----- AGGIUNTE
 
