@@ -179,7 +179,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
                 else:
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-
+            print('batch_y pppppp:', len(batch_y))
+            #print('batch_y_marker ppppp', len(batch_y_mark))
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y))
             print('batch_y primaaaa:', len(batch_y))
             print('batch_y_marker primaaaa', len(batch_y_mark))
