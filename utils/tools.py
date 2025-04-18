@@ -322,10 +322,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(10,5))
-        ax.plot(x = all_batch_dates[0], y = actuals_norm[0], label = 'Actual')
+        ax.plot(all_batch_dates[0], y = actuals_norm[0], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
         #ax.plot(actuals[0], label = 'Actual Normal')
-        ax.plot(x = all_batch_dates[0], y = predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(all_batch_dates[0], y = predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(predictions[0], label = 'Predictions Normal', color='red')
         ax.set_xticks(all_batch_dates[0])
