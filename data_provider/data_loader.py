@@ -315,7 +315,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #----- AGGIUNTE
         #seq_y_dates = self.date_string['date'][r_begin:r_end].to_list() #no dataframe or series
         #seq_y_dates = self.date_string['date'][r_end - self.pred_len:r_end].to_list() # SEMBRA FUNZIONARE
-        seq_y_dates = self.date_string[r_end - self.pred_len:r_end].to_list() # DA TESTARE
+        seq_y_dates = self.date_string[r_end - self.pred_len:r_end] # DA TESTARE con test_dates and self
         #seq_y_dates = self.date_string['date'][r_begin:r_end, feat_id:feat_id+1].to_list() #DA TESTARE
         #seq_y_dates = np.array(self.date_string['date'][r_begin:r_end].to_list())[-self.pred_len:] #da testare
         #print('lenght seq_y', seq_y.shape)
