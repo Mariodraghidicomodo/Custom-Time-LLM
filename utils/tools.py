@@ -267,7 +267,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
         
         #or
-        fig,ax = plt.subplots(figsize=(10,5))
+        fig,ax = plt.subplots(figsize=(20,15))
         #ax.plot(actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(dates, actuals[0],label = 'Actual') #hanno una struttura del tipo 40,1,90
         ax.plot(actuals_flat, label = 'Actual')
@@ -280,7 +280,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         ax.set_title(f'Prediction vs Actual Vali Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Vali Epoch{epoch + 1} (simple plot)", fig)
 
-        fig,ax = plt.subplots(figsize=(10,5))
+        fig,ax = plt.subplots(figsize=(20,15))
         #ax.plot(actuals_norm[0], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
         ax.plot(actuals_flat_norm, label = 'Actual Normal')
@@ -307,7 +307,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         print('all_batch_dates[0]', all_batch_dates[0])
 
         #or
-        fig,ax = plt.subplots(figsize=(10,5))
+        fig,ax = plt.subplots(figsize=(20,15))
         ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(dates, actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(actuals[0], label = 'Actual')
@@ -321,7 +321,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
-        fig,ax = plt.subplots(figsize=(10,5))
+        fig,ax = plt.subplots(figsize=(20,15))
         ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
         #ax.plot(actuals[0], label = 'Actual Normal')
