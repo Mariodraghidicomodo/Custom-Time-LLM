@@ -297,7 +297,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #----- AGGIUNTE
         test_dates = df_raw[['date']][border1:border2].values #add
         print('test_dates:', type(test_dates)) #add
-        self.data_stamp = test_dates #add
+        self.date_string = test_dates #add
         #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
 
