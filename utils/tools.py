@@ -187,6 +187,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             f_dim = -1 if args.features == 'MS' else 0
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
+            #batch_y_dates = batch_y_dates[:, -args.pred_len:, f_dim] #DA TESTARE
 
             pred = outputs.detach() #qua adesso abbiamo i valori predetti
             true = batch_y.detach() #qua abbiamo i valori reali
@@ -198,7 +199,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
-            #batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates]
+            #batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!
             print('batch_y_dates bbbbbb', len(batch_y_dates))
             all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
@@ -307,11 +308,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         print('all_batch_dates[0]', all_batch_dates[0])
 
         #or
-        fig,ax = plt.subplots(figsize=(20,15))
-        ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        fig,ax = plt.subplots(figsize=(30,20))
+        #ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(all_batch_dates, actuals_flat, label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(dates, actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(actuals[0], label = 'Actual')
-        ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
+        ax.plot(all_batch_dates, predictions_flat, label = 'Predictions', color='red')
         #ax.plot(dates, predictions[0], label = 'Predictions', color='red')
         #ax.plot(predictions[0], label = 'Predictions', color='red')
         ax.legend()
@@ -321,11 +323,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
-        fig,ax = plt.subplots(figsize=(20,15))
-        ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
-        #ax.plot(dates, actuals_norm[0], label = 'Actual')
+        fig,ax = plt.subplots(figsize=(30,20))
+        #ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
+        ax.plot(all_batch_dates, actuals_flat_norm, label = 'Actual')
         #ax.plot(actuals[0], label = 'Actual Normal')
-        ax.plot(all_batch_dates[0], predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(all_batch_dates, predictions_flat_norm, label = 'Predictions', color='red')
         #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(predictions[0], label = 'Predictions Normal', color='red')
         ax.set_xticks(all_batch_dates[0])
