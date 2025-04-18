@@ -241,6 +241,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions_flat = predictions.squeeze().reshape(-1)
     actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
     predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
+    all_batch_dates_flates = all_batch_dates.squeeze().reshape(-1)
     print('predictions flat lenght:', len(predictions_flat))
     print('actuals flat lenght:', len(actuals_flat))
     #print('dates_from batch flat:', all_batch_dates)
