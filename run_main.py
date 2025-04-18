@@ -161,8 +161,8 @@ for ii in range(args.itr):
     date = train_data.get_date_strings()
     #print('date: ', date[:5])
     #print('date type:', type(date))
-    print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
-    print('lenght date_x', len(train_data.data_x))
+    #print('lenght date', 'date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
+    #print('lenght date_x', len(train_data.data_x))
     #print('columns:', date.columns)
     #import sys
     #sys.exit()
