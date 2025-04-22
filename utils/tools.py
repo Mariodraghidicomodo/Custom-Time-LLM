@@ -234,7 +234,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     print('actuals inv lenght:', len(actuals_norm))
 
     #provare a fare un df con actuals, predictions
-    if (epoch == args.epoch and type == 'test'): #ultimo testo
+    if (epoch == args.train_epochs and type == 'test'): #ultimo testo
         df_final_eval = {'Actuals': actuals_norm,
                          'Predictions': predictions_norm}
         df_final_eval = pd.DataFrame(df_final_eval)
