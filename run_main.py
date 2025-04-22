@@ -249,7 +249,8 @@ for ii in range(args.itr):
 
         model.train() #set model to trining mode
         epoch_time = time.time() #partenza tempo epochs (tenere traccia di quanto ci dta mettendo) #AGGIUNTO BATCH_Y_DATES
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(train_loader)): #loop in ogni batch (contiene un numero di input e output uguale a quelo inserito in args) #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT (batch y sono i 'labels', batch_x sarebbe images (ex:pytorch))
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)):
+        #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(train_loader)): #loop in ogni batch (contiene un numero di input e output uguale a quelo inserito in args) #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT (batch y sono i 'labels', batch_x sarebbe images (ex:pytorch))
             #tdqm deorazione barra progreso / al posto di avere batch_x, batch_y, batch_x_mark, batch_y_mark = data, sono inseriti ne loop??? 
             # batch_x = ts values that will use as input (shape: batch_size, seq_len, num_features) (numerical values)
             # batch_x_mark = temporal feature day, week, hour etc... (data, timestamp), shape(batch_size, seq_len, num_time_features) (temporal context)

@@ -154,7 +154,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #all_batch_dates = []
 #-----
     with torch.no_grad(): #inference?
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)):
+        #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)): #tolto
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
             #print('batch_y_mark:', batch_y_mark)
