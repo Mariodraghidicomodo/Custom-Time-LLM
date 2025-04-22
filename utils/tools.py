@@ -157,6 +157,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #-----
     with torch.no_grad(): #inference?
         #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)): #tolto
+        pred_last = [] #questi dovrebbero avere la stessa lunghezza del test, quindi salvo l'ultima iterazione cosi dopo ha la stessa lunghezza del test e confortimao le date
+        true_last = []  
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
@@ -202,8 +204,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy())
-            pred_last = pred.cpu().numpy()
-            true_last = true.cpu().numpy()
+            pred_last.append(pred.cpu().numpy())
+            true_last.append(true.cpu().numpy())
             
             #batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA ([7, 8, 9, 10])
             #print('batch_y_dates bbbbbb', batch_y_dates.shape) #
