@@ -195,12 +195,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
             print('batch_y aaaa: ', batch_y.shape)
             #print('batch_y_marker aaaa', batch_y_mark)
-            print('batch_y_dates aaaa', len(batch_y_dates))
+            print('batch_y_dates aaaa', batch_y_dates.shape)
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
-            batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA
-            print('batch_y_dates bbbbbb', len(batch_y_dates)) #
+            batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA ([7, 8, 9, 10])
+            print('batch_y_dates bbbbbb', batch_y_dates.shape) #
             all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
@@ -236,7 +236,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #provare a fare un df con actuals, predictions
     if (epoch == args.train_epochs and type == 'test'): #ultimo testo
         df_final_eval = {'Actuals': actuals_norm,
-                         'Predictions': predictions_norm}
+                         'Predictions': predictions_norm} #AGGIUNGERE LE DATE
         df_final_eval = pd.DataFrame(df_final_eval)
         #save df
         df_final_eval.to_csv('df_final_eval.csv')
