@@ -234,12 +234,15 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     print('actuals inv lenght:', len(actuals_norm))
 
     #provare a fare un df con actuals, predictions
-    if (epoch == args.train_epochs and type == 'test'): #ultimo testo
+    if ((epoch +1) == args.train_epochs and type == 'test'): #ultimo testo
+        print('TRUE')
         df_final_eval = {'Actuals': actuals_norm,
                          'Predictions': predictions_norm} #AGGIUNGERE LE DATE
         df_final_eval = pd.DataFrame(df_final_eval)
         #save df
         df_final_eval.to_csv('df_final_eval.csv')
+    else: 
+        print('FALSE')
     
     
     #print('ACTUALS:', actuals[:5])
