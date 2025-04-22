@@ -157,8 +157,6 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #-----
     with torch.no_grad(): #inference?
         #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)): #tolto
-        pred_last = [] #questi dovrebbero avere la stessa lunghezza del test, quindi salvo l'ultima iterazione cosi dopo ha la stessa lunghezza del test e confortimao le date
-        true_last = []  
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
