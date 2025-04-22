@@ -158,7 +158,7 @@ for ii in range(args.itr):
     #print('unscaled_data = ',train_data.inverse_transform(train_data.data_x))
     #print('unscaled_target = ', train_data.inverse_transform(train_data.data_y))
     #print('data_stamp: ',train_data.data_stamp[:5])
-    date = train_data.get_date_strings()
+    #date = train_data.get_date_strings()
     #print('date: ', date[:5])
     #print('date type:', type(date))
     #print('lenght date', 'date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
@@ -180,21 +180,18 @@ for ii in range(args.itr):
     test_data, test_loader = data_provider(args, 'test') #create test
     
 #----- AGGIUNTE
-    print('test_data:',test_data.shape)
-    #print('test_loader:',test_loader)
-    date = test_data.get_date_strings()
-    print('date: ', date[:5])
     #salvo train test e val
-    torch.save(train_data,"train_data.pt")
-    torch.save(vali_data,"vali_data.pt")
-    torch.save(test_data,"test_data.pt")
+    print('test date lenght:', len(test_data.date_x))
+    #torch.save(train_data,"train_data.pt")
+    #torch.save(vali_data,"vali_data.pt")
+    #torch.save(test_data,"test_data.pt")
     #salvo anche i loader cosi non devo ricrearli
-    with open("train_loader.pkl", "wb") as f:
-        pickle.dump(train_loader, f)
-    with open("vali_loader.pkl", "wb") as f:
-        pickle.dump(vali_loader, f)
-    with open("test_loader.pkl", "wb") as f:
-        pickle.dump(test_loader, f)
+    #with open("train_loader.pkl", "wb") as f:
+    #    pickle.dump(train_loader, f)
+    #with open("vali_loader.pkl", "wb") as f:
+    #    pickle.dump(vali_loader, f)
+    #with open("test_loader.pkl", "wb") as f:
+    #    pickle.dump(test_loader, f)
 #-----
     if args.model == 'Autoformer': #creazione del modello
         model = Autoformer.Model(args).float()
