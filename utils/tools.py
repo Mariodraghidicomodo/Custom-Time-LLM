@@ -195,12 +195,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #----- AGGIUNTE
             print('batch_y aaaa: ', batch_y.shape)
             #print('batch_y_marker aaaa', batch_y_mark)
-            print('batch_y_dates aaaa', len(batch_y_dates))
+            print('batch_y_dates aaaa', batch_y_dates.shape)
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_dates = get_batch_dates(batch_y_mark, args.freq)
-            #batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA
-            print('batch_y_dates bbbbbb', len(batch_y_dates)) #
+            batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA
+            print('batch_y_dates bbbbbb', batch_y_dates.shape) #
             all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
             #print('PREDICTION: ',predictions)
             #print('ACTUALS: ',actuals)
@@ -232,6 +232,14 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     actuals_norm = scaler.inverse_transform(actuals)
     print('predictions inv lenght:', len(predictions_norm))
     print('actuals inv lenght:', len(actuals_norm))
+
+    #provare a fare un df con actuals, predictions
+    if (epoch == args.epoch and type == 'test'): #ultimo testo
+        df_final_eval = {'Actuals': actuals_norm,
+                         'Predictions': predictions_norm}
+        df_final_eval = pd.DataFrame(df_final_eval)
+        #save df
+        df_final_eval.to_csv('df_final_eval.csv')
     
     
     #print('ACTUALS:', actuals[:5])
@@ -283,10 +291,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         test_writer.add_figure(f"Prediction vs Actual Vali Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(20,15))
-        ax.plot(actuals_norm[0], label = 'Actual')
+        ax.plot(actuals_norm[5], label = 'Actual')
         #ax.plot(dates, actuals_norm[0], label = 'Actual')
         #ax.plot(actuals_flat_norm, label = 'Actual Normal')
-        ax.plot(predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(predictions_norm[5], label = 'Predictions', color='red')
         #ax.plot(dates, predictions_norm[0], label = 'Predictions', color='red')
         #ax.plot(predictions_flat_norm, label = 'Predictions Normal', color='red')
         ax.legend()
@@ -426,7 +434,7 @@ def plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch
 
         test_writer.close() #close writer
 
-def get_batch_dates(batch_y_mark, freq): #test to return real data from the batch (during infrernze)
+def get_batch_dates(batch_y_mark, freq): #test to return real data from the batch (during infrernze) #sbagliato
         #from dataset i assume batch_y_mark has time featurees in order [year, month, day, hour, min]
 
         if isinstance(batch_y_mark, torch.Tensor):
