@@ -295,10 +295,10 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
 #----- AGGIUNTE
-        test_dates = df_raw[['date']][border1:border2].values #add
-        print('test_dates:', type(test_dates)) #add
-        self.date_string = test_dates #add
-        #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
+        #test_dates = df_raw[['date']][border1:border2].values #add
+        #print('test_dates:', type(test_dates)) #add
+        #self.date_string = test_dates #add
+        self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
 
     def __getitem__(self, index): #ritorn ai valori
