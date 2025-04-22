@@ -10,7 +10,7 @@ accelerate
 tqdm
 transformers
 sentencepiece
-#deepspeed #deppspeed da problemi, installare dopo direttamente da terminale
+#deepspeed #deppspeed da problemi, installare dopo direttamente da terminale #python 3.11
 mpi4py
 bitsandbytes
 tensorboard

@@ -12,10 +12,13 @@ git clone https://github.com/Mariodraghidicomodo/Custom-Time-LLM.git || exit
 #source .venv/Scripts/activate #Windows
 
 # Step 4: Install requirements
-#echo "Installing requirements"
+echo "Installing requirements"
 #pip install --upgrade pip
 #pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu118
-#pip install -r requirements2.txt || exit
+pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu118
+pip install -r requirements2.txt || exit
+#pip install deepspeed
+pip install deepspeed --prefer-binary
 
 # Step 5: Install LLama 7B model (huggyllama)
 echo "Downloading LLaMA 7B model (huggyllama)"
