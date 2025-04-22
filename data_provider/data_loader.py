@@ -315,14 +315,12 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #----- AGGIUNTE
         #seq_y_dates = self.date_string['date'][r_begin:r_end].to_list() #no dataframe or series
         #seq_y_dates = self.date_string['date'][r_end - self.pred_len:r_end].to_list() # SEMBRA FUNZIONARE
-        #seq_y_dates = self.date_string[r_end - self.pred_len:r_end] # DA TESTARE con test_dates and self
-        seq_y_dates = self.date_string[r_begin:r_end, feat_id:feat_id+1].tolist() #DA TESTARE
+        #seq_y_dates = self.date_string[r_end - self.pred_len:r_end].tolist() # DA TESTARE con test_dates and self
+        seq_y_dates = self.date_string[r_end - self.pred_len:r_end].values
         #seq_y_dates = np.array(self.date_string['date'][r_begin:r_end].to_list())[-self.pred_len:] #da testare
         #print('lenght seq_y', seq_y.shape)
         #print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
         #print('lenght seq_y_dates', seq_y_dates.shape)
-        #print('seq_y_dates type:', type(seq_y_dates))
-        #print('seq_y_dates type:', seq_y_dates)
 #-----
         return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates #add return the raw date
 

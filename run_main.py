@@ -180,7 +180,7 @@ for ii in range(args.itr):
     test_data, test_loader = data_provider(args, 'test') #create test
     
 #----- AGGIUNTE
-    #print('test_data:',test_data)
+    print('test_data:',test_data.shape)
     #print('test_loader:',test_loader)
     date = test_data.get_date_strings()
     print('date: ', date[:5])

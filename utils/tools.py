@@ -151,7 +151,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #date = vali_data.get_date_strings()
     #print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
     #print('lenght date_x', len(vali_data.data_x))
-    all_batch_dates = []
+    #all_batch_dates = []
 #-----
     with torch.no_grad(): #inference?
         for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)):
@@ -179,11 +179,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
                 else:
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-            print('batch_y pppppp:', batch_y.shape)
+            #print('batch_y pppppp:', batch_y.shape)
             #print('batch_y_marker ppppp', len(batch_y_mark))
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
-            print('batch_y primaaaa:', batch_y.shape)
-            print('batch_y_marker primaaaa', batch_y_mark.shape)
+            #print('batch_y primaaaa:', batch_y.shape)
+            #print('batch_y_marker primaaaa', batch_y_mark.shape)
             f_dim = -1 if args.features == 'MS' else 0
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
@@ -192,18 +192,16 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             true = batch_y.detach() #qua abbiamo i valori reali
             #qua potremmo salvare i valori e fare un GRAFICO da mettere su tensor
 #----- AGGIUNTE
-            print('batch_y aaaa: ', batch_y.shape)
+            #print('batch_y aaaa: ', batch_y.shape)
             #print('batch_y_marker aaaa', batch_y_mark)
             #print('batch_y_dates aaaa', batch_y_dates.shape)
-            print('batch_y_dates aaaa', len(batch_y_dates))
+            #print('batch_y_dates aaaa', len(batch_y_dates))
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy()) 
             #batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA ([7, 8, 9, 10])
             #print('batch_y_dates bbbbbb', batch_y_dates.shape) #
-            print('batch_y_dates bbbbbb', len(batch_y_dates))
-            all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim] !!!!????
-            #print('PREDICTION: ',predictions)
-            #print('ACTUALS: ',actuals)
+            #print('batch_y_dates bbbbbb', len(batch_y_dates))
+            #all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim]
 #-----
             loss = criterion(pred, true)
 
@@ -216,22 +214,20 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     total_mae_loss = np.average(total_mae_loss)
 #----- AGGIUNTE
     predictions = np.concatenate(predictions, axis = 0)
-    #predictions = np.concatenate([pred.cpu().numpy() for pred in predictions], axis=0)
     actuals = np.concatenate(actuals, axis = 0)
-    all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
-    #actuals = np.concatenate([true.cpu().numpy() for true in actuals], axis = 0)
-    print('predictions lenght:', predictions.shape)
-    print('actuals lenght:', actuals.shape)
-    print('dates_from batch:', all_batch_dates.shape)
-    print('predictions lenght[0]:', predictions[0].shape)
-    print('actuals lenght[0]:', actuals[0].shape)
-    print('dates_from batch[0]:', all_batch_dates[0].shape)
+    #all_batch_dates = np.concatenate(#all_batch_dates, axis = 0 )
+    #print('predictions lenght:', predictions.shape)
+    #print('actuals lenght:', actuals.shape)
+    #print('dates_from batch:', all_batch_dates.shape)
+    #print('predictions lenght[0]:', predictions[0].shape)
+    #print('actuals lenght[0]:', actuals[0].shape)
+    #print('dates_from batch[0]:', all_batch_dates[0].shape)
     mean,std = vali_data.get_scaler_params()
     scaler = StandardScaler(mean,std)
     predictions_norm = scaler.inverse_transform(predictions)
     actuals_norm = scaler.inverse_transform(actuals)
-    print('predictions inv lenght:', len(predictions_norm))
-    print('actuals inv lenght:', len(actuals_norm))
+    print('predictions inv lenght:', predictions_norm.shape)
+    print('actuals inv lenght:', actuals_norm.shape)
 
     #provare a fare un df con actuals, predictions
     if ((epoch +1) == args.train_epochs and type == 'test'): #ultimo testo
@@ -245,22 +241,16 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         print('FALSE')
     
     
-    #print('ACTUALS:', actuals[:5])
-    #print('ACTUALS FLAT:', actuals.squeeze().reshape(-1)[:5])
-    #print('PREDICTIONS:', predictions)
     actuals_flat = actuals.squeeze().reshape(-1)
     predictions_flat = predictions.squeeze().reshape(-1)
     actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
     predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
-    all_batch_dates_flates = all_batch_dates.squeeze().reshape(-1)
-    print('predictions flat lenght:', len(predictions_flat))
-    print('actuals flat lenght:', len(actuals_flat))
-    #print('dates_from batch flat:', all_batch_dates)
+    #all_batch_dates_flates = #all_batch_dates.squeeze().reshape(-1)
+    #print('predictions flat lenght:', len(predictions_flat))
+    #print('actuals flat lenght:', len(actuals_flat))
+    #print('dates_from batch flat:', #all_batch_dates)
 
     test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
-    
-    #dates = vali_data.get_date_strings()
-    print('dates_from batch_flat:', len(all_batch_dates.squeeze().reshape(-1)))
 
     #if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
@@ -271,13 +261,13 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 
     if type == 'vali':
 
-        title = f'Predictions vs Actuals Vali Epoch {epoch + 1}'
-        title_normal = f'Predictions Normal vs Actuals Normal Vali Epoch {epoch + 1}'
-        for step in range(predictions.shape[0]): #loop samples
-            test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        #title = f'Predictions vs Actuals Vali Epoch {epoch + 1}'
+        #title_normal = f'Predictions Normal vs Actuals Normal Vali Epoch {epoch + 1}'
+        #for step in range(predictions.shape[0]): #loop samples
+        #    test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
         
-        for step in range(predictions.shape[0]): #loop samples
-            test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
+        #for step in range(predictions.shape[0]): #loop samples
+        #    test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
         
         #or
         fig,ax = plt.subplots(figsize=(20,15))
@@ -308,43 +298,38 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 
     if type == 'test':
 
-        title = f'Predictions vs Actuals Test Epoch {epoch + 1}'
-        title_normal = f'Predictions Normal vs Actuals Normal Test Epoch {epoch + 1}'
-        for step in range(predictions.shape[0]): #loop samples
-            test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        #title = f'Predictions vs Actuals Test Epoch {epoch + 1}'
+        #title_normal = f'Predictions Normal vs Actuals Normal Test Epoch {epoch + 1}'
+        #for step in range(predictions.shape[0]): #loop samples
+        #    test_writer.add_scalars(title,{"Predicted":predictions[step].mean(), "Actual":actuals[step].mean()}, step) #name, dict, step
+        #
+        #for step in range(predictions.shape[0]): #loop samples
+        #    test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
         
-        for step in range(predictions.shape[0]): #loop samples
-            test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
-        
-        print('test data[0]:', predictions[0])
-        print('all_batch_dates[0]', all_batch_dates[0])
-
         #or
         fig,ax = plt.subplots(figsize=(30,20))
-        ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
-        #ax.plot(all_batch_dates_flates, actuals_flat, label = 'Actual') #hanno una struttura del tipo 40,1,90
-        #ax.plot(dates, actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
-        #ax.plot(actuals[0], label = 'Actual')
-        #ax.plot(all_batch_dates_flates, predictions_flat, label = 'Predictions', color='red')
-        ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
-        #ax.plot(predictions[0], label = 'Predictions', color='red')
+        #ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(#all_batch_dates_flates, actuals_flat, label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(actuals[0], label = 'Actual')
+        #ax.plot(#all_batch_dates_flates, predictions_flat, label = 'Predictions', color='red')
+        #ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
+        ax.plot(predictions[0], label = 'Predictions', color='red')
         ax.legend()
         ax.set_xlabel('Timestamp')
         ax.set_ylabel('Affluence')
-        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        #ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
         ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1}')
         test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
 
         fig,ax = plt.subplots(figsize=(30,20))
-        ax.plot(all_batch_dates[5], actuals_norm[0], label = 'Actual')
-        #ax.plot(all_batch_dates_flates, actuals_flat_norm, label = 'Actual')
-        #ax.plot(actuals[0], label = 'Actual Normal')
-        #ax.plot(all_batch_dates_flates, predictions_flat_norm, label = 'Predictions', color='red')
-        ax.plot(all_batch_dates[5], predictions_norm[0], label = 'Predictions', color='red')
-        #ax.plot(predictions[0], label = 'Predictions Normal', color='red')
-        ax.set_xticks(all_batch_dates_flates)
-        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
-        #ax.set_xticks(all_batch_dates[0])
+        #ax.plot(all_batch_dates[5], actuals_norm[0], label = 'Actual')
+        #ax.plot(#all_batch_dates_flates, actuals_flat_norm, label = 'Actual')
+        ax.plot(actuals[0], label = 'Actual Normal')
+        #ax.plot(#all_batch_dates_flates, predictions_flat_norm, label = 'Predictions', color='red')
+        #ax.plot(all_batch_dates[5], predictions_norm[0], label = 'Predictions', color='red')
+        ax.plot(predictions[0], label = 'Predictions Normal', color='red')
+        #ax.set_xticks(all_batch_dates_flates)
+        #ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
         ax.legend()
         ax.set_xlabel('Timestamp')
         ax.set_ylabel('Affluence')
