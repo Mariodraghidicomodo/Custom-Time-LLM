@@ -173,8 +173,6 @@ for ii in range(args.itr):
 #----- AGGIUNTE
     #print('vali_data:',train_data)
     #print('vali_loader:',train_loader)
-    date = vali_data.get_date_strings()
-    print('date: ', date[:5])
 #-----    
     
     test_data, test_loader = data_provider(args, 'test') #create test
