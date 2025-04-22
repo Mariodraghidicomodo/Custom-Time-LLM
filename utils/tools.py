@@ -147,7 +147,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     model.eval()
 #----- AGGIUNTE
     predictions = []  
-    actuals = []  
+    actuals = []
+    pred_last = [] #questi dovrebbero avere la stessa lunghezza del test, quindi salvo l'ultima iterazione cosi dopo ha la stessa lunghezza del test e confortimao le date
+    true_last = []  
     #date = vali_data.get_date_strings()
     #print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
     #print('lenght date_x', len(vali_data.data_x))
@@ -197,8 +199,12 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #print('batch_y_marker aaaa', batch_y_mark)
             #print('batch_y_dates aaaa', batch_y_dates.shape)
             #print('batch_y_dates aaaa', len(batch_y_dates))
+            
             predictions.append(pred.cpu().numpy()) 
-            actuals.append(true.cpu().numpy()) 
+            actuals.append(true.cpu().numpy())
+            pred_last = pred.cpu().numpy()
+            true_last = true_last().numpy()
+            
             #batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA ([7, 8, 9, 10])
             #print('batch_y_dates bbbbbb', batch_y_dates.shape) #
             #print('batch_y_dates bbbbbb', len(batch_y_dates))
@@ -226,9 +232,13 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     mean,std = vali_data.get_scaler_params()
     scaler = StandardScaler(mean,std)
     predictions_norm = scaler.inverse_transform(predictions)
+    pred_last_norm = scaler.inverse_transform(pred_last)
     actuals_norm = scaler.inverse_transform(actuals)
+    true_last_norm = scaler.inverse_transform(true_last)
     print('predictions inv lenght:', predictions_norm.shape)
     print('actuals inv lenght:', actuals_norm.shape)
+    print('pred_las inv lenght:', pred_last_norm.shape) #in caso provarli a salvare nel df facendo flat!!
+    print('true_last inv lenght:', true_last_norm.shape)
 
     #provare a fare un df con actuals, predictions
     if ((epoch +1) == args.train_epochs and type == 'test'): #ultimo testo
