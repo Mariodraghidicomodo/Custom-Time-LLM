@@ -203,7 +203,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             predictions.append(pred.cpu().numpy()) 
             actuals.append(true.cpu().numpy())
             pred_last = pred.cpu().numpy()
-            true_last = true_last().numpy()
+            true_last = true_last.cpu().numpy()
             
             #batch_y_dates = [d[-args.pred_len:]for d in batch_y_dates] #ok funziona ma devo salvare anche la restante parte!!!!!!!AAAAAA PROVARE A SISTEMARE, è L'ULTIMA COSA CHE MANCA ([7, 8, 9, 10])
             #print('batch_y_dates bbbbbb', batch_y_dates.shape) #
