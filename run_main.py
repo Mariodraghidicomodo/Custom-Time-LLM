@@ -377,18 +377,17 @@ for ii in range(args.itr):
 
       
 accelerator.wait_for_everyone() 
-unwrapped_model = accelerator.unwrap_model(model)
-torch.save(unwrapped_model.state_dict(), 'test_model.pth')
+#unwrapped_model = accelerator.unwrap_model(model)
+#torch.save(unwrapped_model.state_dict(), 'test_model.pth')
 
-model_pred = TimeLLM.Model(args).float()
-model_pred.load_state_dict(torch.load('test_model.pth', weights_only=True))
-print('load model!')
+#model_pred = TimeLLM.Model(args).float()
+#model_pred.load_state_dict(torch.load('test_model.pth', weights_only=True))
+#print('load model!')
 #model.to(device) #print the model!!
 
 #-----
 
-#test prediction
-#if accelerator.is_local_main_process:
-#    path = './checkpoints'  # unique checkpoint saving path
-#    del_files(path)  # delete checkpoint files
-#    accelerator.print('success delete checkpoints')
+if accelerator.is_local_main_process:
+    path = './checkpoints'  # unique checkpoint saving path
+    del_files(path)  # delete checkpoint files
+    accelerator.print('success delete checkpoints')
