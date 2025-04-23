@@ -296,8 +296,10 @@ for ii in range(args.itr):
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark) #forward
 
                 f_dim = -1 if args.features == 'MS' else 0
+                print('output dim:', outputs.shape)
                 outputs = outputs[:, -args.pred_len:, f_dim:]
                 batch_y = batch_y[:, -args.pred_len:, f_dim:]
+                print('output dim:', outputs.shape)
                 loss = criterion(outputs, batch_y) #OK PERFETTO, QUA CALCOLA LA LOSS A OGNI ITERAZIONE -> QUI INSERIRE IL CONTROLLO SULLE ITERAZIONI E SALVARE IL PLOT DELLA LOSS!!
                 train_loss.append(loss.item()) #OK PERFETTO DEVO SALVARE QUESTA VARIABILE (EX PYTORCH == running_loss)
                 #inserire if sull iter -> inseire nel tensorboard add_scalar (plot della loss)

@@ -188,19 +188,23 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #print('batch_y primaaaa:', batch_y.shape)
             #print('batch_y_marker primaaaa', batch_y_mark.shape)
             f_dim = -1 if args.features == 'MS' else 0
+            print('output dim:', outputs.shape)
+            print('batch_y: ', batch_y.shape)
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
+            print('output dim:', outputs.shape)
 
             pred = outputs.detach() #qua adesso abbiamo i valori predetti
             true = batch_y.detach() #qua abbiamo i valori reali
             #qua potremmo salvare i valori e fare un GRAFICO da mettere su tensor
 #----- AGGIUNTE
-            #print('batch_y aaaa: ', batch_y.shape)
+            print('batch_x: ', batch_x.shape)
+            print('batch_y: ', batch_y.shape)
             #print('batch_y_marker aaaa', batch_y_mark)
             #print('batch_y_dates aaaa', batch_y_dates.shape)
             #print('batch_y_dates aaaa', len(batch_y_dates))
             
-            predictions.append(pred.cpu().numpy()) 
+            predictions.append(pred.cpu().numpy()) #tensore vuoto, salvo il valore pred/ out loop / save in prediction
             actuals.append(true.cpu().numpy())
             pred_last.append(pred.cpu().numpy())
             true_last.append(true.cpu().numpy())
