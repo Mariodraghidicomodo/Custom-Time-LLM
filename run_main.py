@@ -249,8 +249,8 @@ for ii in range(args.itr):
 
         model.train() #set model to trining mode
         epoch_time = time.time() #partenza tempo epochs (tenere traccia di quanto ci dta mettendo) #AGGIUNTO BATCH_Y_DATES
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)):
-        #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(train_loader)): #loop in ogni batch (contiene un numero di input e output uguale a quelo inserito in args) #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT (batch y sono i 'labels', batch_x sarebbe images (ex:pytorch))
+        #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(train_loader)):
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, _) in tqdm(enumerate(train_loader)): #loop in ogni batch (contiene un numero di input e output uguale a quelo inserito in args) #ATTENZIONE ARRIVO FINO A QUA CON IL DEBUGGER POI SI BUGGA E MI RITORNA ALLA RIGA 106!!!! ERRORE CON LA MASTER PORT (batch y sono i 'labels', batch_x sarebbe images (ex:pytorch))
             #tdqm deorazione barra progreso / al posto di avere batch_x, batch_y, batch_x_mark, batch_y_mark = data, sono inseriti ne loop??? 
             # batch_x = ts values that will use as input (shape: batch_size, seq_len, num_features) (numerical values)
             # batch_x_mark = temporal feature day, week, hour etc... (data, timestamp), shape(batch_size, seq_len, num_time_features) (temporal context)
@@ -296,10 +296,12 @@ for ii in range(args.itr):
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark) #forward
 
                 f_dim = -1 if args.features == 'MS' else 0
+                print('batch_y: ', batch_y.shape)
                 print('output dim:', outputs.shape)
                 outputs = outputs[:, -args.pred_len:, f_dim:]
                 batch_y = batch_y[:, -args.pred_len:, f_dim:]
                 print('output dim:', outputs.shape)
+                print('batch_y: ', batch_y.shape)
                 loss = criterion(outputs, batch_y) #OK PERFETTO, QUA CALCOLA LA LOSS A OGNI ITERAZIONE -> QUI INSERIRE IL CONTROLLO SULLE ITERAZIONI E SALVARE IL PLOT DELLA LOSS!!
                 train_loss.append(loss.item()) #OK PERFETTO DEVO SALVARE QUESTA VARIABILE (EX PYTORCH == running_loss)
                 #inserire if sull iter -> inseire nel tensorboard add_scalar (plot della loss)

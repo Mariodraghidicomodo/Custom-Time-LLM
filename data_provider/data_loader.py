@@ -298,7 +298,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         #test_dates = df_raw[['date']][border1:border2].values #add
         #print('test_dates:', type(test_dates)) #add
         #self.date_string = test_dates #add
-        #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
+        self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
 
     def __getitem__(self, index): #ritorn ai valori
@@ -313,14 +313,14 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         seq_x_mark = self.data_stamp[s_begin:s_end]
         seq_y_mark = self.data_stamp[r_begin:r_end]
 #----- AGGIUNTE
-        #seq_y_dates = self.date_string['date'][r_begin:r_end].to_list() #no dataframe or series
+        seq_y_dates = self.date_string['date'][r_begin:r_end].to_numpy() #no dataframe or series
         #seq_y_dates = self.date_string['date'][r_end - self.pred_len:r_end].to_list() # SEMBRA FUNZIONARE
         #seq_y_dates = self.date_string[r_end - self.pred_len:r_end].tolist() # DA TESTARE con test_dates and self
         #seq_y_dates = self.date_string[r_end - self.pred_len:r_end].values
         #seq_y_dates = np.array(self.date_string['date'][r_begin:r_end].to_list())[-self.pred_len:] #da testare
-        #print('lenght seq_y', seq_y.shape)
-        #print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
-        #print('lenght seq_y_dates', seq_y_dates.shape)
+        print('lenght seq_y', seq_y.shape)
+        print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
+        print('lenght seq_y_dates', seq_y_dates.shape)
 #-----
         return seq_x, seq_y, seq_x_mark, seq_y_mark#, seq_y_dates #add return the raw date
 
