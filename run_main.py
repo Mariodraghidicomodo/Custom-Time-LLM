@@ -374,11 +374,20 @@ for ii in range(args.itr):
 #salvo il modello da utilizzare in futuro
 #torch.save(model.state_dict(), '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_dict.pth')
 #torch.save(model, '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_all.pth')
-#-----
+
       
 accelerator.wait_for_everyone() 
 unwrapped_model = accelerator.unwrap_model(model)
-torch.save(unwrapped_model, 'test_model.pth')
+torch.save(unwrapped_model.state_dict(), 'test_model.pth')
+
+model_pred = TimeLLM(args)
+model.load_state_dict(torch.load('test_model.pth'))
+print('load model!')
+#model.to(device) #print the model!!
+
+#-----
+
+#test prediction
 #if accelerator.is_local_main_process:
 #    path = './checkpoints'  # unique checkpoint saving path
 #    del_files(path)  # delete checkpoint files
