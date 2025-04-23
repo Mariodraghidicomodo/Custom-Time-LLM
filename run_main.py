@@ -381,7 +381,7 @@ unwrapped_model = accelerator.unwrap_model(model)
 torch.save(unwrapped_model.state_dict(), 'test_model.pth')
 
 model_pred = TimeLLM(args)
-model.load_state_dict(torch.load('test_model.pth'))
+model_pred.load_state_dict(torch.load('test_model.pth'))
 print('load model!')
 #model.to(device) #print the model!!
 
