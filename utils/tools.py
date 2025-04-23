@@ -241,7 +241,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     print('true_last inv lenght:', true_last_norm.shape)
 
     #provare a fare un df con actuals, predictions
-    if ((epoch +1) == args.train_epochs and type == 'test'): #ultimo testo
+    '''if ((epoch +1) == args.train_epochs and type == 'test'): #ultimo testo
         print('TRUE')
         df_final_eval = {'Actuals': actuals_norm,
                          'Predictions': predictions_norm} #AGGIUNGERE LE DATE
@@ -249,7 +249,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #save df
         df_final_eval.to_csv('df_final_eval.csv')
     else: 
-        print('FALSE')
+        print('FALSE')'''
     
     
     actuals_flat = actuals.squeeze().reshape(-1)
