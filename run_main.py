@@ -374,7 +374,8 @@ for ii in range(args.itr):
 #salvo il modello da utilizzare in futuro
 #torch.save(model.state_dict(), '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_dict.pth')
 #torch.save(model, '/content/drive/MyDrive/Custom-Time-LLM-copia/model_test_small_small_all.pth')
-torch.save(model, '/kaggle/working/model_test_small_small_all.pth')
+unwrapped_model = accelerator.unwrap_model(model)
+torch.save(unwrapped_model, 'test_model.pth')
 #-----
       
 accelerator.wait_for_everyone() 
