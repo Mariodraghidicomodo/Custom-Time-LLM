@@ -17,7 +17,6 @@ import os
 #----- AGGIUNTE
 import pickle
 import json
-from models.TimeLLM import TimeLLM
 #from sklearn.preprocessing import StandardScaler
 #-----
 
@@ -381,8 +380,8 @@ accelerator.wait_for_everyone()
 unwrapped_model = accelerator.unwrap_model(model)
 torch.save(unwrapped_model.state_dict(), 'test_model.pth')
 
-model_pred = TimeLLM(args)
-model_pred.load_state_dict(torch.load('test_model.pth'))
+model_pred = TimeLLM.Model(args).float()
+model_pred.load_state_dict(torch.load('test_model.pth', weights_only=True))
 print('load model!')
 #model.to(device) #print the model!!
 
