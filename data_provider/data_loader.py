@@ -295,9 +295,9 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
 #----- AGGIUNTE
-        test_dates = df_raw[['date']][border1:border2]
-        test_dates = test_dates.drop(['date'],1).values
-        #test_dates = df_raw[['date']][border1:border2].values #add
+        #test_dates = df_raw[['date']][border1:border2]
+        #test_dates = test_dates.drop(['date'],1).values
+        test_dates = df_raw[['date']][border1:border2].values #add
         self.date_string = test_dates #add
         if self.set_type == 2: #se è test
             print('self.date_string: ',type(self.date_string))
@@ -306,6 +306,8 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             print('self.date_string dim: ',self.date_string.shape)
             print('self.date_x dim:',self.data_x.shape)
             print('self.date_y dim:',self.data_y.shape)
+            print('self.date_x [:,1]',self.data_x[:,1])
+            print('self.date_y [:,1]',self.data_y[:,1])
         #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
