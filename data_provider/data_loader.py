@@ -287,7 +287,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             df_stamp['hour'] = df_stamp.date.apply(lambda row: row.hour, 1)
             data_stamp = df_stamp.drop(['date'], 1).values
         elif self.timeenc == 1:
-            print('TEST TIMEENC == 1') #VIENE SCELTO dall args.embed, defaoult timeF (che va bene)
+            #print('TEST TIMEENC == 1') #VIENE SCELTO dall args.embed, defaoult timeF (che va bene)
             data_stamp = time_features(pd.to_datetime(df_stamp['date'].values), freq=self.freq)
             data_stamp = data_stamp.transpose(1, 0) #riscrive la data come numeri? [[[-0.06521739  0.         -0.46666667 -0.49726027]]
 
@@ -302,6 +302,9 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             print('self.date_string: ',type(self.date_string))
             print('self.date_x:',type(self.data_x))
             print('self.date_y:',type(self.data_y))
+            print('self.date_string dim: ',self.date_string.shape)
+            print('self.date_x dim:',self.data_x.shape)
+            print('self.date_y dim:',self.data_y.shape)
         #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
