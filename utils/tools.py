@@ -156,13 +156,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #all_batch_dates = []
 #-----
     with torch.no_grad(): #inference?
-        #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)): #tolto
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)): #tolto
+        #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
+            
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
-            #print('batch_y_mark:', batch_y_mark)
-            #print('type batch_y_mark:', type(batch_y_mark))
-
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
 
@@ -170,6 +168,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             dec_inp = torch.zeros_like(batch_y[:, -args.pred_len:, :]).float()
             dec_inp = torch.cat([batch_y[:, :args.label_len, :], dec_inp], dim=1).float().to(
                 accelerator.device)
+            
             # encoder - decoder
             if args.use_amp:
                 with torch.cuda.amp.autocast():
@@ -182,22 +181,25 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
                 else:
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-            #print('batch_y pppppp:', batch_y.shape)
-            #print('batch_y_marker ppppp', len(batch_y_mark))
+            
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
-            #print('batch_y primaaaa:', batch_y.shape)
-            #print('batch_y_marker primaaaa', batch_y_mark.shape)
+        
             f_dim = -1 if args.features == 'MS' else 0
-            print('output dim:', outputs.shape)
-            print('batch_y: ', batch_y.shape)
-            #print('batch_y_date dim:', batch_y_dates.shape)
+
+            if type == 'test':
+                print('output dim: ', outputs.shape)
+                print('batch_y: ', batch_y.shape)
+                print('batch_y_date dim: ', batch_y_dates.shape)
+            
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
-            #batch_y_dates = batch_y_dates[:, -args.pred_len:, f_dim:]
-            print('output dim:', outputs.shape)
-            print('batch_x: ', batch_x.shape)
-            print('batch_y: ', batch_y.shape)
-            #print('batch_y_dates dim: ', batch_y_dates)
+            batch_y_dates = batch_y_dates[:, -args.pred_len:]
+
+            if type == 'test':
+                print('output dim: ', outputs.shape)
+                print('batch_x: ', batch_x.shape)
+                print('batch_y: ', batch_y.shape)
+                print('batch_y_dates dim: ', batch_y_dates)
 
             pred = outputs.detach() #qua adesso abbiamo i valori predetti
             true = batch_y.detach() #qua abbiamo i valori reali
