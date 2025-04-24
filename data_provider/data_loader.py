@@ -302,25 +302,25 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
     def __getitem__(self, index): #ritorn ai valori #viene usato per ritornare i valori come nelle liste/ array etc o nel nostro caso con in nel for loop
-        #print('index:', index)
-        #print('self.tot_len:', self.tot_len)
-        if self.set_type == 2: #se e il test
-            print('index: ',index)
         feat_id = index // self.tot_len 
-        #print('feat_id:', feat_id)
         s_begin = index % self.tot_len
-        #print('s_begin:', s_begin)
 
         s_end = s_begin + self.seq_len
-        #print('s_end:', s_end)
         r_begin = s_end - self.label_len
-        #print('r_begin:', r_begin)
         r_end = r_begin + self.label_len + self.pred_len
         seq_x = self.data_x[s_begin:s_end, feat_id:feat_id + 1]
         seq_y = self.data_y[r_begin:r_end, feat_id:feat_id + 1]
         seq_x_mark = self.data_stamp[s_begin:s_end]
         seq_y_mark = self.data_stamp[r_begin:r_end]
+        
 #----- AGGIUNTE
+        if self.set_type == 2: #se e il test
+            print('index: ',index)
+            print('s_begin:', s_begin)
+            print('s_end:', s_end)
+            print('r_begin:', r_begin)
+            print('r_end:', r_end) 
+        
         #seq_y_dates = self.date_string['date'][r_begin:r_end].to_numpy() #no dataframe or series
         #seq_y_dates = self.date_string['date'][r_end - self.pred_len:r_end].to_list() # SEMBRA FUNZIONARE
         #seq_y_dates = self.date_string[r_end - self.pred_len:r_end].tolist() # DA TESTARE con test_dates and self
