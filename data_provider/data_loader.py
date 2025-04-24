@@ -295,15 +295,17 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
 #----- AGGIUNTE
-        #test_dates = df_raw[['date']][border1:border2].values #add
-        #print('test_dates:', type(test_dates)) #add
-        #self.date_string = test_dates #add
-        self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
+        test_dates = df_raw[['date']][border1:border2].values #add
+        print('test_dates:', type(test_dates)) #add
+        self.date_string = test_dates #add
+        #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
     def __getitem__(self, index): #ritorn ai valori #viene usato per ritornare i valori come nelle liste/ array etc o nel nostro caso con in nel for loop
         #print('index:', index)
         #print('self.tot_len:', self.tot_len)
+        if self.set_type == 2: #se e il test
+            print('index: ',index)
         feat_id = index // self.tot_len 
         #print('feat_id:', feat_id)
         s_begin = index % self.tot_len
@@ -319,16 +321,16 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         seq_x_mark = self.data_stamp[s_begin:s_end]
         seq_y_mark = self.data_stamp[r_begin:r_end]
 #----- AGGIUNTE
-        seq_y_dates = self.date_string['date'][r_begin:r_end].to_numpy() #no dataframe or series
+        #seq_y_dates = self.date_string['date'][r_begin:r_end].to_numpy() #no dataframe or series
         #seq_y_dates = self.date_string['date'][r_end - self.pred_len:r_end].to_list() # SEMBRA FUNZIONARE
         #seq_y_dates = self.date_string[r_end - self.pred_len:r_end].tolist() # DA TESTARE con test_dates and self
         #seq_y_dates = self.date_string[r_end - self.pred_len:r_end].values
         #seq_y_dates = np.array(self.date_string['date'][r_begin:r_end].to_list())[-self.pred_len:] #da testare
-        print('lenght seq_y', seq_y.shape)
-        print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
-        print('lenght seq_y_dates', seq_y_dates.shape)
+        #print('lenght seq_y', seq_y.shape)
+        #print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
+        #print('lenght seq_y_dates', seq_y_dates.shape)
 #-----
-        return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates #add return the raw date
+        return seq_x, seq_y, seq_x_mark, seq_y_mark#, seq_y_dates #add return the raw date
 
     def __len__(self):
         return (len(self.data_x) - self.seq_len - self.pred_len + 1) * self.enc_in
