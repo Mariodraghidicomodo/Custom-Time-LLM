@@ -322,8 +322,8 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         seq_y_mark = self.data_stamp[r_begin:r_end]
 
 #----- AGGIUNTE
-        if self.set_type != 0: #se e il test creo anche un batch per le date
-            seq_y_dates = self.date_string['date'][r_begin:r_end]
+        if self.set_type != 0: #se e il test o vali creo anche un batch per le date
+            seq_y_dates = self.date_string[r_begin:r_end] #ricordo che è un numpy array non più un df
             '''
             print('index: ',index)
             print('s_begin:', s_begin)
