@@ -322,7 +322,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         seq_y_mark = self.data_stamp[r_begin:r_end]
 
 #----- AGGIUNTE
-        if self.set_type == 2: #se e il test creo anche un batch per le date
+        if self.set_type != 0: #se e il test creo anche un batch per le date
             seq_y_dates = self.date_string['date'][r_begin:r_end]
             '''
             print('index: ',index)

@@ -179,7 +179,7 @@ for ii in range(args.itr):
     
 #----- AGGIUNTE
     #salvo train test e val
-    print('test date lenght:', len(test_data.data_x))
+    #print('test date lenght:', len(test_data.data_x))
     #torch.save(train_data,"train_data.pt")
     #torch.save(vali_data,"vali_data.pt")
     #torch.save(test_data,"test_data.pt")
