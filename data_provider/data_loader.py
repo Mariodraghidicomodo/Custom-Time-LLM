@@ -90,10 +90,10 @@ class Dataset_ETT_hour(Dataset):
 
     def __getitem__(self, index):
         feat_id = index // self.tot_len
-        s_begin = index % self.tot_len
+        s_begin = index % self.tot_len #dove inizia il a prendere i dati
 
-        s_end = s_begin + self.seq_len
-        r_begin = s_end - self.label_len
+        s_end = s_begin + self.seq_len #fino a dove arriva a prendere i dati == seq_len
+        r_begin = s_end - self.label_len #
         r_end = r_begin + self.label_len + self.pred_len
         seq_x = self.data_x[s_begin:s_end, feat_id:feat_id + 1]
         seq_y = self.data_y[r_begin:r_end, feat_id:feat_id + 1]
@@ -300,13 +300,19 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         #self.date_string = test_dates #add
         self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
-
-    def __getitem__(self, index): #ritorn ai valori
-        feat_id = index // self.tot_len
+    #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
+    def __getitem__(self, index): #ritorn ai valori #viene usato per ritornare i valori come nelle liste/ array etc o nel nostro caso con in nel for loop
+        #print('index:', index)
+        #print('self.tot_len:', self.tot_len)
+        feat_id = index // self.tot_len 
+        #print('feat_id:', feat_id)
         s_begin = index % self.tot_len
+        #print('s_begin:', s_begin)
 
         s_end = s_begin + self.seq_len
+        #print('s_end:', s_end)
         r_begin = s_end - self.label_len
+        #print('r_begin:', r_begin)
         r_end = r_begin + self.label_len + self.pred_len
         seq_x = self.data_x[s_begin:s_end, feat_id:feat_id + 1]
         seq_y = self.data_y[r_begin:r_end, feat_id:feat_id + 1]
@@ -322,7 +328,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         print('lenght, seq_y_mark', seq_y_mark.shape) #ok hanno tutti la stessa lunghezza, quindi non è quan che si modificano le grandezze!!
         print('lenght seq_y_dates', seq_y_dates.shape)
 #-----
-        return seq_x, seq_y, seq_x_mark, seq_y_mark#, seq_y_dates #add return the raw date
+        return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates #add return the raw date
 
     def __len__(self):
         return (len(self.data_x) - self.seq_len - self.pred_len + 1) * self.enc_in
