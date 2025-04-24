@@ -298,7 +298,8 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         #test_dates = df_raw[['date']][border1:border2]
         #test_dates = test_dates.drop(['date'],1).values
         test_dates = df_raw[['date']][border1:border2].values #add
-        self.date_string = test_dates #add
+        #self.date_string = test_dates #add
+        self.date_string = test_dates.astype(str)
         if self.set_type == 2: #se è test
             print('self.date_string: ',type(self.date_string))
             print('self.date_x:',type(self.data_x))
