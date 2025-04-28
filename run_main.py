@@ -341,7 +341,7 @@ for ii in range(args.itr):
         #DIVERSO DAI NORMALI ESEMPI DOVE ALLA FINE DI TUTTE LE EPOCH FANNO IL MODEL EVAL SUL TEST 
         #QUA MI FA SUBITO UN EVAL() (FA PREDIZIONI SUL TEST!!!) (PRATICAMENTE AD OGNI EPOCH FA UNAM PREDIZIONI SUL TEST PER VEDERE SE CE EFFETTIVAMENTE UN MIGLIORAMENTO ANCHE SUL TEST!!!) 
 #----- AGGIUNTE
-        test_writer.close()
+        #test_writer.close()
 #-----
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
         train_loss = np.average(train_loss) #print average loss
