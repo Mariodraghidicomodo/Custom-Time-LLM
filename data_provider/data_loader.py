@@ -295,11 +295,11 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
 #----- AGGIUNTE
-        #test_dates = df_raw[['date']][border1:border2]
-        #test_dates = test_dates.drop(['date'],1).values
         test_dates = df_raw[['date']][border1:border2].values #add
-        #self.date_string = test_dates #add
-        self.date_string = test_dates.astype(str)
+        
+        self.date_string = test_dates #add
+        #self.date_string = test_dates.astype(str)
+        
         if self.set_type == 2: #se è test
             print('self.date_string: ',type(self.date_string))
             print('self.date_x:',type(self.data_x))
@@ -314,6 +314,8 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
     def __getitem__(self, index): #ritorn ai valori #viene usato per ritornare i valori come nelle liste/ array etc o nel nostro caso con in nel for loop
+        if self.set_type == 2:
+            print('ci sono')
         feat_id = index // self.tot_len 
         s_begin = index % self.tot_len
 
@@ -327,7 +329,9 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 
 #----- AGGIUNTE
         if self.set_type != 0: #se e il test o vali creo anche un batch per le date
-            seq_y_dates = self.date_string[r_begin:r_end] #ricordo che è un numpy array non più un df
+            #seq_y_dates = self.date_string[r_begin:r_end] #ricordo che è un numpy array non più un df (originale)
+            #seq_y_dates = self.date_string[r_begin:r_end].__str__ (da provare)
+            seq_y_dates = self.date_string[r_begin:r_end].astype(str).tolist()
             '''
             print('index: ',index)
             print('s_begin:', s_begin)
@@ -335,6 +339,14 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             print('r_begin:', r_begin)
             print('r_end:', r_end)
             '''
+            if self.set_type == 2:
+                print('seq_x: ',type(seq_x))
+                print('seq_y:',type(seq_y))
+                print('seq_y_dates:',type(seq_y_dates))
+                print('seq_x dim: ',seq_x.shape)
+                print('seq_y dim:',seq_y.shape)
+                print('seq_y_dates dim:',seq_y_dates.shape)
+            
             return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates 
         
         #seq_y_dates = self.date_string['date'][r_begin:r_end].to_numpy() #no dataframe or series
