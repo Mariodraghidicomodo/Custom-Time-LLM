@@ -371,7 +371,7 @@ for ii in range(args.itr):
             accelerator.print('Updating learning rate to {}'.format(scheduler.get_last_lr()[0]))
 
 #----- AGGIUNTE
-#test_writer.close()
+test_writer.close()
 
 #final_loss = test(args, accelerator, model, train_loader, test_loader, criterion) #ATTENZIONE QUA CHIAMA VALI E NON TEST (test -> funzione usata per il test, controllare che sia uguale a test!!!) !!!!!!!!!
 

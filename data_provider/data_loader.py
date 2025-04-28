@@ -335,10 +335,8 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             #seq_y_dates = self.date_string[r_begin:r_end] #ricordo che è un numpy array non più un df (originale)
             #seq_y_dates = self.date_string[r_begin:r_end].__str__ #(da provare)
             seq_y_dates = self.date_string[r_begin:r_end].astype(str).tolist() #(questo funziona)
-            print('seq_y_dates type:', type(seq_y_dates)) #capiamo se è lista
-            print('seq_y_dates dim:',np.shape(seq_y_dates))
-            #seq_y_dates = seq_y_dates.transpose(2, 0, 1)
-            #print('seq_y_dates dim transpose:',np.shape(seq_y_dates))
+            #print('seq_y_dates type:', type(seq_y_dates)) #capiamo se è lista
+            #print('seq_y_dates dim:',np.shape(seq_y_dates))
             '''
             print('index: ',index)
             print('s_begin:', s_begin)
