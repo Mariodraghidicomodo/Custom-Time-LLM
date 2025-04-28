@@ -194,6 +194,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
+            batch_y_dates = batch_y_dates.transpose(2, 0, 1)
+            print('batch_y_date dim transpos: ', np.shape(batch_y_dates)) #se lista
             batch_y_dates = batch_y_dates[:, -args.pred_len:]
 
             #if type == 'test':
@@ -201,7 +203,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             print('batch_x: ', batch_x.shape)
             print('batch_y: ', batch_y.shape)
             #print('batch_y_dates dim: ', batch_y_dates) 
-            print('batch_y_dates dim: ', np.shape(batch_y_dates))
+            print('batch_y_dates dim cut: ', np.shape(batch_y_dates))
 
             pred = outputs.detach() #qua adesso abbiamo i valori predetti
             true = batch_y.detach() #qua abbiamo i valori reali
