@@ -141,7 +141,7 @@ def del_files(dir_path):
     shutil.rmtree(dir_path)
 
 
-def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric, epoch, type): #esegue la validazione, questa parte è utile per capire la precisione del modello da qua devo ritornare i valori che predice e confrontarli con quelli reali (fare anche un grafico e capire mea e altri errori)
+def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric, epoch, format): #esegue la validazione, questa parte è utile per capire la precisione del modello da qua devo ritornare i valori che predice e confrontarli con quelli reali (fare anche un grafico e capire mea e altri errori)
     total_loss = []
     total_mae_loss = []
     model.eval()
