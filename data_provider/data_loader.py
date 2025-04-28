@@ -314,7 +314,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
     def __getitem__(self, index): #ritorn ai valori #viene usato per ritornare i valori come nelle liste/ array etc o nel nostro caso con in nel for loop
-        if self.set_type == 2:
+        if self.set_type != 0:
             print('ci sono')
         feat_id = index // self.tot_len 
         s_begin = index % self.tot_len
