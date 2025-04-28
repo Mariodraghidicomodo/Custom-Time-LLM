@@ -346,13 +346,13 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             print('r_begin:', r_begin)
             print('r_end:', r_end)
             '''
-            if self.set_type == 2:
+            '''if self.set_type == 2:
                 print('seq_x: ',type(seq_x))
                 print('seq_y:',type(seq_y))
                 print('seq_y_dates:',type(seq_y_dates))
                 print('seq_x dim: ',seq_x.shape)
                 print('seq_y dim:',seq_y.shape)
-                print('seq_y_dates dim:',np.shape(seq_y_dates))
+                print('seq_y_dates dim:',np.shape(seq_y_dates))'''
             
             return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates 
         
