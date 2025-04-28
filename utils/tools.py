@@ -198,7 +198,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             wewe = np.array(batch_y_dates)
             #batch_y_dates = batch_y_dates.permute(2, 0, 1)
             wewe = wewe.transpose(2,0,1)
-            print('wewe: ' , wewe.shape())
+            print('type wewe: ', type(wewe))
+            print('wewe: ', wewe)
+            print('wewe: ' , wewe.shape)
+
             print('batch_y_date dim transpos: ', np.shape(batch_y_dates)) #se lista
             #batch_y_dates = batch_y_dates[:, -args.pred_len:]
             wewe = wewe[:, -args.pred_len:]
