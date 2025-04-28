@@ -307,9 +307,9 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             print('self.date_string dim: ',self.date_string.shape)
             print('self.date_x dim:',self.data_x.shape)
             print('self.date_y dim:',self.data_y.shape)
-            print('self.date_string[0]: ',type(self.date_string[0]))
-            print('self.date_x[0]:',type(self.data_x[0]))
-            print('self.date_y[0]:',type(self.data_y[0]))
+            print('self.date_string[0]: ',type(self.date_string[0:0]))
+            print('self.date_x[0]:',type(self.data_x[0:0]))
+            print('self.date_y[0]:',type(self.data_y[0:0]))
         #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
@@ -330,8 +330,8 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #----- AGGIUNTE
         if self.set_type != 0: #se e il test o vali creo anche un batch per le date
             #seq_y_dates = self.date_string[r_begin:r_end] #ricordo che è un numpy array non più un df (originale)
-            #seq_y_dates = self.date_string[r_begin:r_end].__str__ (da provare)
-            seq_y_dates = self.date_string[r_begin:r_end].astype(str).tolist()
+            seq_y_dates = self.date_string[r_begin:r_end].__str__ #(da provare)
+            #seq_y_dates = self.date_string[r_begin:r_end].astype(str).tolist()
             '''
             print('index: ',index)
             print('s_begin:', s_begin)
