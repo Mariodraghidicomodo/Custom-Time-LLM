@@ -191,10 +191,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             print('batch_y: ', batch_y.shape)
 #            print('batch_y_date dim: ', batch_y_dates.shape) #se fosse np
             print('batch_y_date dim: ', np.shape(batch_y_dates)) #se lista
+            print('batch_y_date type: ', type(batch_y_dates))
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
-            batch_y_dates = batch_y_dates.transpose(2, 0, 1)
+            batch_y_dates = batch_y_dates.permute(2, 0, 1)
             print('batch_y_date dim transpos: ', np.shape(batch_y_dates)) #se lista
             batch_y_dates = batch_y_dates[:, -args.pred_len:]
 
