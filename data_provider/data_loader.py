@@ -352,7 +352,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
                 print('seq_y_dates:',type(seq_y_dates))
                 print('seq_x dim: ',seq_x.shape)
                 print('seq_y dim:',seq_y.shape)
-                print('seq_y_dates dim:',seq_y_dates.shape)
+                print('seq_y_dates dim:',np.shape(seq_y_dates))
             
             return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates 
         
