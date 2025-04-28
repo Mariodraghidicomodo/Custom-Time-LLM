@@ -332,10 +332,10 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 
 #----- AGGIUNTE
         if self.set_type != 0: #se e il test o vali creo anche un batch per le date
-            seq_y_dates = self.date_string[r_begin:r_end] #ricordo che è un numpy array non più un df (originale)
+            #seq_y_dates = self.date_string[r_begin:r_end] #ricordo che è un numpy array non più un df (originale)
             #seq_y_dates = self.date_string[r_begin:r_end].__str__ #(da provare)
             #seq_y_dates = self.date_string[r_begin:r_end].astype(str).tolist() #(questo funziona)
-            #seq_y_dates = self.date_string[r_begin:r_end].
+            seq_y_dates = self.date_string[r_begin:r_end].to_numpy()
             '''
             print('index: ',index)
             print('s_begin:', s_begin)
