@@ -310,6 +310,9 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             print('self.date_string[0]: ',type(self.date_string[0:0]))
             print('self.date_x[0]:',type(self.data_x[0:0]))
             print('self.date_y[0]:',type(self.data_y[0:0]))
+            print('self.date_string[0]: ',self.date_string[0:0])
+            print('self.date_x[0]:',self.data_x[0:0])
+            print('self.date_y[0]:',self.data_y[0:0])
         #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
