@@ -283,12 +283,12 @@ for ii in range(args.itr):
                     loss = criterion(outputs, batch_y) #OK PERFETTO, QUA CALCOLA LA LOSS A OGNI ITERAZIONE -> QUI INSERIRE IL CONTROLLO SULLE ITERAZIONI E SALVARE IL PLOT DELLA LOSS!!
                     train_loss.append(loss.item())
 #----- AGGIUNTE
-                    '''running_loss += loss.item()
+                    running_loss += loss.item()
                     if i % 10 == 9: #ogni 10 iter dovrebbe salvare
                       #log the running loss
                       print('running_loss = ', running_loss)
                       test_writer.add_scalar('training loss', running_loss / 10, epoch * len(train_loader) + i)
-                      running_loss = 0.0'''
+                      running_loss = 0.0
 #-----
             else:
                 if args.output_attention:
@@ -307,12 +307,12 @@ for ii in range(args.itr):
                 train_loss.append(loss.item()) #OK PERFETTO DEVO SALVARE QUESTA VARIABILE (EX PYTORCH == running_loss)
                 #inserire if sull iter -> inseire nel tensorboard add_scalar (plot della loss)
 #----- AGGIUNTE
-                '''running_loss += loss.item()
+                running_loss += loss.item()
                 if i % 10 == 9: #ogni 10 iter dovrebbe salvare
                   #log the running loss
                   print('running_loss = ', running_loss)
                   test_writer.add_scalar('training loss', running_loss / 10, epoch * len(train_loader) + i)
-                  running_loss = 0.0'''
+                  running_loss = 0.0
 #-----
 
             if (i + 1) % 100 == 0: #quando arriva all unltimo batch satmpa i dati
