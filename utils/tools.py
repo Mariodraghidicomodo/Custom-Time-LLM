@@ -342,33 +342,63 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
         #or
         fig,ax = plt.subplots(figsize=(30,20))
-        #ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
         #ax.plot(#all_batch_dates_flates, actuals_flat, label = 'Actual') #hanno una struttura del tipo 40,1,90
-        ax.plot(actuals[0], label = 'Actual')
-        #ax.plot(#all_batch_dates_flates, predictions_flat, label = 'Predictions', color='red')
-        #ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
-        ax.plot(predictions[0], label = 'Predictions', color='red')
+        #ax.plot(actuals[0], label = 'Actual')
+        #ax.plot(all_batch_dates_flates, predictions_flat, label = 'Predictions', color='red')
+        ax.plot(all_batch_dates[0], predictions[0], label = 'Predictions', color='red')
+        #ax.plot(predictions[0], label = 'Predictions', color='red')
         ax.legend()
         ax.set_xlabel('Timestamp')
         ax.set_ylabel('Affluence')
-        #ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
-        ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1}')
-        test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot)", fig)
+        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1} blocco 0')
+        test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot) blocco 0", fig)
 
         fig,ax = plt.subplots(figsize=(30,20))
-        #ax.plot(all_batch_dates[5], actuals_norm[0], label = 'Actual')
+        ax.plot(all_batch_dates[1], actuals[1], label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(#all_batch_dates_flates, actuals_flat, label = 'Actual') #hanno una struttura del tipo 40,1,90
+        #ax.plot(actuals[0], label = 'Actual')
+        #ax.plot(all_batch_dates_flates, predictions_flat, label = 'Predictions', color='red')
+        ax.plot(all_batch_dates[1], predictions[1], label = 'Predictions', color='red')
+        #ax.plot(predictions[0], label = 'Predictions', color='red')
+        ax.legend()
+        ax.set_xlabel('Timestamp')
+        ax.set_ylabel('Affluence')
+        ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        ax.set_title(f'Prediction vs Actual Test Epoch {epoch + 1} blocco 1')
+        test_writer.add_figure(f"Prediction vs Actual Test Epoch{epoch + 1} (simple plot) blocco 1", fig)
+
+
+        fig,ax = plt.subplots(figsize=(30,20))
+        ax.plot(all_batch_dates[0], actuals_norm[0], label = 'Actual')
         #ax.plot(#all_batch_dates_flates, actuals_flat_norm, label = 'Actual')
-        ax.plot(actuals[0], label = 'Actual Normal')
+        #ax.plot(actuals[0], label = 'Actual Normal')
         #ax.plot(#all_batch_dates_flates, predictions_flat_norm, label = 'Predictions', color='red')
-        #ax.plot(all_batch_dates[5], predictions_norm[0], label = 'Predictions', color='red')
-        ax.plot(predictions[0], label = 'Predictions Normal', color='red')
+        ax.plot(all_batch_dates[0], predictions_norm[0], label = 'Predictions', color='red')
+        #ax.plot(predictions[0], label = 'Predictions Normal', color='red')
         #ax.set_xticks(all_batch_dates_flates)
         #ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
         ax.legend()
         ax.set_xlabel('Timestamp')
         ax.set_ylabel('Affluence')
-        ax.set_title(f'Prediction vs Actual NORMAL Test Epoch{epoch + 1}')
-        test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot)", fig)
+        ax.set_title(f'Prediction vs Actual NORMAL Test Epoch{epoch + 1} blocco 0')
+        test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot) blocco 0", fig)
+
+        fig,ax = plt.subplots(figsize=(30,20))
+        ax.plot(all_batch_dates[1], actuals_norm[1], label = 'Actual')
+        #ax.plot(#all_batch_dates_flates, actuals_flat_norm, label = 'Actual')
+        #ax.plot(actuals[0], label = 'Actual Normal')
+        #ax.plot(#all_batch_dates_flates, predictions_flat_norm, label = 'Predictions', color='red')
+        ax.plot(all_batch_dates[1], predictions_norm[1], label = 'Predictions', color='red')
+        #ax.plot(predictions[0], label = 'Predictions Normal', color='red')
+        #ax.set_xticks(all_batch_dates_flates)
+        #ax.set_xticklabels(ax.get_xticklabels(), rotation = 90)
+        ax.legend()
+        ax.set_xlabel('Timestamp')
+        ax.set_ylabel('Affluence')
+        ax.set_title(f'Prediction vs Actual NORMAL Test Epoch{epoch + 1} blocco 1')
+        test_writer.add_figure(f"Prediction Normal vs Actual Normal Test Epoch{epoch + 1} (simple plot) blocco 1", fig)
 
 
     test_writer.close() #close writer
