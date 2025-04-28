@@ -241,7 +241,7 @@ for ii in range(args.itr):
 
 #-----AGGIUNTE
     #test_predictions = []
-    #running_loss = 0.0
+    running_loss = 0.0
 #-----
     for epoch in range(args.train_epochs): #loop for each epochs
         iter_count = 0 #imposto train e iter uguali a zero; a ogni epoch si azzerano
