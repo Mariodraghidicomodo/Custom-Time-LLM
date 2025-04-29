@@ -266,7 +266,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #provare a fare un df con actuals, predictions
     print('epoch +1: ', epoch+1)
     print('args.train_epochs', args.train_epochs)
-    if ((epoch +1) == args.train_epochs and format == 'test'): #ultimo testo
+    if ((epoch +1) == args.train_epochs) and (format == 'test'): #ultimo testo
         print('TRUE')
         np.save('predictions_norm', predictions_norm) 
         np.save('actuals_norm', actuals_norm) 
