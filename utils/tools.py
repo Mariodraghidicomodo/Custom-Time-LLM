@@ -293,7 +293,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #plot_test(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
     #    plot_test(predictions_flat, predictions_flat_norm, actuals_flat, actuals_flat_norm, dates['date'], epoch, args)
 
-    if type == 'vali':
+    if format == 'vali':
 
         #title = f'Predictions vs Actuals Vali Epoch {epoch + 1}'
         #title_normal = f'Predictions Normal vs Actuals Normal Vali Epoch {epoch + 1}'
@@ -330,7 +330,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         ax.set_title(f'Prediction vs Actual NORMAL Vali Epoch{epoch + 1}')
         test_writer.add_figure(f"Prediction Normal vs Actual Normal Vali Epoch{epoch + 1} (simple plot)", fig)
 
-    if type == 'test':
+    if format == 'test':
 
         #title = f'Predictions vs Actuals Test Epoch {epoch + 1}'
         #title_normal = f'Predictions Normal vs Actuals Normal Test Epoch {epoch + 1}'
