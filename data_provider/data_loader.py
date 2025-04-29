@@ -297,7 +297,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 #----- AGGIUNTE
         test_dates = df_raw[['date']][border1:border2].values #add
         
-        self.date_string = test_dates #add (questo funziona)
+        self.date_string = test_dates #add (questo funziona) #ndarray
         #self.date_string = test_dates.astype(str)
         
         if self.set_type == 2: #se è test
