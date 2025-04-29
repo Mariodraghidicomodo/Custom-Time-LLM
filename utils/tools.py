@@ -260,6 +260,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #true_last_norm = scaler.inverse_transform(true_last)
     print('predictions inv lenght:', predictions_norm.shape)
     print('actuals inv lenght:', actuals_norm.shape)
+    print('actuals inv: ',actuals_norm) #TESTARE
+    print('prediction inv: ', predictions_norm) #TESTARE
     #print('pred_las inv lenght:', pred_last_norm.shape) #in caso provarli a salvare nel df facendo flat!!
     #print('true_last inv lenght:', true_last_norm.shape)
 
