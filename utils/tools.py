@@ -264,6 +264,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #print('true_last inv lenght:', true_last_norm.shape)
 
     #provare a fare un df con actuals, predictions
+    print('epoch +1: ', epoch+1)
+    print('args.train_epochs', args.train_epochs)
     if ((epoch +1) == args.train_epochs and format == 'test'): #ultimo testo
         print('TRUE')
         np.save('predictions_norm', predictions_norm) 
