@@ -339,7 +339,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #
         #for step in range(predictions.shape[0]): #loop samples
         #    test_writer.add_scalars(title_normal,{"Predicted Normal":predictions_norm[step].mean(), "Actual Normal":actuals_norm[step].mean()}, step) #name, dict, step
-        
+        print('all_batch_dates[0]: ',all_batch_dates[0])
+        print('actuals[0]:', actuals[0])
         #or
         fig,ax = plt.subplots(figsize=(30,20))
         ax.plot(all_batch_dates[0], actuals[0], label = 'Actual') #hanno una struttura del tipo 40,1,90
