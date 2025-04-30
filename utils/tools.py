@@ -231,7 +231,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #print('batch_y_dates bbbbbb', batch_y_dates.shape) #
             #print('batch_y_dates bbbbbb', len(batch_y_dates))
             #all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim]
-            all_batch_dates.append(wewe)
+            
+            if accelerator.is_main_process:
+                all_batch_dates.extend(wewe) #test con piu gpu
+
+            #all_batch_dates.append(wewe) #(ATTENZIONE QUESTO FUNZIONA SE USO SOLO UNA CPU)
 #-----          
             loss = criterion(pred, true)
 
