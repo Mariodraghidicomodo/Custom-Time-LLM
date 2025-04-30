@@ -187,10 +187,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             f_dim = -1 if args.features == 'MS' else 0
 
             #if type == 'test':
-            #print('output dim: ', outputs.shape)
-            #print('batch_y: ', batch_y.shape)
+            print('output dim: ', outputs.shape)
+            print('batch_y: ', batch_y.shape)
 #            print('batch_y_date dim: ', batch_y_dates.shape) #se fosse np
-            #print('batch_y_date dim: ', np.shape(batch_y_dates)) #se lista
+            print('batch_y_date dim: ', np.shape(batch_y_dates)) #se lista
             #print('batch_y_date type: ', type(batch_y_dates))
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
@@ -198,20 +198,20 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             wewe = np.array(batch_y_dates)
             #batch_y_dates = batch_y_dates.permute(2, 0, 1)
             wewe = wewe.transpose(2,0,1)
-            #print('type wewe: ', type(wewe))
-            #print('wewe: ', wewe)
-            #print('wewe: ' , wewe.shape)
+            print('type wewe: ', type(wewe))
+            print('wewe: ', wewe)
+            print('wewe: ' , wewe.shape)
 
             #print('batch_y_date dim transpos: ', np.shape(batch_y_dates)) #se lista
             #batch_y_dates = batch_y_dates[:, -args.pred_len:]
             wewe = wewe[:, -args.pred_len:]
 
             #if type == 'test':
-            #print('output dim: ', outputs.shape)
-            #print('batch_x: ', batch_x.shape)
-            #print('batch_y: ', batch_y.shape)
+            print('output dim: ', outputs.shape)
+            print('batch_x: ', batch_x.shape)
+            print('batch_y: ', batch_y.shape)
             #print('batch_y_dates dim cut: ', np.shape(batch_y_dates))
-            #print('wewe: ', wewe.shape)
+            print('wewe cut: ', wewe.shape)
 
             pred = outputs.detach() #qua adesso abbiamo i valori predetti
             true = batch_y.detach() #qua abbiamo i valori reali
@@ -246,8 +246,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions = np.concatenate(predictions, axis = 0)
     actuals = np.concatenate(actuals, axis = 0)
     all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
-    #print('predictions lenght:', predictions.shape)
-    #print('actuals lenght:', actuals.shape)
+    print('predictions lenght:', predictions.shape)
+    print('actuals lenght:', actuals.shape)
     print('dates_from batch:', all_batch_dates.shape)
     #print('predictions lenght[0]:', predictions[0].shape)
     #print('actuals lenght[0]:', actuals[0].shape)
