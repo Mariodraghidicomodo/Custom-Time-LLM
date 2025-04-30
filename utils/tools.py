@@ -165,11 +165,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
 
 #-----AGGIUNTE 
-            date_tesnor = torch.tensor([[ord(c) for c in d[0]] for d in batch_y_dates], device=accelerator.device)
+            '''date_tesnor = torch.tensor([[ord(c) for c in d[0]] for d in batch_y_dates], device=accelerator.device)
             max_len = 32
             if date_tensor.shape[1] < max_len:
                 padding = torch.zeros((date_tensor.shape[0], max_len - date_tensor.shape[1]), dtype=torch.long, device=accelerator.device)
-                date_tensor = torch.cat((date_tensor, padding), dim=1)
+                date_tensor = torch.cat((date_tensor, padding), dim=1)'''
 
 #-----
 
@@ -193,11 +193,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
 #----- AGGIUNTE            
-            gathered_date_tensor = accelerator.gather_for_metrics(date_tensor)
+            '''gathered_date_tensor = accelerator.gather_for_metrics(date_tensor)
 
             # Convert back to string
             gathered_dates = [''.join([chr(int(x)) for x in row if x != 0]) for row in gathered_date_tensor.cpu().numpy()]
-            wewe.extend(gathered_dates)
+            wewe.extend(gathered_dates)'''
 #-----
             f_dim = -1 if args.features == 'MS' else 0
 
@@ -210,7 +210,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
-            #wewe = np.array(batch_y_dates) #funziona
+            wewe = np.array(batch_y_dates) #funziona
             wewe = wewe.transpose(2,0,1)
             print('type wewe: ', type(wewe))
             #print('wewe: ', wewe)
