@@ -199,7 +199,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #batch_y_dates = batch_y_dates.permute(2, 0, 1)
             wewe = wewe.transpose(2,0,1)
             print('type wewe: ', type(wewe))
-            print('wewe: ', wewe)
+            #print('wewe: ', wewe)
             print('wewe: ' , wewe.shape)
 
             #print('batch_y_date dim transpos: ', np.shape(batch_y_dates)) #se lista
@@ -264,8 +264,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #true_last_norm = scaler.inverse_transform(true_last)
     print('predictions inv lenght:', predictions_norm.shape)
     print('actuals inv lenght:', actuals_norm.shape)
-    print('actuals inv: ',actuals_norm) #TESTARE
-    print('prediction inv: ', predictions_norm) #TESTARE
+    #print('actuals inv: ',actuals_norm) #TESTARE
+    #print('prediction inv: ', predictions_norm) #TESTARE
     #print('pred_las inv lenght:', pred_last_norm.shape) #in caso provarli a salvare nel df facendo flat!!
     #print('true_last inv lenght:', true_last_norm.shape)
 
