@@ -164,6 +164,15 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
 
+#-----AGGIUNTE 
+            date_tesnor = torch.tensor([[ord(c) for c in d[0]] for d in batch_y_dates], device=accelerator.device)
+            max_len = 32
+            if date_tensor.shape[1] < max_len:
+                padding = torch.zeros((date_tensor.shape[0], max_len - date_tensor.shape[1]), dtype=torch.long, device=accelerator.device)
+                date_tensor = torch.cat((date_tensor, padding), dim=1)
+
+#-----
+
             # decoder input
             dec_inp = torch.zeros_like(batch_y[:, -args.pred_len:, :]).float()
             dec_inp = torch.cat([batch_y[:, :args.label_len, :], dec_inp], dim=1).float().to(
@@ -183,7 +192,13 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
             
             outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
-        
+#----- AGGIUNTE            
+            gathered_date_tensor = accelerator.gather_for_metrics(date_tensor)
+
+            # Convert back to string
+            gathered_dates = [''.join([chr(int(x)) for x in row if x != 0]) for row in gathered_date_tensor.cpu().numpy()]
+            wewe.extend(gathered_dates)
+#-----
             f_dim = -1 if args.features == 'MS' else 0
 
             #if type == 'test':
@@ -195,8 +210,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
-            wewe = np.array(batch_y_dates)
-            #batch_y_dates = batch_y_dates.permute(2, 0, 1)
+            #wewe = np.array(batch_y_dates) #funziona
             wewe = wewe.transpose(2,0,1)
             print('type wewe: ', type(wewe))
             #print('wewe: ', wewe)
@@ -232,10 +246,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #print('batch_y_dates bbbbbb', len(batch_y_dates))
             #all_batch_dates.append(batch_y_dates) # batch_y_date[: -args.pred_len: f_dim]
             
-            if accelerator.is_main_process:
-                all_batch_dates.extend(wewe) #test con piu gpu
+            #if accelerator.is_main_process:
+            #    all_batch_dates.extend(wewe) #test con piu gpu non funziona
 
-            #all_batch_dates.append(wewe) #(ATTENZIONE QUESTO FUNZIONA SE USO SOLO UNA CPU)
+            all_batch_dates.append(wewe) #(ATTENZIONE QUESTO FUNZIONA SE USO SOLO UNA CPU)
 #-----          
             loss = criterion(pred, true)
 
