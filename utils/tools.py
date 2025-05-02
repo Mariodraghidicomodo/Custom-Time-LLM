@@ -294,6 +294,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #print('prediction inv: ', predictions_norm) #TESTARE
         #print('pred_las inv lenght:', pred_last_norm.shape) #in caso provarli a salvare nel df facendo flat!!
         #print('true_last inv lenght:', true_last_norm.shape)
+        actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
+        predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
+    
 
     #provare a fare un df con actuals, predictions
     print('epoch +1: ', epoch+1)
@@ -316,8 +319,6 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     
     actuals_flat = actuals.squeeze().reshape(-1)
     predictions_flat = predictions.squeeze().reshape(-1)
-    actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
-    predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
     #all_batch_dates_flates = #all_batch_dates.squeeze().reshape(-1)
     #print('predictions flat lenght:', len(predictions_flat))
     #print('actuals flat lenght:', len(actuals_flat))
