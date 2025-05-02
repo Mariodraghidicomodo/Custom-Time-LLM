@@ -296,23 +296,29 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
         self.data_stamp = data_stamp
 #----- AGGIUNTE
         test_dates = df_raw[['date']][border1:border2].values #add
+        test_dates_int = df_raw[['date_int']][border1:border2].values #da testare
         
         self.date_string = test_dates #add (questo funziona) #ndarray
         #self.date_string = test_dates.astype(str)
+        self.date_int = test_dates_int #da testare
         
         if self.set_type == 2: #se è test
             print('self.date_string: ',type(self.date_string))
             print('self.date_x:',type(self.data_x))
             print('self.date_y:',type(self.data_y))
+            print('self.date_int:',type(self.date_int))
             print('self.date_string dim: ',self.date_string.shape)
             print('self.date_x dim:',self.data_x.shape)
             print('self.date_y dim:',self.data_y.shape)
+            print('self.date_int dim:', self.date_int.shape)
             print('self.date_string[0]: ',type(self.date_string[0][0]))
             print('self.date_x[0]:',type(self.data_x[0][0]))
             print('self.date_y[0]:',type(self.data_y[0][0]))
+            print('self.date_int[0]:', type(self.date_int[0][0]))
             print('self.date_string[0]: ',self.date_string[0][0])
             print('self.date_x[0]:',self.data_x[0][0])
             print('self.date_y[0]:',self.data_y[0][0])
+            print('self.date_int[0]:',self.date_int[0][0])
         #self.date_string = df_raw[['date']][border1:border2].reset_index(drop=True) #  questo funziona
 #-----
     #questa funziona viene fatta per ogni valore nel loader -> crea delle sliding windows nel caso del test?? 
@@ -337,6 +343,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
             seq_y_dates = self.date_string[r_begin:r_end].astype(str).tolist() #(questo funziona)
             #print('seq_y_dates type:', type(seq_y_dates)) #capiamo se è lista
             #print('seq_y_dates dim:',np.shape(seq_y_dates))
+            seq_y_dates_int = self.date_int[r_begin:r_end]
             '''
             print('index: ',index)
             print('s_begin:', s_begin)
@@ -352,7 +359,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
                 print('seq_y dim:',seq_y.shape)
                 print('seq_y_dates dim:',np.shape(seq_y_dates))'''
             
-            return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates 
+            return seq_x, seq_y, seq_x_mark, seq_y_mark, seq_y_dates, seq_y_dates_int 
         
         #seq_y_dates = self.date_string['date'][r_begin:r_end].to_numpy() #no dataframe or series
         #seq_y_dates = self.date_string['date'][r_end - self.pred_len:r_end].to_list() # SEMBRA FUNZIONARE

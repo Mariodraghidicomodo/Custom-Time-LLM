@@ -154,15 +154,17 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #print('lenght date', len(date['date'])) #dimostriamo che le date e i dati hanno lunghezza uguale quinid cosa succede quando facciamo i batch? perhcè non hanno lunghezza uguale in toools function vali??
     #print('lenght date_x', len(vali_data.data_x))
     all_batch_dates = []
+    all_batch_dates_int = []
 #-----
     with torch.no_grad(): #inference?
-        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates) in tqdm(enumerate(vali_loader)): #tolto
+        for i, (batch_x, batch_y, batch_x_mark, batch_y_mark, batch_y_dates, batch_y_dates_int) in tqdm(enumerate(vali_loader)): #tolto
         #for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(enumerate(vali_loader)):
             
             batch_x = batch_x.float().to(accelerator.device)
             batch_y = batch_y.float()
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
+            batch_y_dates_int = batch_y_dates_int.to(accelerator.device) #addddddd
 
 #-----AGGIUNTE 
             '''date_tesnor = torch.tensor([[ord(c) for c in d[0]] for d in batch_y_dates], device=accelerator.device)
@@ -191,10 +193,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
                 else:
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
             
-            outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
+            #outputs, batch_y = accelerator.gather_for_metrics((outputs, batch_y)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
 #----- AGGIUNTE            
+            outputs, batch_y, batch_y_dates_int = accelerator.gather_for_metrics((outputs, batch_y, batch_y_dates_int)) #qua raccoglie i valori distribuiti su più gpu es gpu1 = 8, gpu2 = 8 dopo questo punto batch_y = 16
             '''gathered_date_tensor = accelerator.gather_for_metrics(date_tensor)
-
+            
             # Convert back to string
             gathered_dates = [''.join([chr(int(x)) for x in row if x != 0]) for row in gathered_date_tensor.cpu().numpy()]
             wewe.extend(gathered_dates)'''
@@ -205,17 +208,18 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             print('output dim: ', outputs.shape)
             print('batch_y: ', batch_y.shape)
 #            print('batch_y_date dim: ', batch_y_dates.shape) #se fosse np
-            print('batch_y_date dim: ', np.shape(batch_y_dates)) #se lista
+            print('batch_y_date dim: ', np.shape(batch_y_dates_int)) #se lista
             #print('batch_y_date type: ', type(batch_y_dates))
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
+            batch_y_dates_int = batch_y_dates_int[:, -args.pred_len:]
             wewe = np.array(batch_y_dates) #funziona
             wewe = wewe.transpose(2,0,1)
             print('type wewe: ', type(wewe))
             #print('wewe: ', wewe)
             print('wewe: ' , wewe.shape)
-
+            print('batch_y_dates_int_cut:', batch_y_dates_int.shape)
             #print('batch_y_date dim transpos: ', np.shape(batch_y_dates)) #se lista
             #batch_y_dates = batch_y_dates[:, -args.pred_len:]
             wewe = wewe[:, -args.pred_len:]
@@ -226,6 +230,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             print('batch_y: ', batch_y.shape)
             #print('batch_y_dates dim cut: ', np.shape(batch_y_dates))
             print('wewe cut: ', wewe.shape)
+
 
             pred = outputs.detach() #qua adesso abbiamo i valori predetti
             true = batch_y.detach() #qua abbiamo i valori reali
@@ -250,6 +255,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #    all_batch_dates.extend(wewe) #test con piu gpu non funziona
 
             all_batch_dates.append(wewe) #(ATTENZIONE QUESTO FUNZIONA SE USO SOLO UNA CPU)
+            all_batch_dates_int.append(batch_y_dates_int.cpu().numpy())
 #-----          
             loss = criterion(pred, true)
 
@@ -264,9 +270,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     predictions = np.concatenate(predictions, axis = 0)
     actuals = np.concatenate(actuals, axis = 0)
     all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
+    all_batch_dates_int = np.concatenate(all_batch_dates_int, axis=0)
     print('predictions lenght:', predictions.shape)
     print('actuals lenght:', actuals.shape)
     print('dates_from batch:', all_batch_dates.shape)
+    print('dates_int_batches:', all_batch_dates_int.shape)
     #print('predictions lenght[0]:', predictions[0].shape)
     #print('actuals lenght[0]:', actuals[0].shape)
     print('dates_from batch[0]:', all_batch_dates[0].shape)
@@ -291,6 +299,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         np.save('predictions_norm', predictions_norm) 
         np.save('actuals_norm', actuals_norm) 
         np.save('dates', all_batch_dates) 
+        np.save('dates_int',all_batch_dates_int)
     else: 
         print('FALSE')
     
