@@ -59,7 +59,7 @@ parser.add_argument('--freq', type=str, default='h',
                          'options:[s:secondly, t:minutely, h:hourly, d:daily, b:business days, w:weekly, m:monthly], '
                          'you can also use more detailed freq like 15min or 3h') #perfetto -> indica ogni quanto vengono salvati i dati (il nostro caso mi sembra particolare in quanto abbimao i dati salvati solo per tre ore ogni giorno!!!!!) (TESTARE)
 parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='location of model checkpoints') #??? ricontrollare!!
-parser.add_argument('--scale', type=bool, default=True, help='Scale the values') #AGGIUNTO
+parser.add_argument('--scale', type=str, default='True', help='Scale the values') #AGGIUNTO
 
 # forecasting task
 parser.add_argument('--seq_len', type=int, default=96, help='input sequence length')
