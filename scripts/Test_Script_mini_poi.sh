@@ -12,11 +12,11 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --data_path freq_mini_df_2.csv \
   --model_id freq_mini_df_42_date_int \
   --model TimeLLM \
-  --scale False \
   --data Traffic \
   --features S \
   --target frequency \
   --freq h \
+  --scale False \
   --seq_len 168 \
   --label_len 24 \
   --pred_len 4 \
