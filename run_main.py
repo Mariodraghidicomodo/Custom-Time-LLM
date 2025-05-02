@@ -179,7 +179,6 @@ for ii in range(args.itr):
     test_data, test_loader = data_provider(args, 'test') #create test
     
 #----- AGGIUNTE
-    print('index: ',test_data.index)
     #salvo train test e val
     #print('test date lenght:', len(test_data.data_x))
     #torch.save(train_data,"train_data.pt")
