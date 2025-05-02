@@ -300,10 +300,16 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     print('args.train_epochs', args.train_epochs)
     if ((epoch +1) == args.train_epochs) and (format == 'test'): #ultimo testo
         print('TRUE')
-        np.save('predictions_norm', predictions_norm) 
-        np.save('actuals_norm', actuals_norm) 
-        np.save('dates', all_batch_dates) 
-        np.save('dates_int',all_batch_dates_int)
+        if(vali_data.scale == True):
+            np.save('predictions_norm', predictions_norm) 
+            np.save('actuals_norm', actuals_norm) 
+            np.save('dates', all_batch_dates) 
+            np.save('dates_int',all_batch_dates_int)
+        else:
+            np.save('predictions', predictions) 
+            np.save('actuals', actuals) 
+            np.save('dates', all_batch_dates) 
+            np.save('dates_int',all_batch_dates_int)
     else: 
         print('FALSE')
     
