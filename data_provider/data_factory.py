@@ -17,6 +17,7 @@ data_dict = {
 def data_provider(args, flag):
     Data = data_dict[args.data] #imposta la classe
     timeenc = 0 if args.embed != 'timeF' else 1
+    #scale = args.scale #AGGIUNTO
     percent = args.percent
 
     if flag == 'test':
@@ -51,6 +52,7 @@ def data_provider(args, flag):
             size=[args.seq_len, args.label_len, args.pred_len],
             features=args.features,
             target=args.target,
+            scale = args.scale, #AGGIUNTO
             timeenc=timeenc,
             freq=freq,
             percent=percent,

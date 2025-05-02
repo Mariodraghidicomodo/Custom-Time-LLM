@@ -59,6 +59,7 @@ parser.add_argument('--freq', type=str, default='h',
                          'options:[s:secondly, t:minutely, h:hourly, d:daily, b:business days, w:weekly, m:monthly], '
                          'you can also use more detailed freq like 15min or 3h') #perfetto -> indica ogni quanto vengono salvati i dati (il nostro caso mi sembra particolare in quanto abbimao i dati salvati solo per tre ore ogni giorno!!!!!) (TESTARE)
 parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='location of model checkpoints') #??? ricontrollare!!
+parser.add_argument('--scale', type=bool, default=True, help='Scale the values') #AGGIUNTO
 
 # forecasting task
 parser.add_argument('--seq_len', type=int, default=96, help='input sequence length')
@@ -178,6 +179,7 @@ for ii in range(args.itr):
     test_data, test_loader = data_provider(args, 'test') #create test
     
 #----- AGGIUNTE
+    print('index: ',test_data.index)
     #salvo train test e val
     #print('test date lenght:', len(test_data.data_x))
     #torch.save(train_data,"train_data.pt")

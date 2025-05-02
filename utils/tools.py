@@ -208,7 +208,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             print('output dim: ', outputs.shape)
             print('batch_y: ', batch_y.shape)
 #            print('batch_y_date dim: ', batch_y_dates.shape) #se fosse np
-            print('batch_y_date dim: ', np.shape(batch_y_dates_int)) #se lista
+            print('batch_y_date_int dim: ', batch_y_dates_int.shape) #se lista
             #print('batch_y_date type: ', type(batch_y_dates))
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
@@ -278,18 +278,22 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #print('predictions lenght[0]:', predictions[0].shape)
     #print('actuals lenght[0]:', actuals[0].shape)
     print('dates_from batch[0]:', all_batch_dates[0].shape)
-    mean,std = vali_data.get_scaler_params()
-    scaler = StandardScaler(mean,std)
-    predictions_norm = scaler.inverse_transform(predictions)
-    #pred_last_norm = scaler.inverse_transform(pred_last)
-    actuals_norm = scaler.inverse_transform(actuals)
-    #true_last_norm = scaler.inverse_transform(true_last)
-    print('predictions inv lenght:', predictions_norm.shape)
-    print('actuals inv lenght:', actuals_norm.shape)
-    #print('actuals inv: ',actuals_norm) #TESTARE
-    #print('prediction inv: ', predictions_norm) #TESTARE
-    #print('pred_las inv lenght:', pred_last_norm.shape) #in caso provarli a salvare nel df facendo flat!!
-    #print('true_last inv lenght:', true_last_norm.shape)
+
+
+    if(vali_data.scale == True):
+        print('RISCALO I DATI')
+        mean,std = vali_data.get_scaler_params()
+        scaler = StandardScaler(mean,std)
+        predictions_norm = scaler.inverse_transform(predictions)
+        #pred_last_norm = scaler.inverse_transform(pred_last)
+        actuals_norm = scaler.inverse_transform(actuals)
+        #true_last_norm = scaler.inverse_transform(true_last)
+        print('predictions inv lenght:', predictions_norm.shape)
+        print('actuals inv lenght:', actuals_norm.shape)
+        #print('actuals inv: ',actuals_norm) #TESTARE
+        #print('prediction inv: ', predictions_norm) #TESTARE
+        #print('pred_las inv lenght:', pred_last_norm.shape) #in caso provarli a salvare nel df facendo flat!!
+        #print('true_last inv lenght:', true_last_norm.shape)
 
     #provare a fare un df con actuals, predictions
     print('epoch +1: ', epoch+1)
