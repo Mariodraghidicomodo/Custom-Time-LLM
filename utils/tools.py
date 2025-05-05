@@ -326,7 +326,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #print('actuals flat lenght:', len(actuals_flat))
     #print('dates_from batch flat:', #all_batch_dates)
 
-    test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
+    #test_writer = SummaryWriter(log_dir=f'runs/{args.model_comment}') #open writer
 
     #if type == 'vali':
         #plot_vali(predictions, predictions_norm, actuals, actuals_norm, dates, epoch, args)
@@ -448,7 +448,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         test_writer.add_figure(f"PN vs AN Test Epoch{epoch + 1} (simple plot) blocco 1", fig)'''
 
 
-    test_writer.close() #close writer
+    #test_writer.close() #close writer
 #-----
 
     model.train()
