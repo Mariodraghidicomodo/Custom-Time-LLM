@@ -271,13 +271,13 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     actuals = np.concatenate(actuals, axis = 0)
     all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
     all_batch_dates_int = np.concatenate(all_batch_dates_int, axis=0)
-    print('predictions lenght:', predictions.shape)
+    '''print('predictions lenght:', predictions.shape)
     print('actuals lenght:', actuals.shape)
     print('dates_from batch:', all_batch_dates.shape)
     print('dates_int_batches:', all_batch_dates_int.shape)
     #print('predictions lenght[0]:', predictions[0].shape)
     #print('actuals lenght[0]:', actuals[0].shape)
-    print('dates_from batch[0]:', all_batch_dates[0].shape)
+    print('dates_from batch[0]:', all_batch_dates[0].shape)'''
 
 
     if(vali_data.scale == True):
@@ -299,8 +299,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     
 
     #provare a fare un df con actuals, predictions
-    print('epoch +1: ', epoch+1)
-    print('args.train_epochs', args.train_epochs)
+    '''print('epoch +1: ', epoch+1)
+    print('args.train_epochs', args.train_epochs)'''
     if ((epoch +1) == args.train_epochs) and (format == 'test'): #ultimo testo
         print('TRUE')
         if(vali_data.scale == True):

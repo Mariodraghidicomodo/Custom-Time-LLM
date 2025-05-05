@@ -180,9 +180,9 @@ for ii in range(args.itr):
     
 #----- AGGIUNTE
     #salvo train test e val
-    print('args.scale = ',args.scale)
-    print('test scale type:', type(test_data.scale))
-    print('scale:', test_data.scale)
+    #print('args.scale = ',args.scale)
+    #print('test scale type:', type(test_data.scale))
+    #print('scale:', test_data.scale)
     #print('test date lenght:', len(test_data.data_x))
     #torch.save(train_data,"train_data.pt")
     #torch.save(vali_data,"vali_data.pt")

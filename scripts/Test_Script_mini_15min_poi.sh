@@ -16,7 +16,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --features S \
   --target frequency \
   --freq 15min \
-  --scale False \
+  --scale True \
   --seq_len 96 \
   --label_len 4 \
   --pred_len 4 \
@@ -33,5 +33,5 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --eval_batch_size 8 \
   --learning_rate 0.01 \
   --llm_layers 8 \
-  --train_epochs 10 \
+  --train_epochs 1 \
   --model_comment TimeLLM_mini_poi_42
