@@ -204,32 +204,32 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 #-----
             f_dim = -1 if args.features == 'MS' else 0
 
-            #if type == 'test':
+            '''#if type == 'test':
             print('output dim: ', outputs.shape)
             print('batch_y: ', batch_y.shape)
 #            print('batch_y_date dim: ', batch_y_dates.shape) #se fosse np
             print('batch_y_date_int dim: ', batch_y_dates_int.shape) #se lista
-            #print('batch_y_date type: ', type(batch_y_dates))
+            #print('batch_y_date type: ', type(batch_y_dates))'''
         
             outputs = outputs[:, -args.pred_len:, f_dim:]
             batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
             batch_y_dates_int = batch_y_dates_int[:, -args.pred_len:]
             wewe = np.array(batch_y_dates) #funziona
             wewe = wewe.transpose(2,0,1)
-            print('type wewe: ', type(wewe))
+            '''print('type wewe: ', type(wewe))
             #print('wewe: ', wewe)
             print('wewe: ' , wewe.shape)
             print('batch_y_dates_int_cut:', batch_y_dates_int.shape)
             #print('batch_y_date dim transpos: ', np.shape(batch_y_dates)) #se lista
-            #batch_y_dates = batch_y_dates[:, -args.pred_len:]
+            #batch_y_dates = batch_y_dates[:, -args.pred_len:]'''
             wewe = wewe[:, -args.pred_len:]
 
             #if type == 'test':
-            print('output dim: ', outputs.shape)
+            '''print('output dim: ', outputs.shape)
             print('batch_x: ', batch_x.shape)
             print('batch_y: ', batch_y.shape)
             #print('batch_y_dates dim cut: ', np.shape(batch_y_dates))
-            print('wewe cut: ', wewe.shape)
+            print('wewe cut: ', wewe.shape)'''
 
 
             pred = outputs.detach() #qua adesso abbiamo i valori predetti

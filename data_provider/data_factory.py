@@ -22,6 +22,7 @@ def data_provider(args, flag):
         scale = False
     else: 
         scale = True
+
     percent = args.percent
 
     if flag == 'test':
