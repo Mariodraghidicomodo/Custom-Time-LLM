@@ -19,7 +19,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --scale True \
   --seq_len 96 \
   --label_len 4 \
-  --pred_len 4 \
+  --pred_len 1 \
   --enc_in 1 \
   --dec_in 1 \
   --c_out 1 \
