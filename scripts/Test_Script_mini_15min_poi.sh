@@ -34,5 +34,5 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --learning_rate 0.01 \
   --llm_layers 8 \
   --train_epochs 10 \
-  --seasonal_patterns Daily \
+  --seasonal_patterns Monthly \
   --model_comment TimeLLM_mini_poi_61_15min

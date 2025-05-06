@@ -271,7 +271,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     print('dates_from batch[0]:', all_batch_dates[0].shape)'''
 
 
-    '''if(vali_data.scale == True):
+    if(vali_data.scale == True):
         print('RISCALO I DATI')
         mean,std = vali_data.get_scaler_params()
         scaler = StandardScaler(mean,std)
@@ -282,28 +282,28 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #print('predictions inv lenght:', predictions_norm.shape)
         #print('actuals inv lenght:', actuals_norm.shape)
         actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
-        predictions_flat_norm = predictions_norm.squeeze().reshape(-1)'''
+        predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
     
 
     #provare a fare un df con actuals, predictions
     '''print('epoch +1: ', epoch+1)
     print('args.train_epochs', args.train_epochs)'''
     if ((epoch +1) == args.train_epochs) and (format == 'test'): #ultimo testo
-        print('TRUE')
-        '''if(vali_data.scale == True):
-            print('SCALE')
+        #print('TRUE')
+        if(vali_data.scale == True):
+            #print('SCALE')
             np.save(f'predictions_norm_{args.model_id}', predictions_norm) 
             np.save(f'actuals_norm_{args.model_id}', actuals_norm) 
             np.save(f'dates_{args.model_id}', all_batch_dates) 
             np.save(f'dates_int_{args.model_id}',all_batch_dates_int)
-        else:'''
-        print('NO SCALE')
-        np.save(f'predictions_{args.model_id}', predictions) 
-        np.save(f'actuals_{args.model_id}', actuals) 
-        np.save(f'dates_{args.model_id}', all_batch_dates) 
-        np.save(f'dates_int_{args.model_id}',all_batch_dates_int)
-    else: 
-        print('FALSE')
+        else:
+            #print('NO SCALE')
+            np.save(f'predictions_{args.model_id}', predictions) 
+            np.save(f'actuals_{args.model_id}', actuals) 
+            np.save(f'dates_{args.model_id}', all_batch_dates) 
+            np.save(f'dates_int_{args.model_id}',all_batch_dates_int)
+    #else: 
+        #print('FALSE')
     
     
     actuals_flat = actuals.squeeze().reshape(-1)
