@@ -164,16 +164,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             batch_y = batch_y.float()
             batch_x_mark = batch_x_mark.float().to(accelerator.device)
             batch_y_mark = batch_y_mark.float().to(accelerator.device)
-            batch_y_dates_int = batch_y_dates_int.to(accelerator.device) #addddddd
-
-#-----AGGIUNTE 
-            '''date_tesnor = torch.tensor([[ord(c) for c in d[0]] for d in batch_y_dates], device=accelerator.device)
-            max_len = 32
-            if date_tensor.shape[1] < max_len:
-                padding = torch.zeros((date_tensor.shape[0], max_len - date_tensor.shape[1]), dtype=torch.long, device=accelerator.device)
-                date_tensor = torch.cat((date_tensor, padding), dim=1)'''
-
-#-----
+            batch_y_dates_int = batch_y_dates_int.to(accelerator.device) #add
 
             # decoder input
             dec_inp = torch.zeros_like(batch_y[:, -args.pred_len:, :]).float()
@@ -280,7 +271,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     print('dates_from batch[0]:', all_batch_dates[0].shape)'''
 
 
-    if(vali_data.scale == True):
+    '''if(vali_data.scale == True):
         print('RISCALO I DATI')
         mean,std = vali_data.get_scaler_params()
         scaler = StandardScaler(mean,std)
@@ -288,14 +279,10 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #pred_last_norm = scaler.inverse_transform(pred_last)
         actuals_norm = scaler.inverse_transform(actuals)
         #true_last_norm = scaler.inverse_transform(true_last)
-        print('predictions inv lenght:', predictions_norm.shape)
-        print('actuals inv lenght:', actuals_norm.shape)
-        #print('actuals inv: ',actuals_norm) #TESTARE
-        #print('prediction inv: ', predictions_norm) #TESTARE
-        #print('pred_las inv lenght:', pred_last_norm.shape) #in caso provarli a salvare nel df facendo flat!!
-        #print('true_last inv lenght:', true_last_norm.shape)
+        #print('predictions inv lenght:', predictions_norm.shape)
+        #print('actuals inv lenght:', actuals_norm.shape)
         actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
-        predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
+        predictions_flat_norm = predictions_norm.squeeze().reshape(-1)'''
     
 
     #provare a fare un df con actuals, predictions
