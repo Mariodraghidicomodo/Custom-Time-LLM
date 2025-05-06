@@ -292,16 +292,16 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         print('TRUE')
         '''if(vali_data.scale == True):
             print('SCALE')
-            np.save('predictions_norm', predictions_norm) 
-            np.save('actuals_norm', actuals_norm) 
-            np.save('dates', all_batch_dates) 
-            np.save('dates_int',all_batch_dates_int)
+            np.save(f'predictions_norm_{args.model_id}', predictions_norm) 
+            np.save(f'actuals_norm_{args.model_id}', actuals_norm) 
+            np.save(f'dates_{args.model_id}', all_batch_dates) 
+            np.save(f'dates_int_{args.model_id}',all_batch_dates_int)
         else:'''
         print('NO SCALE')
-        np.save('predictions', predictions) 
-        np.save('actuals', actuals) 
-        np.save('dates', all_batch_dates) 
-        np.save('dates_int',all_batch_dates_int)
+        np.save(f'predictions_{args.model_id}', predictions) 
+        np.save(f'actuals_{args.model_id}', actuals) 
+        np.save(f'dates_{args.model_id}', all_batch_dates) 
+        np.save(f'dates_int_{args.model_id}',all_batch_dates_int)
     else: 
         print('FALSE')
     
