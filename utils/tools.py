@@ -231,9 +231,9 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #print('batch_y_marker aaaa', batch_y_mark)
             #print('batch_y_dates aaaa', batch_y_dates.shape)
             #print('batch_y_dates aaaa', len(batch_y_dates))
-            
-            predictions.append(pred.cpu().numpy()) #tensore vuoto, salvo il valore pred/ out loop / save in prediction
-            actuals.append(true.cpu().numpy())
+            if (epoch +1) == args.train_epochs:
+                predictions.append(pred.cpu().numpy()) #tensore vuoto, salvo il valore pred/ out loop / save in prediction
+                actuals.append(true.cpu().numpy())
             #pred_last.append(pred.cpu().numpy())
             #true_last.append(true.cpu().numpy())
             
@@ -245,8 +245,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
             #if accelerator.is_main_process:
             #    all_batch_dates.extend(wewe) #test con piu gpu non funziona
 
-            all_batch_dates.append(wewe) #(ATTENZIONE QUESTO FUNZIONA SE USO SOLO UNA CPU)
-            all_batch_dates_int.append(batch_y_dates_int.cpu().numpy())
+                all_batch_dates.append(wewe) #(ATTENZIONE QUESTO FUNZIONA SE USO SOLO UNA CPU)
+                all_batch_dates_int.append(batch_y_dates_int.cpu().numpy())
 #-----          
             loss = criterion(pred, true)
 
@@ -258,10 +258,11 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     total_loss = np.average(total_loss)
     total_mae_loss = np.average(total_mae_loss)
 #----- AGGIUNTE
-    predictions = np.concatenate(predictions, axis = 0)
-    actuals = np.concatenate(actuals, axis = 0)
-    all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
-    all_batch_dates_int = np.concatenate(all_batch_dates_int, axis=0)
+    if (epoch +1) == args.train_epochs:
+        predictions = np.concatenate(predictions, axis = 0)
+        actuals = np.concatenate(actuals, axis = 0)
+        all_batch_dates = np.concatenate(all_batch_dates, axis = 0 )
+        all_batch_dates_int = np.concatenate(all_batch_dates_int, axis=0)
     '''print('predictions lenght:', predictions.shape)
     print('actuals lenght:', actuals.shape)
     print('dates_from batch:', all_batch_dates.shape)
@@ -271,7 +272,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     print('dates_from batch[0]:', all_batch_dates[0].shape)'''
 
 
-    if(vali_data.scale == True):
+    if((epoch +1) == args.train_epochs) and (vali_data.scale == True):
         #print('RISCALO I DATI')
         mean,std = vali_data.get_scaler_params()
         scaler = StandardScaler(mean,std)
@@ -306,8 +307,8 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #print('FALSE')
     
     
-    actuals_flat = actuals.squeeze().reshape(-1)
-    predictions_flat = predictions.squeeze().reshape(-1)
+    #actuals_flat = actuals.squeeze().reshape(-1)
+    #predictions_flat = predictions.squeeze().reshape(-1)
     #all_batch_dates_flates = #all_batch_dates.squeeze().reshape(-1)
     #print('predictions flat lenght:', len(predictions_flat))
     #print('actuals flat lenght:', len(actuals_flat))
