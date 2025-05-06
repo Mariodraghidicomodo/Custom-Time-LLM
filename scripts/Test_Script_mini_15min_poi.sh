@@ -10,7 +10,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --is_training 1 \
   --root_path ./dataset/final_15min_df_poi/ \
   --data_path freq_mini_61.csv \
-  --model_id freq_mini_61_15min_spm_pl1 \
+  --model_id freq_mini_61_15min_spd_pl4 \
   --model TimeLLM \
   --data Traffic \
   --features S \
@@ -19,7 +19,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --scale True \
   --seq_len 96 \
   --label_len 4 \
-  --pred_len 1 \
+  --pred_len 4 \
   --enc_in 1 \
   --dec_in 1 \
   --c_out 1 \
@@ -34,5 +34,5 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --learning_rate 0.01 \
   --llm_layers 8 \
   --train_epochs 10 \
-  --seasonal_patterns Monthly \
+  --seasonal_patterns Daily \
   --model_comment TimeLLM_mini_poi_61_15min
