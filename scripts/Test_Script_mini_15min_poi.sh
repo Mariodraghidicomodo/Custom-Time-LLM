@@ -10,7 +10,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --is_training 1 \
   --root_path ./dataset/final_15min_df_poi/ \
   --data_path freq_mini_61.csv \
-  --model_id freq_mini_61_15min_spd_pl1 \
+  --model_id freq_mini_61_15min_spm_pl1 \
   --model TimeLLM \
   --data Traffic \
   --features S \
