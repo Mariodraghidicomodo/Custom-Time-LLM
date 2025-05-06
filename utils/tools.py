@@ -272,7 +272,7 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
 
 
     if(vali_data.scale == True):
-        print('RISCALO I DATI')
+        #print('RISCALO I DATI')
         mean,std = vali_data.get_scaler_params()
         scaler = StandardScaler(mean,std)
         predictions_norm = scaler.inverse_transform(predictions)
