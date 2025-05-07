@@ -1,3 +1,12 @@
+#Step 0: Linux
+echo "Install git"
+sudo apt install git
+echo "Install venv"
+sudo apt install python3-venv
+echo "Install apt for library mpi4py"
+sudo apt install libopenmpi-dev
+sudo apt install libmpich-dev
+
 # Step 1: Clone the GitHub repository
 echo "Cloning GitHub repo"
 git clone https://github.com/Mariodraghidicomodo/Custom-Time-LLM.git || exit
@@ -6,9 +15,10 @@ git clone https://github.com/Mariodraghidicomodo/Custom-Time-LLM.git || exit
 #cd Custom-Time-LLM || exit
 
 # Step 3: Set up Python virtual environment (optional)
-#echo "Set up Python virtual environment"
+echo "Set up Python virtual environment"
 #python -m venv .venv
-#source .venv/bin/activate #Linux
+python3 -m venv new_venv
+source new_venv/bin/activate #Linux
 #source .venv/Scripts/activate #Windows
 
 # Step 4: Install requirements

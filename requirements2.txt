@@ -3,14 +3,11 @@ numpy
 pandas
 scikit_learn
 scipy
-#torch==2.2.2 
-#torchvision==0.17.2 
-#torchaudio==2.2.2
 accelerate
 tqdm
 transformers
 sentencepiece
-#deepspeed #deppspeed da problemi, installare dopo direttamente da terminale #python 3.11
-mpi4py
+deepspeed #deppspeed da problemi, installare dopo direttamente da terminale #python 3.11
+mpi4py #if i have problem with mpi4py install also: sudo apt install libopenmpi-dev and sudo apt install libmpich-dev
 bitsandbytes
 tensorboard
