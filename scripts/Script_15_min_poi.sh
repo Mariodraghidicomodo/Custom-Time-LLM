@@ -11,7 +11,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --data_path frequency_15min_df_61.csv \
   --model_id Giulietta \
   --model TimeLLM \
-  --data Traffic \
+  --data Casa_Giulietta \
   --features S \
   --target frequency \
   --freq 15min \
@@ -21,6 +21,8 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --enc_in 1 \
   --dec_in 1 \
   --c_out 1 \
+  --patch_len 30 \
+  --prompt_domain 1 \
   --moving_avg 96 \
   --des Exp \
   --itr 1 \

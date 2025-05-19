@@ -627,7 +627,7 @@ def test(args, accelerator, model, train_loader, vali_loader, criterion):
     return loss
 
 
-def load_content(args):
+def load_content(args): #ok perfetto qua carica il prompt_back!!!!!!!!
     if 'ETT' in args.data:
         file = 'ETT'
     else:

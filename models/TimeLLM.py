@@ -29,7 +29,7 @@ class FlattenHead(nn.Module):
 
 class Model(nn.Module):
 
-    def __init__(self, configs, patch_len=16, stride=8):
+    def __init__(self, configs, patch_len=16, stride=8): #args è configs
         super(Model, self).__init__()
         self.task_name = configs.task_name
         self.pred_len = configs.pred_len
@@ -166,8 +166,10 @@ class Model(nn.Module):
         for param in self.llm_model.parameters():
             param.requires_grad = False
 
-        if configs.prompt_domain:
+        if configs.prompt_domain: #qua prede da args il prompt_back da passare al modello
+            print('content??')
             self.description = configs.content
+            print(self.description)
         else:
             self.description = 'The Electricity Transformer Temperature (ETT) is a crucial indicator in the electric power long-term deployment.'
 

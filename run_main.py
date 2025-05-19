@@ -85,7 +85,7 @@ parser.add_argument('--activation', type=str, default='gelu', help='activation')
 parser.add_argument('--output_attention', action='store_true', help='whether to output attention in encoder') #If set, the model outputs attention weights.
 parser.add_argument('--patch_len', type=int, default=16, help='patch length') #Patch size (16), possibly for a patch-based transformer (similar to ViTs).
 parser.add_argument('--stride', type=int, default=8, help='stride') #Stride for patch extraction (8)
-parser.add_argument('--prompt_domain', type=int, default=0, help='') #BOH???
+parser.add_argument('--prompt_domain', type=int, default=0, help='') #DEVE ESSERE DIVERSO DA ZERO PER INDICARE LA PRESENZA DI UN PROMPT?? PENSO DI SI
 parser.add_argument('--llm_model', type=str, default='LLAMA', help='LLM model') # LLAMA, GPT2, BERT
 parser.add_argument('--llm_dim', type=int, default='4096', help='LLM model dimension')# LLama7b:4096; GPT2-small:768; BERT-base:768
 
@@ -204,7 +204,8 @@ for ii in range(args.itr):
 
     path = os.path.join(args.checkpoints,
                         setting + '-' + args.model_comment)  # unique checkpoint saving path
-    args.content = load_content(args)
+    #ATTENZIONE ARGS.CONTENT NON DOVREBBE ANDARE PRIMA DI CARICARE IL MODELLO ALTRIMENTI IN MODEL SELF.DESCRIPTION NON CARICA NULLA!!!!???
+    args.content = load_content(args) #OK PERFETTO QUA AGGIUNGE IN ARGS IL PROMPT_BACK (ATTENZIONE: prende il prompt back in base a args.date e args.prompt_domain)
     if not os.path.exists(path) and accelerator.is_local_main_process: #dove mi salva il modello??
         os.makedirs(path) #create the directory where save the model if it doesn't exist!!! (path)
 

@@ -1,0 +1,1 @@
+frequency_15min_df_61 is a dataset that collects attendance data for the 'Juliet and Romeo's House' in Verona. The data is recorded every 15 minutes. The point of interest is closed from 7 PM onwards and reopens at 8 AM. Some days may be much more crowded, such as Valentine's Day.
