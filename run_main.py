@@ -195,6 +195,9 @@ for ii in range(args.itr):
     #with open("test_loader.pkl", "wb") as f:
     #    pickle.dump(test_loader, f)
 #-----
+#----- SPOSTATO
+    args.content = load_content(args)
+#-----
     if args.model == 'Autoformer': #creazione del modello
         model = Autoformer.Model(args).float()
     elif args.model == 'DLinear':
@@ -205,7 +208,8 @@ for ii in range(args.itr):
     path = os.path.join(args.checkpoints,
                         setting + '-' + args.model_comment)  # unique checkpoint saving path
     #ATTENZIONE ARGS.CONTENT NON DOVREBBE ANDARE PRIMA DI CARICARE IL MODELLO ALTRIMENTI IN MODEL SELF.DESCRIPTION NON CARICA NULLA!!!!???
-    args.content = load_content(args) #OK PERFETTO QUA AGGIUNGE IN ARGS IL PROMPT_BACK (ATTENZIONE: prende il prompt back in base a args.date e args.prompt_domain)
+    #infatti quando carico Time LLM mi dice che non è presente content che è il prompt quindi provo a spostarlo prima che carichi il modello!!!
+    #args.content = load_content(args) #OK PERFETTO QUA AGGIUNGE IN ARGS IL PROMPT_BACK (ATTENZIONE: prende il prompt back in base a args.date e args.prompt_domain)
     if not os.path.exists(path) and accelerator.is_local_main_process: #dove mi salva il modello??
         os.makedirs(path) #create the directory where save the model if it doesn't exist!!! (path)
 
