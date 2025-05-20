@@ -33,5 +33,5 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --eval_batch_size 8 \
   --learning_rate 0.01 \
   --llm_layers 8 \
-  --train_epochs 10 \
-  --model_comment TimeLLM-Casa-Giulietta-15min-with-prompt-10epochs
+  --train_epochs 1 \
+  --model_comment TimeLLM-Casa-Giulietta-15min-with-prompt-1epochs
