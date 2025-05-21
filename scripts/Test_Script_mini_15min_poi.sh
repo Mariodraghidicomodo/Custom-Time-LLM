@@ -9,20 +9,21 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset/final_15min_df_poi/ \
-  --data_path freq_mini_61.csv \
-  --model_id freq_mini_61_15min_spd_pl4 \
+  --data_path frequency_15min_df_61_year2018.csv \
+  --model_id Casa_Giulietta_2018 \
   --model TimeLLM \
-  --data Traffic \
+  --data Casa_Giulietta_2018 \
   --features S \
   --target frequency \
   --freq 15min \
   --scale True \
   --seq_len 96 \
-  --label_len 4 \
-  --pred_len 4 \
+  --label_len 24 \
+  --pred_len 1 \
   --enc_in 1 \
   --dec_in 1 \
   --c_out 1 \
+  --prompt_domain 1 \
   --moving_avg 96 \
   --des Exp \
   --itr 1 \
@@ -35,4 +36,4 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --llm_layers 8 \
   --train_epochs 1 \
   --seasonal_patterns Daily \
-  --model_comment TimeLLM_mini_poi_61_15min
+  --model_comment TimeLLM_Casa_Giulietta_2018_15min_1epochs
