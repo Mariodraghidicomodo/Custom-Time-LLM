@@ -167,7 +167,7 @@ class Model(nn.Module):
             param.requires_grad = False
 
         if configs.prompt_domain: #qua prede da args il prompt_back da passare al modello
-            print('content??')
+            print('content')
             self.description = configs.content
             print(self.description)
         else:
