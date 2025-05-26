@@ -1,7 +1,5 @@
 The dataset frequency_15min_df_49_year2019 is a dataset that collects attendance data for the Verona Arena. 
 The data is recorded every 15 minutes in the year 2019. 
-The point of interest is open all year round, usually from 8:30 AM to 7:30 PM, although events or concerts may take place after closing hours.
-It is closed on January 1st and December 25th.
 The highest peaks in tourist visits occur during events and concerts, particularly on the following dates:
 MAY 2019
 01 May – TheGiornalisti - Love Tour 2019/18 May – Ennio Morricone/19 May – Ennio Morricone/24 May – Marco Mengoni - #MengoniLive2019/25 May – Marco Mengoni - #MengoniLive2019/26 May – Marco Mengoni - #MengoniLive2019/27 May – Francesco Renga - Live 2019/29 May – Elton John - Farewell Yellow Brick Road Tour/30 May – Elton John - Farewell Yellow Brick Road Tour
