@@ -12,7 +12,8 @@ data_dict = {
     'm4': Dataset_M4,
     'Casa_Giulietta' : Dataset_Custom,
     'Casa_Giulietta_2018': Dataset_Custom,
-    'Arena_Verona_2019': Dataset_Custom
+    'Arena_Verona_2019': Dataset_Custom,
+    'Arena_Verona_2019_mini': Dataset_Custom #prompt decrise
     #'export_42':Dataset_Custom # capire se devo usare dataset_custom oppure crearmi il mio (vedere data_loader.py)
 }   #attenzione inserire il nome del nostro data set
 

@@ -1,0 +1,17 @@
+The dataset frequency_15min_df_49_year2019 is a dataset that collects attendance data for the Verona Arena. 
+The data is recorded every 15 minutes in the year 2019. 
+The point of interest is open all year round, usually from 8:30 AM to 7:30 PM, although events or concerts may take place after closing hours.
+It is closed on January 1st and December 25th.
+The highest peaks in tourist visits occur during events and concerts, particularly on the following dates:
+MAY 2019
+01 May – TheGiornalisti - Love Tour 2019/18 May – Ennio Morricone/19 May – Ennio Morricone/24 May – Marco Mengoni - #MengoniLive2019/25 May – Marco Mengoni - #MengoniLive2019/26 May – Marco Mengoni - #MengoniLive2019/27 May – Francesco Renga - Live 2019/29 May – Elton John - Farewell Yellow Brick Road Tour/30 May – Elton John - Farewell Yellow Brick Road Tour
+JUNE 2019
+21 June 21:00 – La Traviata/22 June 21:00 – Aida/27 June 21:00 – Aida/28 June 21:00 – La Traviata/29 June 21:00 – Il Trovatore
+JULY 2019
+04 July 21:00 – Il Trovatore/05 July 21:00 – Aida/07 July 21:00 – Il Trovatore/08 July 20:45 – La Traviata/08 July – King Crimson - 50th Anniversary/09 July 21:00 – Aida/10 July 21:00 – Carmen/11 July 21:00 – La Traviata/12 July 21:00 – Aida/13 July 21:00 – Carmen/14 July – J-Ax + Articolo 31/16 July 21:15 – Roberto Bolle and Friends/17 July 21:15 – Roberto Bolle and Friends/18 July 21:00 – Carmen/19 July 21:00 – La Traviata/20 July 21:00 – Il Trovatore/21 July 21:00 – Aida/22 July 20:45 – La Traviata/22 July – Mark Knopfler and His Band/23 July 21:00 – Carmen/24 July 21:00 – Aida/25 July 21:00 – La Traviata/26 July 21:00 – Il Trovatore/27 July 21:00 – Carmen/28 July 21:00 – Aida/29 July – PGM & Cristiano De André - Cantano Fabrizio/30 July 20:45 – La Traviata/31 July 20:45 – Aida
+AUGUST 2019
+01 August 20:45 – La Traviata/02 August 20:45 – Carmen/03 August 20:45 – Aida/04 August 20:45 – Plácido Domingo 50 - Arena Anniversary Night/05 August 20:45 – La Traviata/08 August 20:45 – La Traviata/09 August 20:45 – Aida/10 August 20:45 – Tosca/11 August 21:45 – Carmina Burana/12 August 21:00 – Aida/16 August 20:45 – Tosca/17 August 20:45 – La Traviata/18 August 20:45 – Aida/22 August 20:45 – La Traviata/23 August 20:45 – Tosca/24 August 20:45 – Carmen/25 August 20:45 – Aida/26 August – Sergei Polunin - Romeo e Giulietta/27 August 20:45 – Carmen/28 August 20:45 – Aida/29 August 20:45 – Tosca/30 August 20:45 – La Traviata/31 August 20:45 – Aida
+SEPTEMBER 2019
+03 September 20:45 – Aida/04 September 20:45 – Carmen/05 September 20:45 – La Traviata/06 September 20:45 – Tosca/07 September 20:45 – Aida/11 September – Eros Ramazzotti/12 September – Eros Ramazzotti/14 September – Eros Ramazzotti/15 September – David Garrett - Unlimited Greatest Hits Live/20 September – Francesco De Gregori - Greatest Hits 2019/22 September – Nek/23 September – Pio & Amedeo/24 September – Il Volo/29 September – Coez
+OCTOBER 2019
+03 October – Notre Dame de Paris/04 October – Notre Dame de Paris/05 October – Notre Dame de Paris

@@ -12,7 +12,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --data_path frequency_15min_df_49_year2019.csv \
   --model_id Arena_Verona_2019 \
   --model TimeLLM \
-  --data Arena_Verona_2019 \
+  --data Arena_Verona_2019_mini \
   --features S \
   --target frequency \
   --freq 15min \
@@ -30,7 +30,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --d_model 32 \
   --d_ff 128 \
   --n_head 4 \
-  --batch_size 1 \
+  --batch_size 8 \
   --eval_batch_size 8 \
   --learning_rate 0.01 \
   --llm_layers 8 \
