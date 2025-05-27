@@ -11,7 +11,8 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --root_path ./dataset/final_15min_df_poi/ \
   --data_path frequency_15min_df_61_year2018.csv \
   --model_id Casa_Giulietta_2018 \
-  --model GPT2 \
+  --model TimeLLM \
+  --llm_model GPT2 \
   --data Casa_Giulietta_2018 \
   --features S \
   --target frequency \
