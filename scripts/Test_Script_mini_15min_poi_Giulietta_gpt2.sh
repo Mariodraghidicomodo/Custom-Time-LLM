@@ -13,6 +13,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --model_id Casa_Giulietta_2018 \
   --model TimeLLM \
   --llm_model GPT2 \
+  --llm_dim 768 \
   --data Casa_Giulietta_2018 \
   --features S \
   --target frequency \
