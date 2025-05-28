@@ -36,6 +36,6 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --eval_batch_size 6 \
   --learning_rate 0.01 \
   --llm_layers 2 \
-  --train_epochs 1 \
+  --train_epochs 10 \
   --seasonal_patterns Daily \
   --model_comment TimeLLM_Arena_Verona_2019_15min_1epochs
