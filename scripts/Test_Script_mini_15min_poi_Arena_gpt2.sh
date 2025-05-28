@@ -14,7 +14,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --model TimeLLM \
   --llm_model GPT2 \
   --llm_dim 768 \
-  --data Arena_Verona_2019_mini \
+  --data Arena_Verona_2019_mini2 \
   --features S \
   --target frequency \
   --freq 15min \
