@@ -1,5 +1,0 @@
-The dataset frequency_15min_df_49_year2019 is a dataset that collects attendance data for the Verona Arena. 
-The data is recorded every 15 minutes in the year 2019. 
-The point of interest is open all year round, usually from 8:30 AM to 7:30 PM, although events or concerts may take place after closing hours.
-It is closed on January 1st and December 25th.
-The highest peaks in tourist visits occur during events and concerts
