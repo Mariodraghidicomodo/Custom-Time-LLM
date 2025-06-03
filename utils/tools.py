@@ -276,15 +276,14 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
         #print('RISCALO I DATI')
         mean,std = vali_data.get_scaler_params()
         scaler = StandardScaler(mean,std)
-        predictions_norm = scaler.inverse_transform(predictions)
-        #pred_last_norm = scaler.inverse_transform(pred_last)
-        actuals_norm = scaler.inverse_transform(actuals)
-        #true_last_norm = scaler.inverse_transform(true_last)
-        #print('predictions inv lenght:', predictions_norm.shape)
-        #print('actuals inv lenght:', actuals_norm.shape)
-        actuals_flat_norm = actuals_norm.squeeze().reshape(-1)
-        predictions_flat_norm = predictions_norm.squeeze().reshape(-1)
-    
+
+        #RESCALE
+        #predictions_norm = scaler.inverse_transform(predictions)
+        #actuals_norm = scaler.inverse_transform(actuals)
+
+        #NO RESCALE
+        predictions_norm = predictions
+        actuals_norm = actuals 
 
     #provare a fare un df con actuals, predictions
     '''print('epoch +1: ', epoch+1)
