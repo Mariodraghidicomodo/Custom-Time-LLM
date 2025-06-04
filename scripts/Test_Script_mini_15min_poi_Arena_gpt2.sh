@@ -19,9 +19,9 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --target frequency \
   --freq 15min \
   --scale True \
-  --seq_len 32 \
-  --label_len 12 \
-  --pred_len 1 \
+  --seq_len 192 \
+  --label_len 96 \
+  --pred_len 48 \
   --enc_in 1 \
   --dec_in 1 \
   --c_out 1 \
@@ -29,13 +29,13 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --moving_avg 96 \
   --des Exp \
   --itr 1 \
-  --d_model 16 \
-  --d_ff 64 \
-  --n_head 2 \
-  --batch_size 6 \
+  --d_model 32 \
+  --d_ff 128 \
+  --n_head 4 \
+  --batch_size 15 \
   --eval_batch_size 6 \
   --learning_rate 0.01 \
-  --llm_layers 2 \
+  --llm_layers 8 \
   --train_epochs 10 \
   --seasonal_patterns Daily \
   --model_comment TimeLLM_Arena_Verona_2019_15min_1epochs
