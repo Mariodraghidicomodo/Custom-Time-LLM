@@ -288,20 +288,20 @@ def vali(args, accelerator, model, vali_data, vali_loader, criterion, mae_metric
     #provare a fare un df con actuals, predictions
     '''print('epoch +1: ', epoch+1)
     print('args.train_epochs', args.train_epochs)'''
-    if ((epoch +1) == args.train_epochs) and (format == 'test'): #ultimo testo
+    if ((epoch +1) == args.train_epochs) and (format == 'test'): #ultimo testo, attenzione non salva quello con il migliore Vali accuracy!!
         #print('TRUE')
         if(vali_data.scale == True):
             #print('SCALE')
-            np.save(f'predictions_norm_{args.model_id}', predictions_norm) 
-            np.save(f'actuals_norm_{args.model_id}', actuals_norm) 
-            np.save(f'dates_{args.model_id}', all_batch_dates) 
-            np.save(f'dates_int_{args.model_id}',all_batch_dates_int)
+            np.save(f'predictions_norm_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}', predictions_norm) 
+            np.save(f'actuals_norm_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}', actuals_norm) 
+            np.save(f'dates_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}', all_batch_dates) 
+            np.save(f'dates_int_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}',all_batch_dates_int)
         else:
             #print('NO SCALE')
-            np.save(f'predictions_{args.model_id}', predictions) 
-            np.save(f'actuals_{args.model_id}', actuals) 
-            np.save(f'dates_{args.model_id}', all_batch_dates) 
-            np.save(f'dates_int_{args.model_id}',all_batch_dates_int)
+            np.save(f'predictions_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}', predictions) 
+            np.save(f'actuals_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}', actuals) 
+            np.save(f'dates_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}', all_batch_dates) 
+            np.save(f'dates_int_{args.model_id}_{args.seq_len}_{args.label_len}_{args.pred_len}',all_batch_dates_int)
     #else: 
         #print('FALSE')
     
