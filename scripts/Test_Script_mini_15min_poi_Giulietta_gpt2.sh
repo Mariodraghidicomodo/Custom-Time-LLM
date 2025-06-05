@@ -32,8 +32,8 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --d_model 32 \
   --d_ff 128 \
   --n_head 4 \
-  --batch_size 30 \
-  --eval_batch_size 8 \
+  --batch_size 15 \
+  --eval_batch_size 6 \
   --learning_rate 0.01 \
   --llm_layers 8 \
   --train_epochs 10 \
