@@ -18,7 +18,7 @@ accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_proces
   --features S \
   --target frequency \
   --freq 15min \
-  --scale True \
+  --scale False \
   --seq_len 96 \
   --label_len 24 \
   --pred_len 1 \
