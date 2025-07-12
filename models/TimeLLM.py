@@ -197,14 +197,14 @@ class Model(nn.Module):
         self.normalize_layers = Normalize(configs.enc_in, affine=False)
 
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        print('FOREWARD')
+        #print('FOREWARD')
         if self.task_name == 'long_term_forecast' or self.task_name == 'short_term_forecast':
             dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec) #faccio predizione
             return dec_out[:, -self.pred_len:, :]
         return None
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        print('FORECAST')
+        #print('FORECAST')
         x_enc = self.normalize_layers(x_enc, 'norm')
 
         B, T, N = x_enc.size()
