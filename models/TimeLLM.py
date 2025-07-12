@@ -197,13 +197,14 @@ class Model(nn.Module):
         self.normalize_layers = Normalize(configs.enc_in, affine=False)
 
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
+        print('FOREWARD')
         if self.task_name == 'long_term_forecast' or self.task_name == 'short_term_forecast':
-            dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
+            dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec) #faccio predizione
             return dec_out[:, -self.pred_len:, :]
         return None
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-
+        print('FORECAST')
         x_enc = self.normalize_layers(x_enc, 'norm')
 
         B, T, N = x_enc.size()
@@ -215,7 +216,7 @@ class Model(nn.Module):
         lags = self.calcute_lags(x_enc)
         trends = x_enc.diff(dim=1).sum(dim=1)
 
-        prompt = []
+        prompt = [] #costruzione prompt
         for b in range(x_enc.shape[0]):
             min_values_str = str(min_values[b].tolist()[0])
             max_values_str = str(max_values[b].tolist()[0])
@@ -236,7 +237,7 @@ class Model(nn.Module):
 
         x_enc = x_enc.reshape(B, N, T).permute(0, 2, 1).contiguous()
 
-        prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids
+        prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids #tokenizzazione del prompt in base se tokenizer di gpt o di llama
         prompt_embeddings = self.llm_model.get_input_embeddings()(prompt.to(x_enc.device))  # (batch, prompt_token, dim)
 
         source_embeddings = self.mapping_layer(self.word_embeddings.permute(1, 0)).permute(1, 0)

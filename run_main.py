@@ -282,8 +282,10 @@ for ii in range(args.itr):
             if args.use_amp: #CAPIRE QUANDO SI ATTIVA
                 with torch.cuda.amp.autocast(): #arriva qua
                     if args.output_attention:
+                        print('test punto 1')
                         outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0] #predizione dei valori??
                     else:
+                        print('test punto 1.5')
                         outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
 
                     f_dim = -1 if args.features == 'MS' else 0
@@ -301,8 +303,10 @@ for ii in range(args.itr):
 #-----
             else:
                 if args.output_attention:
-                    outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]  #model.forward(), costruisco il modello con una parte dei dati (più o meno) forward
+                    print('test punto 2')
+                    outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]  #model.forward()??, costruisco il modello con una parte dei dati (più o meno) forward
                 else:
+                    print('test punto 1')
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark) #forward
 
                 f_dim = -1 if args.features == 'MS' else 0

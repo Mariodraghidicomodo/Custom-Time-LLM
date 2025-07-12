@@ -270,7 +270,7 @@ class Dataset_Custom(Dataset):  #PROVARE A USARE QUESTO PER CREARE IL DATASET AL
 
         if self.scale:
             train_data = df_data[border1s[0]:border2s[0]]
-#----- AGIUNTE 
+#----- AGGIUNTE 
             #print('MEAN: ',train_data.values.mean())
 #-----
             self.scaler.fit(train_data.values)
